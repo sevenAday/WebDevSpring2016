@@ -2,6 +2,9 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="1b6802bd-752a-4b46-b20f-6f6300d59727" name="Default" comment="Changes to complete home.html and register.html without navigation">
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assignment/admin.html" afterPath="$PROJECT_DIR$/public/assignment/admin.html" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assignment/form-fields.html" afterPath="$PROJECT_DIR$/public/assignment/form-fields.html" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/public/assignment/forms.html" afterPath="$PROJECT_DIR$/public/assignment/forms.html" />
     </list>
     <ignored path="WebDevSpring2016.iws" />
@@ -93,21 +96,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="admin.html" pinned="false" current-in-tab="false">
+      <file leaf-file-name="admin.html" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/public/assignment/admin.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.0">
-              <caret line="69" column="85" selection-start-line="69" selection-start-column="85" selection-end-line="69" selection-end-column="85" />
+            <state vertical-scroll-proportion="0.8776978">
+              <caret line="104" column="89" selection-start-line="104" selection-start-column="89" selection-end-line="104" selection-end-column="89" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="forms.html" pinned="false" current-in-tab="true">
+      <file leaf-file-name="forms.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/assignment/forms.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="0.44964027">
-              <caret line="89" column="28" selection-start-line="89" selection-start-column="28" selection-end-line="89" selection-end-column="28" />
+            <state vertical-scroll-proportion="-8.076923">
+              <caret line="87" column="32" selection-start-line="87" selection-start-column="32" selection-end-line="87" selection-end-column="44" />
               <folding />
             </state>
           </provider>
@@ -116,8 +119,8 @@
       <file leaf-file-name="form-fields.html" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/public/assignment/form-fields.html">
           <provider selected="true" editor-type-id="text-editor">
-            <state vertical-scroll-proportion="-6.923077">
-              <caret line="175" column="98" selection-start-line="175" selection-start-column="98" selection-end-line="175" selection-end-column="98" />
+            <state vertical-scroll-proportion="-9.384615">
+              <caret line="185" column="36" selection-start-line="185" selection-start-column="24" selection-end-line="185" selection-end-column="36" />
               <folding />
             </state>
           </provider>
@@ -153,9 +156,9 @@
         <option value="$PROJECT_DIR$/public/assignment/login.html" />
         <option value="$PROJECT_DIR$/public/assignment/register.html" />
         <option value="$PROJECT_DIR$/public/assignment/profile.html" />
-        <option value="$PROJECT_DIR$/public/assignment/admin.html" />
-        <option value="$PROJECT_DIR$/public/assignment/form-fields.html" />
         <option value="$PROJECT_DIR$/public/assignment/forms.html" />
+        <option value="$PROJECT_DIR$/public/assignment/form-fields.html" />
+        <option value="$PROJECT_DIR$/public/assignment/admin.html" />
       </list>
     </option>
   </component>
@@ -693,14 +696,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/assignment/admin.html">
-      <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.0">
-          <caret line="69" column="85" selection-start-line="69" selection-start-column="85" selection-end-line="69" selection-end-column="85" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/public/assignment/home.html">
       <provider selected="true" editor-type-id="text-editor">
         <state vertical-scroll-proportion="-0.65384614">
@@ -717,18 +712,26 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/assignment/form-fields.html">
+    <entry file="file://$PROJECT_DIR$/public/assignment/forms.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="-6.923077">
-          <caret line="175" column="98" selection-start-line="175" selection-start-column="98" selection-end-line="175" selection-end-column="98" />
+        <state vertical-scroll-proportion="-8.076923">
+          <caret line="87" column="32" selection-start-line="87" selection-start-column="32" selection-end-line="87" selection-end-column="44" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/public/assignment/forms.html">
+    <entry file="file://$PROJECT_DIR$/public/assignment/form-fields.html">
       <provider selected="true" editor-type-id="text-editor">
-        <state vertical-scroll-proportion="0.44964027">
-          <caret line="89" column="28" selection-start-line="89" selection-start-column="28" selection-end-line="89" selection-end-column="28" />
+        <state vertical-scroll-proportion="-9.384615">
+          <caret line="185" column="36" selection-start-line="185" selection-start-column="24" selection-end-line="185" selection-end-column="36" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/public/assignment/admin.html">
+      <provider selected="true" editor-type-id="text-editor">
+        <state vertical-scroll-proportion="0.8776978">
+          <caret line="104" column="89" selection-start-line="104" selection-start-column="89" selection-end-line="104" selection-end-column="89" />
           <folding />
         </state>
       </provider>
