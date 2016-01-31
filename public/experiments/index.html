@@ -2,21 +2,21 @@
 <html lang="en">
 <head>
     <title>Testing out java script</title>
-    <script>
-        //alert("Hello World!");
-        var a = 1;
-        var b = 2;
-        var c = Math.pow(a,b);
-        //alert(c);
-        var fact=1;
-        for(var i=1; i <=5; i++)
-        {
-            fact = fact * i;
-        }
-        alert("Factorial of 5 = " + fact);
-    </script>
 </head>
 <body>
-    <h1>Intro to JavaScript</h1>
+    <h1 id="hello">Hello</h1>
+    <script>
+        //var html = document.getElementById("hello").innerHTML;
+        document.getElementById("hello").innerHTML = "Goodbye!";
+    </script>
+    <input type="text" id="age" value="23"/>
+    <input type="text" id="name" value="Tom"/>
+
+    <script>
+        var age = document.getElementById("age").value;
+        var name = document.getElementById("name").value;
+        console.log(age);
+        console.log(name);
+    </script>
 </body>
 </html>
