@@ -1,0 +1,34 @@
+<script src="jquery-1.12.0.min.js"></script>
+<h1>Handling Events with jQuery</h1>
+
+<script>
+    $(init);
+
+    function init() {
+        $("#p1").click(p1Clicked);
+    }
+
+    function p1Clicked()
+    {
+        $("body").append("<p>New Test Paragraph here</p>");
+        $("#ADD").click(addAandB);
+    }
+
+    function addAandB() {
+        var a = $("#A").val();
+        var b = $("#B").val();
+        a = parseInt(a);
+        b = parseInt(b);
+        var c = a + b;
+        $("#C").val(c);
+    }
+</script>
+
+<p id="p1">
+    Test paragraph is here.
+</p>
+
+<input id="A"/>
+<input id="B"/>>
+<button id="ADD">Add A and B</button>
+<input id="C"/>
