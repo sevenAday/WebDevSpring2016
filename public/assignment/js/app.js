@@ -4,7 +4,7 @@
         .config(function($routeProvider){
             $routeProvider
                 .when("/", {
-                    templateUrl: "index.html"
+                    templateUrl: "home.html"
                 })
                 .otherwise({
                     redirectTo: "/"
