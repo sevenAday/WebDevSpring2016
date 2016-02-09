@@ -4,10 +4,14 @@
         .config(function($routeProvider){
             $routeProvider
                 .when("/", {
-                    templateUrl: "home.html"
+                    templateUrl: "home/home.view.html",
+                    controller: "MainController"
+                })
+                .when("/profile", {
+                    templateUrl: "profile.view.html"
                 })
                 .otherwise({
-                    redirectTo: "/home.html"
+                    redirectTo: "/"
                 });
         });
 })();
