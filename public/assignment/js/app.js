@@ -7,7 +7,7 @@
                     templateUrl: "home.html"
                 })
                 .otherwise({
-                    redirectTo: "/"
+                    redirectTo: "/home.html"
                 });
         });
 })();
