@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <title>Testing out java script</title>
+</head>
+<body>
+    <h1 id="hello">Hello</h1>
+    <script>
+        //var html = document.getElementById("hello").innerHTML;
+        document.getElementById("hello").innerHTML = "Goodbye!";
+    </script>
+    <input type="text" id="age" value="23"/>
+    <input type="text" id="name" value="Tom"/>
+
+    <script>
+        var age = document.getElementById("age").value;
+        var name = document.getElementById("name").value;
+        console.log(age);
+        console.log(name);
+    </script>
+</body>
+</html>
