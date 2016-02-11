@@ -8,9 +8,16 @@
     <meta name="author" content="">
     <!--link rel="icon" href="../../favicon.ico"-->
 
-    <title>Welcome !</title>
+    <title></title>
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
     <link href="css/dashboard.css" rel="stylesheet">
+
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="http://code.jquery.com/jquery-2.2.0.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular-route.js"></script>
+
+    <script src="js/config.js"></script>
     <script src="views/header/header.controller.js"></script>
 </head>
 
@@ -28,18 +35,15 @@
             </div>
             <div id="navbar" class="navbar-collapse collapse">
                 <ul class="nav navbar-nav navbar-right">
-                    <li><a href="#/register">Register</a></li>
-                    <li><a href="#/login">Login</a></li>
-                    <li><a href="#/home">Logout</a></li>
-                    <li><a href="#username">Username</a></li>
-                    <li><a href="#/profile">Profile</a></li>
-                    <li><a href="#/admin">Admin</a></li>
+                    <li ng-class="{'active': selectedTab == 'register'}"><a ng-click="selectedTab = 'register'" href="#/register">Register</a></li>
+                    <li ng-class="{'active': selectedTab == 'login'}"   ><a ng-click="selectedTab = 'login'"    href="#/login">Login</a></li>
+                    <li ng-class="{'active': selectedTab == 'home'}"    ><a ng-click="selectedTab = 'home'"     href="#/home">Logout</a></li>
+                    <li ng-class="{'active': selectedTab == 'username'}"><a ng-click="selectedTab = 'username'" href="#username">Username</a></li>
+                    <li ng-class="{'active': selectedTab == 'profile'}" ><a ng-click="selectedTab = 'profile'"  href="#/profile">Profile</a></li>
+                    <li ng-class="{'active': selectedTab == 'register'}"><a ng-click="selectedTab = 'register'" href="#/admin">Admin</a></li>
                 </ul>
             </div>
         </div>
     </nav>
-
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
-    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
 </body>
 </html>
