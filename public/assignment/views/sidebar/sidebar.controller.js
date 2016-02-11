@@ -1,3 +1,8 @@
-/**
- * Created by VAIO37113778 on 2/5/2016.
- */
+(function(){
+    angular
+        .module("FormBuilderApp")
+        .controller("SidebarController", SidebarController);
+    function SidebarController($scope, $location) {
+        $scope.$location = $location;
+    }
+})();
