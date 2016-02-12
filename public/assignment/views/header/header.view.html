@@ -13,12 +13,12 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li ng-class="{'active': selectedTab == 'register'}"><a ng-click="selectedTab = 'register'" href="#/register">Register</a></li>
-                <li ng-class="{'active': selectedTab == 'login'}"><a ng-click="selectedTab = 'login'" href="#/login">Login</a></li>
-                <li ng-class="{'active': selectedTab == 'home'}"><a ng-click="selectedTab = 'home'" href="#/home">Logout</a></li>
-                <li ng-class="{'active': selectedTab == 'username'}"><a ng-click="selectedTab = 'username'" href="#username">Username</a></li>
-                <li ng-class="{'active': selectedTab == 'profile'}" ><a ng-click="selectedTab = 'profile'" href="#/profile">Profile</a></li>
-                <li ng-class="{'active': selectedTab == 'admin'}"><a ng-click="selectedTab = 'admin'" href="#/admin">Admin</a></li>
+                <li ng-class="{'active': header.selectedTab == 'register'}"><a ng-click="header.selectedTab = 'register'" href="#/register">Register</a></li>
+                <li ng-class="{'active': header.selectedTab == 'login'}"><a ng-click="header.selectedTab = 'login'" href="#/login">Login</a></li>
+                <li ng-class="{'active': header.selectedTab == 'home'}"><a ng-click="header.selectedTab = 'home'" href="#/home">Logout</a></li>
+                <li ng-class="{'active': header.selectedTab == 'username'}"><a ng-click="header.selectedTab = 'username'" href="#username">Username</a></li>
+                <li ng-class="{'active': header.selectedTab == 'profile'}" ><a ng-click="header.selectedTab = 'profile'" href="#/profile">Profile</a></li>
+                <li ng-class="{'active': header.selectedTab == 'admin'}"><a ng-click="header.selectedTab = 'admin'" href="#/admin">Admin</a></li>
             </ul>
         </div>
     </div>
