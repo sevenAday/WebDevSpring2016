@@ -18,7 +18,8 @@
             findUserByUsernameAndPassword: findUserByUsernameAndPassword,
             findAllUsers: findAllUsers,
             createUser: createUser,
-            deleteUserById: deleteUserById
+            deleteUserById: deleteUserById,
+            updateUser: updateUser
         };
         return service;
 
