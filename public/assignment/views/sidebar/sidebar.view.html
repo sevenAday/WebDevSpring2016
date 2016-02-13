@@ -1,11 +1,11 @@
-<div ng-controller="SidebarController" class="container-fluid">
+<div class="container-fluid" ng-controller="SidebarController">
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li ng-class="{'active': sidebar.selectedTab == 'home'}"><a ng-click="sidebar.selectedTab = 'home'" href="#/home">Home</a></li>
-                <li ng-class="{'active': sidebar.selectedTab == 'profile'}"><a ng-click="sidebar.selectedTab = 'profile'" href="#/profile">Profile</a></li>
-                <li ng-class="{'active': sidebar.selectedTab == 'admin'}"><a ng-click="sidebar.selectedTab = 'admin'" href="#/admin">Admin</a></li>
-                <li ng-class="{'active': sidebar.selectedTab == 'forms'}"><a ng-click="sidebar.selectedTab = 'forms'" href="#/forms">Forms</a></li>
+                <li ng-class="{'active': $location.url().indexOf('home') != -1}"><a href="#/home">Home</a></li>
+                <li ng-class="{'active': $location.url().indexOf('profile') != -1}"><a href="#/profile">Profile</a></li>
+                <li ng-class="{'active': $location.url().indexOf('admin') != -1}"><a href="#/admin">Admin</a></li>
+                <li ng-class="{'active': $location.url().indexOf('forms') != -1}"><a href="#/forms">Forms</a></li>
             </ul>
         </div>
     </div>

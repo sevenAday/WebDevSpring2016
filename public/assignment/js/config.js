@@ -7,32 +7,26 @@
     function Config($routeProvider)
     {
         $routeProvider
-            .when ("/home",
-                {
+            .when ("/home", {
                     templateUrl: "views/home/home.view.html"
-                })
-            .when ("/register",
-                {
+            })
+            .when ("/register", {
                     templateUrl: "views/users/register.view.html"
-                })
-            .when ("/login",
-                {
+            })
+            .when ("/login", {
                     templateUrl: "views/users/login.view.html"
-                })
-            .when ("/profile",
-                {
+            })
+            .when ("/profile", {
                     templateUrl: "views/users/profile.view.html"
-                })
-            .when ("/admin",
-                {
+            })
+            .when ("/admin", {
                     templateUrl: "views/admin/admin.view.html"
-                })
-            .when ("/forms",
-                {
+            })
+            .when ("/forms", {
                     templateUrl: "views/forms/forms.view.html"
-                })
+            })
             .otherwise ({
-                    redirectTo: "home"
-                })
+                    redirectTo: "/home"
+            })
     }
 })();

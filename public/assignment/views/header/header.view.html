@@ -1,4 +1,4 @@
-<nav ng-controller="HeaderController" class="navbar navbar-inverse navbar-fixed-top">
+<nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="HeaderController">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
@@ -13,12 +13,12 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li ng-class="{'active': header.selectedTab == 'register'}"><a ng-click="header.selectedTab = 'register'" href="#/register">Register</a></li>
-                <li ng-class="{'active': header.selectedTab == 'login'}"><a ng-click="header.selectedTab = 'login'" href="#/login">Login</a></li>
-                <li ng-class="{'active': header.selectedTab == 'home'}"><a ng-click="header.selectedTab = 'home'" href="#/home">Logout</a></li>
-                <li ng-class="{'active': header.selectedTab == 'username'}"><a ng-click="header.selectedTab = 'username'" href="#username">Username</a></li>
-                <li ng-class="{'active': header.selectedTab == 'profile'}" ><a ng-click="header.selectedTab = 'profile'" href="#/profile">Profile</a></li>
-                <li ng-class="{'active': header.selectedTab == 'admin'}"><a ng-click="header.selectedTab = 'admin'" href="#/admin">Admin</a></li>
+                <li ng-class="{'active': $location.url().indexOf('register') != -1}"><a href="#/register">Register</a></li>
+                <li ng-class="{'active': $location.url().indexOf('login') != -1}"><a href="#/login">Login</a></li>
+                <li ng-class="{'active': $location.url().indexOf('home') != -1}"><a href="#/home">Logout</a></li>
+                <li ng-class="{'active': $location.url().indexOf('username') != -1}"><a href="#username">Username</a></li>
+                <li ng-class="{'active': $location.url().indexOf('profile') != -1}" ><a href="#/profile">Profile</a></li>
+                <li ng-class="{'active': $location.url().indexOf('admin') != -1}"><a href="#/admin">Admin</a></li>
             </ul>
         </div>
     </div>
