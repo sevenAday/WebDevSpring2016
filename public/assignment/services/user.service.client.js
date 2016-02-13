@@ -1,10 +1,11 @@
 (function(){
+    "use strict";
+
     angular
         .module("FormBuilderApp")
         .factory("UserService", UserService);
 
     function UserService() {
-        var currentUsers = [];
         var users = [
             {"_id":123, "firstName":"Alice",  "lastName":"Wonderland","username":"alice",  "password":"alice"},
             {"_id":234, "firstName":"Bob",    "lastName":"Hope",      "username":"bob",    "password":"bob"},
@@ -16,13 +17,14 @@
         var service = {
             findUserByUsernameAndPassword: findUserByUsernameAndPassword,
             findAllUsers: findAllUsers,
-            createUser: createUser
+            createUser: createUser,
+            deleteUserById: deleteUserById
         };
         return service;
 
         function findUserByUsernameAndPassword(username, password, callback) {
             var foundUser = null;
-            for (user in users) {
+            for (var user in users) {
                 if (user.username == username && user.password == password) {
                     foundUser = user;
                     break;
@@ -56,6 +58,23 @@
             }
             users.splice(idx, 1);
             return callback(users);
+        }
+
+        function updateUser(userId, user, callback) {
+            var foundUser = null;
+            for (var idx = 0; idx < users.length; idx++) {
+                if (users[idx]._id === userId) {
+                    foundUser = users[idx];
+                    break;
+                }
+            }
+            if (foundUser) {
+                foundUser.firstName = user.firstName;
+                foundUser.lastName = user.lastName;
+                foundUser.username = user.username;
+                foundUser.password = user.password;
+            }
+            return callback(foundUser);
         }
     }
 })();

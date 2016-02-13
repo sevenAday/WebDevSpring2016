@@ -1,5 +1,6 @@
-(function()
-{
+(function(){
+    "use strict";
+
     angular
         .module("FormBuilderApp")
         .config(Config);
