@@ -10,13 +10,12 @@
         $scope.register = register;
 
         function register() {
-            console.log("registering...");
-            $scope.isErorr = false;
+            $scope.showError = true;
             if ($scope.password != $scope.verifyPassword) {
-                //$scope.errorMessage = "The passwords you entered do not match.";
-                $scope.isErorr = true;
+                $scope.registration.verifyPassword.$error = "different";
                 return;
             }
+            $location.path("/profile");
         }
     }
 })();
