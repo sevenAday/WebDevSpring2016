@@ -7,7 +7,7 @@
                 <div class="form-group">
                     <label for="inputUsername" class="col-sm-2">Username:</label>
                     <div class="col-sm-10">
-                        <input name="username" ng-minlength="3" required ng-model="username" type="text" class="form-control" id="inputUsername" placeholder="Username">
+                        <input name="username" ng-minlength="2" required ng-model="username" type="text" class="form-control" id="inputUsername" placeholder="Username">
                         <div ng-messages="profile.username.$error" role="error">
                             <div ng-if="showError" class="text-danger">
                                 <div ng-message="required">Please enter a username.</div>
@@ -19,7 +19,7 @@
                 <div class="form-group">
                     <label for="inputPassword" class="col-sm-2">Password:</label>
                     <div class="col-sm-10">
-                        <input name="password" ng-minlength="8" required ng-model="password" type="password" class="form-control" id="inputPassword" placeholder="Password">
+                        <input name="password" ng-minlength="2" required ng-model="password" type="password" class="form-control" id="inputPassword" placeholder="Password">
                         <div ng-messages="profile.password.$error" role="alert">
                             <div ng-if="showError" class="text-danger">
                                 <div ng-message="required">Please enter a password.</div>

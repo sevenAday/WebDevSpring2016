@@ -25,9 +25,9 @@
 
         function findUserByUsernameAndPassword(username, password, callback) {
             var foundUser = null;
-            for (var user in users) {
-                if (user.username == username && user.password == password) {
-                    foundUser = user;
+            for (var idx = 0; idx < users.length; idx++) {
+                if (users[idx].username == username && users[idx].password == password) {
+                    foundUser = users[idx];
                     break;
                 }
             }
