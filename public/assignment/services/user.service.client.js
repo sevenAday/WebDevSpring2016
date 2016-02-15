@@ -7,11 +7,11 @@
 
     function UserService() {
         var users = [
-            {"_id":123, "firstName":"Alice",  "lastName":"Wonderland","username":"alice",  "password":"alice"},
-            {"_id":234, "firstName":"Bob",    "lastName":"Hope",      "username":"bob",    "password":"bob"},
-            {"_id":345, "firstName":"Charlie","lastName":"Brown",     "username":"charlie","password":"charlie"},
-            {"_id":456, "firstName":"Dan",    "lastName":"Craig",     "username":"dan",    "password":"dan"},
-            {"_id":567, "firstName":"Edward", "lastName":"Norton",    "username":"ed",     "password":"ed"}
+            {"_id":123, "firstName":"Alice",  "lastName":"Wonderland","username":"alice",  "password":"alice",   "email":"aw@e.net"},
+            {"_id":234, "firstName":"Bob",    "lastName":"Hope",      "username":"bob",    "password":"bob",     "email":"bh@e.net"},
+            {"_id":345, "firstName":"Charlie","lastName":"Brown",     "username":"charlie","password":"charlie", "email":"cb@e.net"},
+            {"_id":456, "firstName":"Dan",    "lastName":"Craig",     "username":"dan",    "password":"dan",     "email":"dc@e.net"},
+            {"_id":567, "firstName":"Edward", "lastName":"Norton",    "username":"ed",     "password":"ed",      "email":"en@e.net"}
         ];
 
         var service = {
@@ -44,7 +44,8 @@
                 "firstName": user.firstName,
                 "lastName": user.lastName,
                 "username": user.username,
-                "password": user.password
+                "password": user.password,
+                "email": user.email
             };
             users.push(newUser);
             return callback(newUser);
@@ -74,6 +75,7 @@
                 foundUser.lastName = user.lastName;
                 foundUser.username = user.username;
                 foundUser.password = user.password;
+                foundUser.email = user.email;
             }
             return callback(foundUser);
         }
