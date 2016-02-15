@@ -70,7 +70,7 @@
                     break;
                 }
             }
-            if (foundUser) {
+            if (!!foundUser) {
                 foundUser.firstName = user.firstName;
                 foundUser.lastName = user.lastName;
                 foundUser.username = user.username;
