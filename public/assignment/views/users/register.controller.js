@@ -12,6 +12,7 @@
         function register() {
             var newUser = null;
             $scope.showError = true;
+            delete $scope.registration.verifyPassword.$error.notMatching;
             if ($scope.password != $scope.verifyPassword) {
                 $scope.registration.verifyPassword.$error = {"notMatching" : true};
             }

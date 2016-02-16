@@ -12,6 +12,7 @@
         function login() {
             var currentUser = null;
             $scope.showError = true;
+            delete $scope.signin.password.$error.invalidLogin;
             if (!isNotEmpty($scope.signin.username.$error) && !isNotEmpty($scope.signin.password.$error)) {
                 UserService.findUserByUsernameAndPassword($scope.username, $scope.password, function (user) {
                     $rootScope.user = user;
