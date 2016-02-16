@@ -13,7 +13,10 @@
         ];
 
         var service = {
-            createFormForUser: createFormForUser
+            createFormForUser: createFormForUser,
+            findAllFormsForUser: findAllFormsForUser,
+            deleteFormById: deleteFormById,
+            updateFormById: updateFormById
         };
         return service;
 
