@@ -1,4 +1,4 @@
-(function(){
+(function () {
     "use strict";
 
     angular
@@ -20,7 +20,7 @@
                 if (!!$rootScope.user) {
                     $location.path("/profile");
                 } else {
-                    $scope.signin.password.$error = {"invalidLogin" : true};
+                    $scope.signin.password.$error = {"invalidLogin": true};
                 }
             }
         }
@@ -29,4 +29,4 @@
             return (Object.keys(obj).length > 0);
         }
     }
-})();
+}());

@@ -1,4 +1,4 @@
-(function(){
+(function () {
     "use strict";
 
     angular
@@ -13,13 +13,13 @@
             var newUser = null;
             $scope.showError = true;
             delete $scope.registration.verifyPassword.$error.notMatching;
-            if ($scope.password != $scope.verifyPassword) {
-                $scope.registration.verifyPassword.$error = {"notMatching" : true};
+            if ($scope.password !== $scope.verifyPassword) {
+                $scope.registration.verifyPassword.$error = {"notMatching": true};
             }
             if (isNotEmpty($scope.registration.username.$error)
-                || isNotEmpty($scope.registration.password.$error)
-                || isNotEmpty($scope.registration.verifyPassword.$error)
-                || isNotEmpty($scope.registration.inputEmail.$error)) {
+                    || isNotEmpty($scope.registration.password.$error)
+                    || isNotEmpty($scope.registration.verifyPassword.$error)
+                    || isNotEmpty($scope.registration.inputEmail.$error)) {
                 return;
             }
             newUser = {
@@ -27,7 +27,7 @@
                 "password": $scope.password,
                 "email": $scope.email
             };
-            UserService.createUser(newUser, function(user) {
+            UserService.createUser(newUser, function (user) {
                 $rootScope.user = user;
             });
             $location.path("/profile");
@@ -37,4 +37,4 @@
             return (Object.keys(obj).length > 0);
         }
     }
-})();
+}());
