@@ -20,10 +20,10 @@
             var currentUser = null;
             $scope.showError = true;
             if (isNotEmpty($scope.profile.username.$error)
-                    || isNotEmpty($scope.profile.password.$error)
-                    || isNotEmpty($scope.profile.lastName.$error)
-                    || isNotEmpty($scope.profile.firstName.$error)
-                    || isNotEmpty($scope.profile.inputEmail.$error)) {
+                || isNotEmpty($scope.profile.password.$error)
+                || isNotEmpty($scope.profile.lastName.$error)
+                || isNotEmpty($scope.profile.firstName.$error)
+                || isNotEmpty($scope.profile.inputEmail.$error)) {
                 return;
             }
             currentUser = {
