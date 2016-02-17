@@ -1,4 +1,4 @@
-(function(){
+(function () {
     "use strict";
 
     angular
@@ -40,7 +40,7 @@
 
         function createUser(user, callback) {
             var newUser = {
-                "_id": (new Date).getTime(),
+                "_id": (new Date()).getTime(),
                 "firstName": user.firstName,
                 "lastName": user.lastName,
                 "username": user.username,
@@ -80,4 +80,4 @@
             return callback(foundUser);
         }
     }
-})();
+}());

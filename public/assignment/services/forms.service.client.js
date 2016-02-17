@@ -1,4 +1,4 @@
-(function(){
+(function () {
     "use strict";
 
     angular
@@ -22,7 +22,7 @@
 
         function createFormForUser(userId, form, callback) {
             var newForm = {
-                "_id": (new Date).getTime(),
+                "_id": (new Date()).getTime(),
                 "title": form.title,
                 "userId": userId
             };
@@ -66,4 +66,4 @@
             return callback(foundForm);
         }
     }
-})();
+}());
