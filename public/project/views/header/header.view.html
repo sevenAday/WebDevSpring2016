@@ -13,14 +13,26 @@
         </div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
-                <li ng-class="{'active': $location.url().indexOf('register') != -1}"><a href="#/register">Register</a></li>
+                <li ng-class="{'active': $location.url().indexOf('register') != -1}">
+                    <a href="#/register">Register</a>
+                </li>
                 <li ng-class="{'active': $location.url().indexOf('login') != -1}"><a href="#/login">Login</a></li>
-                <li ng-class="{'active': $location.url().indexOf('home') != -1}"><a href="#/home">Logout</a></li>
-                <li ng-class="{'active': $location.url().indexOf('username') != -1}"><a href="#username">Username</a></li>
-                <li ng-class="{'active': $location.url().indexOf('profile') != -1}" ><a href="#/profile">Profile</a></li>
-                <li ng-class="{'active': $location.url().indexOf('admin') != -1}"><a href="#/admin">Admin</a></li>
-                <li ng-class="{'active': $location.url().indexOf('document') != -1}"><a href="#/document">Document</a></li>
-                <li ng-class="{'active': $location.url().indexOf('searchResults') != -1}"><a href="#/searchResults">Searh Results</a></li>
+                <li ng-show="user" ng-class="{'active': $location.url().indexOf('home') != -1}"><a href="#/home">Logout</a></li>
+                <li ng-show="user" ng-class="{'active': $location.url().indexOf('username') != -1}">
+                    <a href="#username">Username</a>
+                </li>
+                <li ng-show="user" ng-class="{'active': $location.url().indexOf('profile') != -1}" >
+                    <a href="#/profile">Profile</a>
+                </li>
+                <li ng-show="user" ng-class="{'active': $location.url().indexOf('admin') != -1}">
+                    <a href="#/admin">Admin</a>
+                </li>
+                <li ng-show="user" ng-class="{'active': $location.url().indexOf('document') != -1}">
+                    <a href="#/document">Document</a>
+                </li>
+                <li ng-class="{'active': $location.url().indexOf('searchResults') != -1}">
+                    <a href="#/searchResults">Searh Results</a>
+                </li>
             </ul>
         </div>
     </div>
