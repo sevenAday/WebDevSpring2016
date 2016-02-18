@@ -2,7 +2,7 @@
     "use strict";
 
     angular
-        .module("DocumentCallaborationApp")
+        .module("FormBuilderApp")
         .controller("ProfileController", ProfileController);
 
     function ProfileController($scope, $rootScope, $location, UserService) {
