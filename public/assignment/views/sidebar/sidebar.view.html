@@ -2,7 +2,9 @@
     <div class="row">
         <div class="col-sm-3 col-md-2 sidebar">
             <ul class="nav nav-sidebar">
-                <li ng-class="{'active': $location.url().indexOf('home') != -1}"><a href="#/home">Home</a></li>
+                <li ng-class="{'active': $location.url().indexOf('home') != -1 || $location.url().indexOf('logout') != -1}">
+                    <a href="#/home">Home</a>
+                </li>
                 <li ng-show="user" ng-class="{'active': $location.url().indexOf('profile') != -1}">
                     <a href="#/profile">Profile</a>
                 </li>
