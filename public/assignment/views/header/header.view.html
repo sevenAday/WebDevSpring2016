@@ -20,10 +20,10 @@
                 <li ng-hide="user" ng-class="{'active': $location.url().indexOf('login') != -1}">
                     <a href="#/login">Login</a>
                 </li>
-                <li ng-show="user"  ng-class="{'active': $location.url().indexOf('profile') != -1}" >
+                <li ng-show="user" ng-class="{'active': $location.url().indexOf('profile') != -1}" >
                     <a href="#/profile">Profile</a>
                 </li>
-                <li ng-show="user"  ng-class="{'active': $location.url().indexOf('admin') != -1}">
+                <li ng-show="isAdmin" ng-class="{'active': $location.url().indexOf('admin') != -1}">
                     <a href="#/admin">Admin</a>
                 </li>
                 <li ng-show="user" ng-class="{'active': $location.url().indexOf('username') != -1}">

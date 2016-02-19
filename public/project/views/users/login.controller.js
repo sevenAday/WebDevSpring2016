@@ -18,6 +18,11 @@
                     $rootScope.user = user;
                 });
                 if (!!$rootScope.user) {
+                    $rootScope.user.roles.forEach(function (role) {
+                       if (role.indexOf("admin") != -1) {
+                           $rootScope.isAdmin = true;
+                       }
+                    });
                     $location.path("/profile");
                 } else {
                     $scope.signin.password.$error = {"invalidLogin": true};
