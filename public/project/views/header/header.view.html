@@ -33,7 +33,7 @@
                     <a href="#/searchResults">Searh Results</a>
                 </li>
                 <li ng-show="user" ng-class="{'active': $location.url().indexOf('username') != -1}">
-                    <a href="#username">Username</a>
+                    <a href="#/username">{{user.username}}</a>
                 </li>
                 <li ng-show="user" ng-class="{'active': $location.url().indexOf('home') != -1}">
                     <a href="#/home">Logout</a>
