@@ -31,7 +31,7 @@
 
         function deleteForm($index) {
             FormService.deleteFormById($scope.forms[$index]._id, function (forms) {
-                $scope.forms.splice($index, 1);
+                $scope.forms.splice($index, 1); //only one user's forms, not everyone's
             });
         }
 

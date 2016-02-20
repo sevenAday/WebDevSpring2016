@@ -2,7 +2,7 @@
     "use strict";
 
     angular
-        .module("FormBuilderApp")
+        .module("DocumentCallaborationApp")
         .controller("LogoutController", LogoutController);
 
     function LogoutController($rootScope) {

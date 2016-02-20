@@ -13,12 +13,23 @@
                         <th>Action</th>
                     </tr>
                     <tr>
-                        <th><input type="text" class="form-control" id="inputUsername" placeholder="username"></th>
-                        <th><input type="text" class="form-control" id="inputPassword" placeholder="password"></th>
-                        <th><input type="text" class="form-control" id="inputRole" placeholder="role"></th>
                         <th>
-                            <a href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                            <a href="#"><span class="glyphicon glyphicon-ok" aria-hidden="true"></span></a>
+                            <input ng-model="username" type="text" class="form-control" id="inputUsername"
+                                   placeholder="username">
+                        </th>
+                        <th><input ng-model="password" type="text" class="form-control" id="inputPassword"
+                                   placeholder="password">
+                        </th>
+                        <th>
+                            <input ng-model="role" type="text" class="form-control" id="inputRole" placeholder="role">
+                        </th>
+                        <th>
+                            <a ng-click="addUser()">
+                                <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                            </a>
+                            <a ng-click="updateUser()">
+                                <span class="glyphicon glyphicon-ok" aria-hidden="true"></span>
+                            </a>
                         </th>
                     </tr>
                     </thead>
@@ -28,8 +39,12 @@
                         <td>{{user.password}}</td>
                         <td>{{user.roles}}</td>
                         <td>
-                            <a href="#"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-                            <a href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
+                            <a ng-click="deleteUser($index)">
+                                <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                            </a>
+                            <a ng-click="selectUser($index)">
+                                <span class="glyphicon glyphicon-pencil" aria-hidden="true"></span>
+                            </a>
                         </td>
                     </tr>
                     </tbody>

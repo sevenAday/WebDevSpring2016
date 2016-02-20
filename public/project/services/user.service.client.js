@@ -75,7 +75,8 @@
                 "lastName": user.lastName,
                 "username": user.username,
                 "password": user.password,
-                "email": user.email
+                "email": user.email,
+                "roles": user.roles
             };
             users.push(newUser);
             return callback(newUser);
@@ -101,11 +102,18 @@
                 }
             }
             if (!!foundUser) {
-                foundUser.firstName = user.firstName;
-                foundUser.lastName = user.lastName;
+                if (user.firstName) {
+                    foundUser.firstName = user.firstName;
+                }
+                if (user.lastName) {
+                    foundUser.lastName = user.lastName;
+                }
                 foundUser.username = user.username;
                 foundUser.password = user.password;
-                foundUser.email = user.email;
+                if (user.email) {
+                    foundUser.email = user.email;
+                }
+                foundUser.roles = user.roles;
             }
             return callback(foundUser);
         }
