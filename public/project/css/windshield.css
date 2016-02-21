@@ -1,0 +1,26 @@
+.navbar .nav > li > a {
+    color: #7FFF00;
+}
+
+.navbar-inverse .navbar-brand {
+    color: #7FFF00;
+}
+
+.navbar-inverse .navbar-toggle.collapsed .icon-bar {
+    background-color: #7FFF00;
+}
+
+.nav-sidebar > li > a {
+    color: #008000;
+}
+
+.nav-sidebar > .active > a,
+.nav-sidebar > .active > a:hover,
+.nav-sidebar > .active > a:focus {
+    background-color: #7FFF00;
+    color: #060c00;
+}
+
+textarea {
+    resize: none;
+}

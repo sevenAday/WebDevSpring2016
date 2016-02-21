@@ -13,7 +13,7 @@
                 "username":"alice",
                 "password":"alice",
                 "email":"aw@al.net",
-                "roles":["student"]},
+                "roles":["business analyst"]},
             {"_id":234,
                 "firstName":"Bob",
                 "lastName":"Hope",
@@ -27,21 +27,21 @@
                 "username":"charlie",
                 "password":"charlie",
                 "email":"cb@cc.au",
-                "roles":["faculty"]},
+                "roles":["trainer"]},
             {"_id":456,
                 "firstName":"Dan",
                 "lastName":"Craig",
                 "username":"dan",
                 "password":"dan",
                 "email":"dc@dan.com",
-                "roles":["faculty", "admin"]},
+                "roles":["developer", "admin"]},
             {"_id":567,
                 "firstName":"Edward",
                 "lastName":"Norton",
                 "username":"ed",
                 "password":"ed",
                 "email":"en@ed.edu",
-                "roles":["student"]}
+                "roles":["developer"]}
         ];
 
         var service = {
@@ -49,7 +49,8 @@
             findAllUsers: findAllUsers,
             createUser: createUser,
             deleteUserById: deleteUserById,
-            updateUser: updateUser
+            updateUser: updateUser,
+            findUserById: findUserById
         };
         return service;
 
@@ -114,6 +115,17 @@
                     foundUser.email = user.email;
                 }
                 foundUser.roles = user.roles;
+            }
+            return callback(foundUser);
+        }
+
+        function findUserById(userId, callback) {
+            var foundUser = null;
+            for (var idx = 0; idx <= users.length; idx++) {
+                if (users[idx]._id === userId) {
+                    foundUser = users[idx];
+                    break;
+                }
             }
             return callback(foundUser);
         }

@@ -1,0 +1,19 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1 ng-hide="editable">{{document.title}}</h1>
+            <h6 ng-hide="editable">Last modified by {{document.user}} on {{document.lastModifiedDate}}</h6>
+            <p ng-hide="editable">{{document.content}}</p>
+            <input ng-show="editable" name="title" required ng-model="title" type="text" class="form-control"
+                   id="documentTitle" placeholder="Enter a title">
+            <textarea ng-show="editable" name="content" required ng-model="content" type="text" class="form-control"
+                   id="documentContent" placeholder="Enter the content" rows="15"></textarea>
+            <a ng-hide="editable" ng-click="#">Like</a>&nbsp;
+            <a ng-hide="editable" ng-click="#">Comment</a>&nbsp;
+            <a ng-hide="editable" ng-click="editDocument()">Edit</a>&nbsp;
+            <a ng-hide="editable" ng-click="#">Delete</a>&nbsp;
+            <a ng-show="editable" ng-click="#">Save</a>&nbsp;
+            <a ng-show="editable" ng-click="#">Discard</a>
+        </div>
+    </div>
+</div>

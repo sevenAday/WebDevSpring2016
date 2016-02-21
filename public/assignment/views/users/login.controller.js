@@ -10,7 +10,6 @@
         $scope.login = login;
 
         function login() {
-            var currentUser = null;
             $scope.showError = true;
             delete $scope.signin.password.$error.invalidLogin;
             if (!isNotEmpty($scope.signin.username.$error) && !isNotEmpty($scope.signin.password.$error)) {

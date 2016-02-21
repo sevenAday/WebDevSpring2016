@@ -5,8 +5,12 @@
         .module("DocumentCallaborationApp")
         .controller("LogoutController", LogoutController);
 
-    function LogoutController($rootScope) {
-        delete $rootScope.user;
+    function LogoutController($scope, $rootScope, $location) {
+        $scope.$location = $location;
+        delete $rootScope.document;
         delete $rootScope.isAdmin;
+        delete $rootScope.searching;
+        delete $rootScope.user;
+        $location.path("/home");
     }
 }());

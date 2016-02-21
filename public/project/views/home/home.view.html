@@ -1,17 +1,32 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1>Welcome !</h1>
+            <h1>Welcome to DOConvergence!</h1>
             <p>
-                Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nulla quam velit, vulputate eu pharetra nec,
-                mattis ac neque. Duis vulputate commodo lectus, ac blandit elit tincidunt id. Sed rhoncus, tortor sed
-                eleifend tristique, tortor mauris molestie elit, et lacinia ipsum quam nec dui. Quisque nec mauris sit
-                amet elit iaculis pretium sit amet quis magna. Aenean velit odio, elementum in tempus ut, vehicula eu
-                diam. Pellentesque rhoncus aliquam mattis. Ut vulputate eros sed felis sodales nec vulputate justo
-                hendrerit. Vivamus varius pretium ligula, a aliquam odio euismod sit amet. Quisque laoreet sem sit amet
-                orci ullamcorper at ultricies metus viverra. Pellentesque arcu mauris, malesuada quis ornare accumsan,
-                blandit sed diam.
+                This is where you can create documents and share with your colleagues the best documentations
+                that you can come up with. By doing so, your colleagues will also do the same to you. The
+                hope is that together you and your colleagues will collaborate and contribute to create the
+                best set of documentations the world has ever seen. Everyone will then shake hands and be
+                happy. Start by clicking on one of the links below, creating a new document, or searching for
+                some documents by using some keyword. You can also go to your profile to access a document
+                you have recently worked on. Good luck and be happy!
             </p>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead></thead>
+                    <tbody>
+                        <tr ng-repeat="document in documents">
+                            <td>
+                                <a ng-click="openDocument($index)">
+                                    <span class="text-nowrap">{{document.title}}</span>
+                                </a>
+                                <br/>
+                                <span>{{document.abstract}} ...</span>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>

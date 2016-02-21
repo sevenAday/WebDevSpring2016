@@ -8,7 +8,8 @@
     function Config($routeProvider) {
         $routeProvider
             .when("/home", {
-                templateUrl: "views/home/home.view.html"
+                templateUrl: "views/home/home.view.html",
+                controller: "HomeController"
             })
             .when("/register", {
                 templateUrl: "views/users/register.view.html",
@@ -33,6 +34,10 @@
             .when("/logout", {
                 templateUrl: "views/home/home.view.html",
                 controller: "LogoutController"
+            })
+            .when("/document", {
+                templateUrl: "views/activities/document.view.html",
+                controller: "DocumentController"
             })
             .otherwise({
                 redirectTo: "/home"
