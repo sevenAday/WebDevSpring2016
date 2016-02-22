@@ -1,3 +1,16 @@
-/**
- * Created by VAIO37113778 on 2/5/2016.
- */
+(function () {
+    "use strict";
+
+    angular
+        .module("FormBuilderApp")
+        .controller("FieldsController", FieldsController);
+
+    function FieldsController($scope, $rootScope, $location) {
+        $scope.$location = $location;
+        if ($rootScope.user) {
+            // do nothing right now
+        } else {
+            $location.path("/login");
+        }
+    }
+}());

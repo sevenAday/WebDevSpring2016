@@ -7,16 +7,20 @@
 
     function DocumentController($scope, $rootScope, $location, UserService) {
         $scope.$location = $location;
-        var dd = $rootScope.document.lastModified;
-        $scope.editable = false;
-        UserService.findUserById($rootScope.document.userId, function (user) {
-            if (!!user) {
-                $rootScope.document.user = user.firstName + " " + user.lastName;
-            }
-        });
-        $rootScope.document.lastModifiedDate = dd.getMonth() + "/" + dd.getDate() + "/" + dd.getFullYear();
-        $scope.title = $rootScope.document.title;
-        $scope.content = $rootScope.document.content;
+        if ($rootScope.user && $rootScope.document) {
+            var dd = $rootScope.document.lastModified;
+            $scope.editable = false;
+            UserService.findUserById($rootScope.document.userId, function (user) {
+                if (!!user) {
+                    $rootScope.document.user = user.firstName + " " + user.lastName;
+                }
+            });
+            $rootScope.document.lastModifiedDate = dd.getMonth() + "/" + dd.getDate() + "/" + dd.getFullYear();
+            $scope.title = $rootScope.document.title;
+            $scope.content = $rootScope.document.content;
+        } else {
+            $location.path("/home");
+        }
 
         $scope.editDocument = editDocument;
 

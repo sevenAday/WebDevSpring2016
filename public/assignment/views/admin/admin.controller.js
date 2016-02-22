@@ -8,6 +8,7 @@
     function AdminController($scope, $rootScope, $location, UserService) {
         $scope.$location = $location;
         var selectedUserIndex = -1;
+
         if ($rootScope.user && $rootScope.isAdmin) {
             UserService.findAllUsers(function (users) {
                 $scope.users = [];
@@ -25,6 +26,8 @@
                 }
 
             });
+        } else {
+            $location.path("/login");
         }
 
         $scope.addUser = addUser;

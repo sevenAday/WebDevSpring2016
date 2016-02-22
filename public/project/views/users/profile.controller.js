@@ -13,7 +13,10 @@
             $scope.firstName = $rootScope.user.firstName;
             $scope.lastName = $rootScope.user.lastName;
             $scope.email = $rootScope.user.email;
+        } else {
+            $location.path("/login");
         }
+
         $scope.update = update;
 
         function update() {

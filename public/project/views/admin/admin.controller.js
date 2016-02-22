@@ -24,6 +24,8 @@
                     };
                 }
             });
+        } else {
+            $location.path("/login");
         }
 
         $scope.addUser = addUser;

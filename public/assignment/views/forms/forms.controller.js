@@ -12,6 +12,8 @@
             FormService.findAllFormsForUser($rootScope.user._id, function (forms) {
                 $scope.forms = forms;
             });
+        } else {
+            $location.path("/login");
         }
 
         $scope.addForm = addForm;
