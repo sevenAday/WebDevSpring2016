@@ -27,9 +27,18 @@
         }
 
         $scope.editDocument = editDocument;
+        $scope.discardDocument = discardDocument;
 
         function editDocument() {
             $rootScope.editable = true;
+        }
+
+        function discardDocument() {
+            if ($rootScope.editable) {
+                $rootScope.editable = false;
+            } else if ($rootScope.newDocument) {
+                $location.path("/home");
+            }
         }
     }
 }());
