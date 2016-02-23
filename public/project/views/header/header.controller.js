@@ -5,7 +5,14 @@
         .module("DocumentCallaborationApp")
         .controller("HeaderController", HeaderController);
 
-    function HeaderController($scope, $location) {
+    function HeaderController($scope, $rootScope, $location) {
         $scope.$location = $location;
+
+        $scope.createDocument = createDocument;
+
+        function createDocument() {
+            $rootScope.document = {"newDocument": true};
+            $location.path("/document");
+        }
     }
 }());
