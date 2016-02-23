@@ -12,7 +12,8 @@
 
         function createDocument() {
             $rootScope.document = {"newDocument": true};
-            $location.path("/document")
+            $rootScope.newDocument = true;
+            $location.path("/document");
         }
     }
 }());

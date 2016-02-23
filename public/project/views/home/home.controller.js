@@ -27,6 +27,8 @@
         function openDocument($index) {
             $rootScope.document = $scope.documents[$index];
             if ($rootScope.user) {
+                $rootScope.newDocument = false;
+                $rootScope.editable = false;
                 $location.path("/document");
             } else {
                 $location.path("/login");

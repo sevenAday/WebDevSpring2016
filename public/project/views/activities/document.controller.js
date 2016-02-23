@@ -9,10 +9,10 @@
         $scope.$location = $location;
         if ($rootScope.user && $rootScope.document) {
             if ($rootScope.document.newDocument) {
-                $scope.editable = true;
+
             } else {
                 var dd = $rootScope.document.lastModified;
-                $scope.editable = false;
+                $rootScope.editable = false;
                 UserService.findUserById($rootScope.document.userId, function (user) {
                     if (!!user) {
                         $rootScope.document.user = user.firstName + " " + user.lastName;
@@ -29,7 +29,7 @@
         $scope.editDocument = editDocument;
 
         function editDocument() {
-            $scope.editable = true;
+            $rootScope.editable = true;
         }
     }
 }());

@@ -1,19 +1,23 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 ng-hide="editable">{{document.title}}</h1>
-            <h6 ng-hide="editable">Last modified by {{document.user}} on {{document.lastModifiedDate}}</h6>
-            <p ng-hide="editable">{{document.content}}</p>
-            <input ng-show="editable" name="title" required ng-model="title" type="text" class="form-control"
-                   id="documentTitle" placeholder="Enter a title">
-            <textarea ng-show="editable" name="content" required ng-model="content" type="text" class="form-control"
-                   id="documentContent" placeholder="Enter the content" rows="15"></textarea>
-            <a ng-hide="editable" href="#">Like</a>&nbsp;
-            <a ng-hide="editable" href="#">Comment</a>&nbsp;
-            <a ng-hide="editable" ng-click="editDocument()">Edit</a>&nbsp;
-            <a ng-hide="editable" href="#">Delete</a>&nbsp;
-            <a ng-show="editable" href="#">Save</a>&nbsp;
-            <a ng-show="editable" href="#">Discard</a>
+            <h1 ng-hide="editable || newDocument">{{document.title}}</h1>
+            <h6 ng-hide="editable || newDocument">Last modified by {{document.user}} on {{document.lastModifiedDate}}</h6>
+            <p ng-hide="editable || newDocument">{{document.content}}</p>
+            <input ng-show="editable" required ng-model="title" type="text" class="form-control"
+                   placeholder="Enter a title">
+            <textarea ng-show="editable" required ng-model="content" type="text" class="form-control"
+                      placeholder="Enter the content" rows="15"></textarea>
+            <input ng-show="newDocument" required ng-model="newDocumentTitle" type="text" class="form-control"
+                   placeholder="Enter a title">
+            <textarea ng-show="newDocument" required ng-model="newDocumentContent" type="text" class="form-control"
+                      placeholder="Enter the content" rows="15"></textarea>
+            <a ng-hide="editable || newDocument" href="#">Like</a>&nbsp;
+            <a ng-hide="editable || newDocument" href="#">Comment</a>&nbsp;
+            <a ng-hide="editable || newDocument" ng-click="editDocument()">Edit</a>&nbsp;
+            <a ng-hide="editable || newDocument" href="#">Delete</a>&nbsp;
+            <a ng-show="editable || newDocument" href="#">Save</a>&nbsp;
+            <a ng-show="editable || newDocument" href="#">Discard</a>
         </div>
     </div>
 </div>
