@@ -20,7 +20,12 @@
                 .success(callback);
         }
 
-        function createCourse() {}
+        function createCourse(course, callback) {
+            $http
+                .post("/rest/course", course)
+                .success(callback);
+        }
+
         function readOneCourseById(id, callback) {
             $http
                 .get("/rest/course" + id)

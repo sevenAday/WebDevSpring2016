@@ -9,6 +9,12 @@ var courses = [
     {title: "Nodejs 101", seats: 90, start: new Date(2016, 9,4)},
 ];
 
+app.post("/rest/course", function(req, res) {
+    var course = req.body;
+    courses.push(course);
+    res.json(courses);
+});
+
 app.delete("/rest/course/:id", function(req, res) {
     var index = req.params["id"];
     courses.splice(index, 1);
