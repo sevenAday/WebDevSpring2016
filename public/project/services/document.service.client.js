@@ -92,12 +92,32 @@
         ];
 
         var service = {
-            getAllDocuments: getAllDocuments
+            getAllDocuments: getAllDocuments,
+            updateDocumentById: updateDocumentById,
+            addNewDocument: addNewDocument
         };
         return service;
 
         function getAllDocuments(callback) {
             return callback(documents);
+        }
+
+        function updateDocumentById(documentId, newDocument, callback) {
+            for (var idx = 0; idx < documents.length; idx++) {
+                if (documents[idx]._id === documentId) {
+                    documents[idx].userId = newDocument.userId;
+                    documents[idx].title = newDocument.title;
+                    documents[idx].content = newDocument.content;
+                    documents[idx].lastModified = newDocument.lastModified;
+                    return callback(documents[idx]);
+                }
+            }
+        }
+
+        function addNewDocument(newDocument, callback) {
+            newDocument._id = (new Date()).getTime();
+            documents.push(newDocument);
+            return callback(newDocument);
         }
     }
 }());
