@@ -9,11 +9,20 @@
         $scope.$location = $location;
 
         $scope.createDocument = createDocument;
+        $scope.logout = logout;
 
         function createDocument() {
             $rootScope.document = {"newDocument": true};
             $rootScope.newDocument = true;
             $location.path("/document");
+        }
+
+        function logout() {
+            delete $rootScope.document;
+            delete $rootScope.isAdmin;
+            delete $rootScope.searching;
+            delete $rootScope.user;
+            $location.url("/home");
         }
     }
 }());

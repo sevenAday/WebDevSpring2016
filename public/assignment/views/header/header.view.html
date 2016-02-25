@@ -24,9 +24,7 @@
                 <li ng-show="user" ng-class="{'active': $location.url().indexOf('profile') != -1 || $location.url().indexOf('username') != -1}">
                     <a href="#/username">{{user.username}}</a>
                 </li>
-                <li ng-show="user" ng-class="{'active': $location.url().indexOf('logout') != -1}">
-                    <a href="#/logout">Logout</a>
-                </li>
+                <li ng-show="user"><a ng-click="logout()">Logout</a></li>
             </ul>
         </div>
     </div>

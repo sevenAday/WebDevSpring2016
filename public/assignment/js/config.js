@@ -38,10 +38,6 @@
                 templateUrl: "views/users/profile.view.html",
                 controller: "ProfileController"
             })
-            .when("/logout", {
-                templateUrl: "views/home/home.view.html",
-                controller: "LogoutController"
-            })
             .otherwise({
                 redirectTo: "/home"
             });
