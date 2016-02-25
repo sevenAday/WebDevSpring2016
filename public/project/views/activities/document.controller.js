@@ -43,6 +43,10 @@
         }
 
         function saveDocument() {
+            $scope.showError = true;
+            if (isNotEmpty($scope.edoc.title.$error)) {
+                return;
+            }
             var newDocument = {"userId": $rootScope.user._id, "lastModified": new Date()};
             var dd = newDocument.lastModified;
             if ($rootScope.editable) {
@@ -68,6 +72,10 @@
             $rootScope.document.lastModifiedDate = dd.getMonth() + "/" + dd.getDate() + "/" + dd.getFullYear();
             $scope.title = $rootScope.document.title;
             $scope.content = $rootScope.document.content;
+        }
+
+        function isNotEmpty(obj) {
+            return (Object.keys(obj).length > 0);
         }
     }
 }());

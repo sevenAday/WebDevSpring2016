@@ -17,11 +17,9 @@
                     $rootScope.user = user;
                 });
                 if (!!$rootScope.user) {
-                    $rootScope.user.roles.forEach(function (role) {
-                       if (role.indexOf("admin") != -1) {
-                           $rootScope.isAdmin = true;
-                       }
-                    });
+                    if ($rootScope.user.roles.indexOf("admin") != -1) {
+                        $rootScope.isAdmin = true;
+                    }
                     if ($rootScope.document) {
                         $location.path("/document");
                     } else {

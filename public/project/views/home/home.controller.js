@@ -10,12 +10,16 @@
         $scope.documents = [];
         DocumentService.getAllDocuments(function (documents) {
             documents.forEach(function (document) {
+                var asbtractStr = "";
+                if (document.content) {
+                    asbtractStr = document.content.substring(0, 160);
+                }
                 var newDocument = {
                     "_id": document._id,
                     "userId": document.userId,
                     "title": document.title,
                     "content": document.content,
-                    "abstract": document.content.substring(0, 160),
+                    "abstract": asbtractStr,
                     "lastModified": document.lastModified
                 };
                 $scope.documents.push(newDocument);
