@@ -29,12 +29,14 @@
         $scope.editDocument = editDocument;
         $scope.discardDocument = discardDocument;
         $scope.saveDocument = saveDocument;
+        $scope.clearError = clearError;
 
         function editDocument() {
             $rootScope.editable = true;
         }
 
         function discardDocument() {
+            clearError();
             if ($rootScope.editable) {
                 $rootScope.editable = false;
             } else if ($rootScope.newDocument) {
@@ -43,10 +45,12 @@
         }
 
         function saveDocument() {
-            $scope.showError = true;
-            if (isNotEmpty($scope.edoc.title.$error)) {
+            if (($rootScope.editable && !$scope.title) || ($rootScope.newDocument && !$scope.newDocumentTitle)) {
+                $scope.errorred = true;
+                $scope.errorMessage = "Title required for document";
                 return;
             }
+            clearError();
             var newDocument = {"userId": $rootScope.user._id, "lastModified": new Date()};
             var dd = newDocument.lastModified;
             if ($rootScope.editable) {
@@ -74,8 +78,9 @@
             $scope.content = $rootScope.document.content;
         }
 
-        function isNotEmpty(obj) {
-            return (Object.keys(obj).length > 0);
+        function clearError() {
+            $scope.errorred = false;
+            $scope.errorMessage = "";
         }
     }
 }());

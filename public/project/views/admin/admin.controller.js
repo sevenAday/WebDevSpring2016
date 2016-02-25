@@ -34,19 +34,25 @@
         $scope.updateUser = updateUser;
 
         function addUser() {
-            var newUser = {"username": $scope.username,
-                "password": $scope.password,
-                "roles": $scope.role.split("\\s*|\\s*")};
-            if ($scope.username && $scope.password && $scope.role && $rootScope.user && $rootScope.isAdmin) {
-                UserService.createUser(newUser, function (user) {
-                    $scope.users.push({"_id": user._id,
-                        "username": user.username,
-                        "password": user.password,
-                        "roles": $scope.role});
-                    $scope.username = "";
-                    $scope.password = "";
-                    $scope.role = "";
-                });
+            if ($scope.username && $scope.password && $scope.role) {
+                var newUser = {
+                    "username": $scope.username,
+                    "password": $scope.password,
+                    "roles": $scope.role.replace(/\s/g, "").split("|")
+                };
+                if ($scope.username && $scope.password && $scope.role && $rootScope.user && $rootScope.isAdmin) {
+                    UserService.createUser(newUser, function (user) {
+                        $scope.users.push({
+                            "_id": user._id,
+                            "username": user.username,
+                            "password": user.password,
+                            "roles": $scope.role
+                        });
+                        $scope.username = "";
+                        $scope.password = "";
+                        $scope.role = "";
+                    });
+                }
             }
         }
 
@@ -64,20 +70,22 @@
         }
 
         function updateUser() {
-            var newUser = {"username": $scope.username,
-                "password": $scope.password,
-                "roles": $scope.role.split("\\s*|\\s*")};
-            if (selectedUserIndex >= 0) {
-                UserService.updateUser($scope.users[selectedUserIndex]._id, newUser, function (user) {
-                    $scope.users[selectedUserIndex]._id = user._id;
-                    $scope.users[selectedUserIndex].username = user.username;
-                    $scope.users[selectedUserIndex].password = user.password;
-                    $scope.users[selectedUserIndex].roles = $scope.role;
-                    $scope.username = "";
-                    $scope.password = "";
-                    $scope.role = "";
-                });
-                selectedUserIndex = -1;
+            if ($scope.username && $scope.password && $scope.role) {
+                var newUser = {"username": $scope.username,
+                    "password": $scope.password,
+                    "roles": $scope.role.replace(/\s/g, "").split("|")};
+                if (selectedUserIndex >= 0) {
+                    UserService.updateUser($scope.users[selectedUserIndex]._id, newUser, function (user) {
+                        $scope.users[selectedUserIndex]._id = user._id;
+                        $scope.users[selectedUserIndex].username = user.username;
+                        $scope.users[selectedUserIndex].password = user.password;
+                        $scope.users[selectedUserIndex].roles = $scope.role;
+                        $scope.username = "";
+                        $scope.password = "";
+                        $scope.role = "";
+                    });
+                    selectedUserIndex = -1;
+                }
             }
         }
     }

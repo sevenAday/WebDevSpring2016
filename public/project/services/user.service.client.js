@@ -114,7 +114,9 @@
                 if (user.email) {
                     foundUser.email = user.email;
                 }
-                foundUser.roles = user.roles;
+                if (user.roles) {
+                    foundUser.roles = user.roles;
+                }
             }
             return callback(foundUser);
         }

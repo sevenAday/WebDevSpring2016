@@ -18,8 +18,10 @@
         }
 
         $scope.update = update;
+        $scope.clearMessage = clearMessage;
 
         function update() {
+            $scope.successful = false;
             var currentUser = null;
             $scope.showError = true;
             if (isNotEmpty($scope.profile.username.$error)
@@ -42,12 +44,18 @@
                 $rootScope.user.firstName = user.firstName;
                 $rootScope.user.lastName = user.lastName;
                 $rootScope.user.email = user.email;
+                $rootScope.user.roles = user.roles;
             });
+            $scope.successful = true;
             $location.path("/profile");
         }
 
         function isNotEmpty(obj) {
             return (Object.keys(obj).length > 0);
+        }
+
+        function clearMessage() {
+            $scope.successful = false;
         }
     }
 }());

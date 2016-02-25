@@ -4,18 +4,12 @@
             <h1 ng-hide="editable || newDocument">{{document.title}}</h1>
             <h6 ng-hide="editable || newDocument">Last modified by {{document.user}} on {{document.lastModifiedDate}}</h6>
             <p ng-hide="editable || newDocument">{{document.content}}</p>
-            <form name="edoc" class="form-horizontal">
-                <input ng-show="editable" name="title" required ng-model="title" type="text" class="form-control"
-                       placeholder="Enter a title">
-                <div ng-messages="edoc.title.$error" role="error">
-                    <div ng-if="showError" class="text-danger">
-                        <div ng-message="required">Please enter a title.</div>
-                    </div>
-                </div>
-            </form>
+            <div ng-if="errorred" class="text-danger">{{errorMessage}}</div>
+            <input ng-show="editable" ng-focus="clearError()" ng-model="title" type="text" class="form-control"
+                   placeholder="Enter a title">
             <textarea ng-show="editable" ng-model="content" type="text" class="form-control"
                       placeholder="Enter the content" rows="15"></textarea>
-            <input ng-show="newDocument" ng-model="newDocumentTitle" type="text" class="form-control"
+            <input ng-show="newDocument" ng-focus="clearError()" ng-model="newDocumentTitle" type="text" class="form-control"
                    placeholder="Enter a title">
             <textarea ng-show="newDocument" ng-model="newDocumentContent" type="text" class="form-control"
                       placeholder="Enter the content" rows="15"></textarea>
