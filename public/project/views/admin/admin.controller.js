@@ -9,6 +9,14 @@
         $scope.$location = $location;
         var selectedUserIndex = -1;
         $scope.alertMessage = $rootScope.alertMessageToAll;
+        if (!$rootScope.numberOfPages) {
+            $rootScope.numberOfPages = 10;
+        }
+        if (!$rootScope.numberOfActivities) {
+            $rootScope.numberOfActivities = 10;
+        }
+        $scope.numberOfRecentPages = $rootScope.numberOfPages;
+        $scope.numberOfRecentActivities = $rootScope.numberOfActivities;
         if ($rootScope.user && $rootScope.isAdmin) {
             UserService.findAllUsers(function (users) {
                 $scope.users = [];
@@ -35,6 +43,8 @@
         $scope.updateUser = updateUser;
         $scope.postAlertMessage = postAlertMessage;
         $scope.removeAlertMessage = removeAlertMessage;
+        $scope.updateNumberOfPages = updateNumberOfPages;
+        $scope.updateNumberOfActivities = updateNumberOfActivities;
 
         function addUser() {
             if ($scope.username && $scope.password && $scope.role) {
@@ -100,6 +110,14 @@
         function removeAlertMessage() {
             $rootScope.showAlertMessage = false;
             $scope.alertMessage = "";
+        }
+
+        function updateNumberOfPages() {
+            $rootScope.numberOfPages = $scope.numberOfRecentPages;
+        }
+
+        function updateNumberOfActivities() {
+            $rootScope.numberOfActivities = $scope.numberOfRecentActivities;
         }
     }
 }());
