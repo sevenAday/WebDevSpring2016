@@ -8,6 +8,7 @@
     function AdminController($scope, $rootScope, $location, UserService) {
         $scope.$location = $location;
         var selectedUserIndex = -1;
+        $scope.alertMessage = $rootScope.alertMessageToAll;
         if ($rootScope.user && $rootScope.isAdmin) {
             UserService.findAllUsers(function (users) {
                 $scope.users = [];
@@ -32,6 +33,8 @@
         $scope.deleteUser = deleteUser;
         $scope.selectUser = selectUser;
         $scope.updateUser = updateUser;
+        $scope.postAlertMessage = postAlertMessage;
+        $scope.removeAlertMessage = removeAlertMessage;
 
         function addUser() {
             if ($scope.username && $scope.password && $scope.role) {
@@ -87,6 +90,16 @@
                     selectedUserIndex = -1;
                 }
             }
+        }
+
+        function postAlertMessage() {
+            $rootScope.showAlertMessage = true;
+            $rootScope.alertMessageToAll = $scope.alertMessage;
+        }
+
+        function removeAlertMessage() {
+            $rootScope.showAlertMessage = false;
+            $scope.alertMessage = "";
         }
     }
 }());
