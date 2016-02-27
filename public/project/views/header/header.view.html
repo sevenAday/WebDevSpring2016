@@ -14,9 +14,11 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a ng-click="searchForDocuments()">
+                    <a ng-click="#">
                         <div class="input-group">
-                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            <a ng-click="searchForDocuments()">
+                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            </a>
                             <input class="text-search"
                                    name="keyWord" ng-model="keyWord"
                                    type="text" placeholder="Search for...">
@@ -43,8 +45,8 @@
                     <a href="#/document">Document</a>
                 </li>
                 <li ng-show="searching" class="hidden-lg"
-                    ng-class="{'active': $location.url().indexOf('searchResults') != -1}">
-                    <a href="#/searchResults">Search Results</a>
+                    ng-class="{'active': $location.url().indexOf('results') != -1}">
+                    <a href="#/results">Search Results</a>
                 </li>
                 <li ng-show="user" ng-class="{'active': $location.url().indexOf('profile') != -1 || $location.url().indexOf('username') != -1}">
                     <a href="#/username">{{user.username}}</a>

@@ -1,0 +1,23 @@
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h2>Found {{(documents | filter:keyWord).length}} results for "{{keyWord}}"</h2>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead></thead>
+                    <tbody>
+                    <tr ng-repeat="document in documents | filter:keyWord">
+                        <td>
+                            <a ng-click="openDocument($index)">
+                                <span class="text-nowrap">{{document.title}}</span>
+                            </a>
+                            <br/>
+                            <span>{{document.abstract}} ...</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>

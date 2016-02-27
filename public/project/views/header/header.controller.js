@@ -27,7 +27,9 @@
         }
 
         function searchForDocuments() {
-
+            $rootScope.keyWord = $scope.keyWord;
+            $rootScope.searching = true;
+            $location.url("/results");
         }
     }
 }());
