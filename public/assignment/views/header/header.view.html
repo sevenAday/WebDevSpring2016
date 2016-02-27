@@ -18,7 +18,12 @@
                 <li ng-hide="user" ng-class="{'active': $location.url().indexOf('login') != -1}">
                     <a href="#/login">Login</a>
                 </li>
-                <li ng-show="isAdmin" ng-class="{'active': $location.url().indexOf('admin') != -1}">
+                <li ng-show="user" class="hidden-lg"
+                    ng-class="{'active': $location.url().indexOf('forms') != -1 || $location.url().indexOf('fields') != -1}">
+                    <a href="#/forms">Forms</a>
+                </li>
+                <li ng-show="isAdmin" class="hidden-lg"
+                    ng-class="{'active': $location.url().indexOf('admin') != -1}">
                     <a href="#/admin">Admin</a>
                 </li>
                 <li ng-show="user" ng-class="{'active': $location.url().indexOf('profile') != -1 || $location.url().indexOf('username') != -1}">

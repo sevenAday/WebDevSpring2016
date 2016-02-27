@@ -24,13 +24,16 @@
                 <li ng-hide="user" ng-class="{'active': $location.url().indexOf('login') != -1}">
                     <a href="#/login">Login</a>
                 </li>
-                <li ng-show="isAdmin" ng-class="{'active': $location.url().indexOf('admin') != -1}">
+                <li ng-show="isAdmin" class="hidden-lg"
+                    ng-class="{'active': $location.url().indexOf('admin') != -1}">
                     <a href="#/admin">Admin</a>
                 </li>
-                <li ng-show="document" ng-class="{'active': $location.url().indexOf('document') != -1}">
+                <li ng-show="document" class="hidden-lg"
+                    ng-class="{'active': $location.url().indexOf('document') != -1}">
                     <a href="#/document">Document</a>
                 </li>
-                <li ng-show="searching" ng-class="{'active': $location.url().indexOf('searchResults') != -1}">
+                <li ng-show="searching" class="hidden-lg"
+                    ng-class="{'active': $location.url().indexOf('searchResults') != -1}">
                     <a href="#/searchResults">Search Results</a>
                 </li>
                 <li ng-show="user" ng-class="{'active': $location.url().indexOf('profile') != -1 || $location.url().indexOf('username') != -1}">

@@ -9,12 +9,6 @@
         $scope.$location = $location;
         var selectedUserIndex = -1;
         $scope.alertMessage = $rootScope.alertMessageToAll;
-        if (!$rootScope.numberOfPages) {
-            $rootScope.numberOfPages = 10;
-        }
-        if (!$rootScope.numberOfActivities) {
-            $rootScope.numberOfActivities = 10;
-        }
         $scope.numberOfRecentPages = $rootScope.numberOfPages;
         $scope.numberOfRecentActivities = $rootScope.numberOfActivities;
         if ($rootScope.user && $rootScope.isAdmin) {

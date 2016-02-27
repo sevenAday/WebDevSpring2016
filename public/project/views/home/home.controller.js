@@ -26,6 +26,16 @@
             });
         });
 
+        $scope.documents.sort(function (x, y) {
+            var xDate = x.lastModified;
+            var yDate = y.lastModified;
+            return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
+        });
+
+        if ($rootScope.numberOfPages < $scope.documents.length) {
+            $scope.documents.splice($rootScope.numberOfPages, $scope.documents.length - $rootScope.numberOfPages);
+        }
+
         $scope.openDocument = openDocument;
 
         function openDocument($index) {
