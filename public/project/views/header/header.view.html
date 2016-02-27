@@ -10,9 +10,19 @@
             </button>
             <a class="navbar-brand" href="#/home">DOConvergence</a>
         </div>
-        <div ng-if="showAlertMessage" class="text-alert">{{alertMessageToAll}}</div>
+        <div ng-if="showAlertMessage" class="text-alert text-center">{{alertMessageToAll}}</div>
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
+                <li>
+                    <a ng-click="searchForDocuments()">
+                        <div class="input-group">
+                            <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                            <input class="text-search"
+                                   name="keyWord" ng-model="keyWord"
+                                   type="text" placeholder="Search for...">
+                        </div>
+                    </a>
+                </li>
                 <li ng-show="user">
                     <a ng-click="createDocument()">
                         <span class="glyphicon glyphicon-file" aria-hidden="true">New</span>

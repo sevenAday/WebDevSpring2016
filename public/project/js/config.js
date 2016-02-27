@@ -32,7 +32,7 @@
                 controller: "ProfileController"
             })
             .when("/document", {
-                templateUrl: "views/activities/document.view.html",
+                templateUrl: "views/document/document.view.html",
                 controller: "DocumentController"
             })
             .otherwise({

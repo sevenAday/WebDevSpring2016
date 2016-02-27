@@ -10,6 +10,7 @@
 
         $scope.createDocument = createDocument;
         $scope.logout = logout;
+        $scope.searchForDocuments = searchForDocuments;
 
         function createDocument() {
             $rootScope.document = {"newDocument": true};
@@ -23,6 +24,10 @@
             delete $rootScope.searching;
             delete $rootScope.user;
             $location.url("/home");
+        }
+
+        function searchForDocuments() {
+
         }
     }
 }());
