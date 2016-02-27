@@ -5,7 +5,7 @@
         .module("DocumentCallaborationApp")
         .controller("ProfileController", ProfileController);
 
-    function ProfileController($scope, $rootScope, $location, UserService) {
+    function ProfileController($scope, $rootScope, $location, UserService, DocumentService) {
         $scope.$location = $location;
         if ($rootScope.user) {
             $scope.username = $rootScope.user.username;
@@ -13,12 +13,49 @@
             $scope.firstName = $rootScope.user.firstName;
             $scope.lastName = $rootScope.user.lastName;
             $scope.email = $rootScope.user.email;
+            $scope.documents = [];
+            DocumentService.getDocumentsModifiedByUserId($rootScope.user._id, function (documents) {
+                documents.forEach(function (document) {
+                    var asbtractStr = "";
+                    if (document.content) {
+                        asbtractStr = document.content.substring(0, 160);
+                    }
+                    var newDocument = {
+                        "_id": document._id,
+                        "userId": document.userId,
+                        "title": document.title,
+                        "content": document.content,
+                        "abstract": asbtractStr,
+                        "lastModified": document.lastModified
+                    };
+                    $scope.documents.push(newDocument);
+                });
+            });
+
+            $scope.documents.sort(function (x, y) {
+                var xDate = x.lastModified;
+                var yDate = y.lastModified;
+                return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
+            });
+
+            if ($rootScope.numberOfActivities < $scope.documents.length) {
+                $scope.documents.splice($rootScope.numberOfActivities,
+                    $scope.documents.length - $rootScope.numberOfActivities);
+            }
         } else {
             $location.path("/login");
         }
 
         $scope.update = update;
         $scope.clearMessage = clearMessage;
+        $scope.openDocument = openDocument;
+
+        function openDocument($index) {
+            $rootScope.document = $scope.documents[$index];
+            $rootScope.newDocument = false;
+            $rootScope.editable = false;
+            $location.path("/document");
+        }
 
         function update() {
             $scope.successful = false;

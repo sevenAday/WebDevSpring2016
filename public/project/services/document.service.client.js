@@ -94,12 +94,23 @@
         var service = {
             getAllDocuments: getAllDocuments,
             updateDocumentById: updateDocumentById,
-            addNewDocument: addNewDocument
+            addNewDocument: addNewDocument,
+            getDocumentsModifiedByUserId: getDocumentsModifiedByUserId
         };
         return service;
 
         function getAllDocuments(callback) {
             return callback(documents);
+        }
+
+        function getDocumentsModifiedByUserId(userId, callback) {
+            var foundDocuments = [];
+            documents.forEach(function (document) {
+               if (document.userId === userId) {
+                   foundDocuments.push(document);
+               }
+            });
+            return callback(foundDocuments);
         }
 
         function updateDocumentById(documentId, newDocument, callback) {

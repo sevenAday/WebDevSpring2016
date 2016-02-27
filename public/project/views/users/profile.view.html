@@ -75,6 +75,22 @@
                     </div>
                 </div>
             </form>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead></thead>
+                    <tbody>
+                    <tr ng-repeat="document in documents">
+                        <td>
+                            <a ng-click="openDocument($index)">
+                                <span class="text-nowrap">{{document.title}}</span>
+                            </a>
+                            <br/>
+                            <span>{{document.abstract}} ...</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
         </div>
     </div>
 </div>
