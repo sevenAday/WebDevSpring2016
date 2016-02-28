@@ -1,25 +1,31 @@
 (function () {
     "use strict";
 
+    var DEFINE_URL = "https://glosbe.com/gapi/translate?from=eng&dest=eng&format=json&callback=JSON_CALLBACK&phrase=";
+
     angular
         .module("DocumentCallaborationApp")
         .controller("DocumentController", DocumentController);
 
-    function DocumentController($scope, $rootScope, $location, UserService, DocumentService) {
+    function AAA(response) {
+        console.log(response);
+    }
+
+    function DocumentController($scope, $rootScope, $location, $http, UserService, DocumentService) {
         $scope.$location = $location;
         if ($rootScope.user && $rootScope.document) {
             if ($rootScope.document.newDocument) {
 
             } else {
                 var dd = $rootScope.document.lastModified;
-                var disDate = (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear();
+                var dispDate = (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear();
                 $rootScope.editable = false;
                 UserService.findUserById($rootScope.document.userId, function (user) {
                     if (!!user) {
                         $rootScope.document.user = user.firstName + " " + user.lastName;
                     }
                 });
-                $rootScope.document.lastModifiedDate = disDate;
+                $rootScope.document.lastModifiedDate = dispDate;
                 $scope.title = $rootScope.document.title;
                 $scope.content = $rootScope.document.content;
             }
@@ -31,6 +37,7 @@
         $scope.discardDocument = discardDocument;
         $scope.saveDocument = saveDocument;
         $scope.clearError = clearError;
+        $scope.getSelectedText = getSelectedText;
 
         function editDocument() {
             $rootScope.editable = true;
@@ -82,6 +89,24 @@
         function clearError() {
             $scope.errorred = false;
             $scope.errorMessage = "";
+        }
+
+        function getSelectedText() {
+            var selectedText = "";
+            if (window.getSelection) {
+                selectedText = window.getSelection().toString();
+            } else if (document.selection && document.selection.type != "Control") {
+                selectedText = document.selection.createRange().text;
+            }
+            if (selectedText) {
+                var defineUrl = DEFINE_URL + selectedText;
+                $http.jsonp(defineUrl)
+                    .success(renderDefinition);
+            }
+        }
+
+        function renderDefinition(response) {
+
         }
     }
 }());

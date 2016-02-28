@@ -1,0 +1,5 @@
+<h1 ng-hide="editable || newDocument" ng-cloak>{{data.title}}</h1>
+<h6 ng-hide="editable || newDocument" ng-cloak>
+    Last modified by {{data.user}} on {{data.lastModifiedDate}}
+</h6>
+<p ng-hide="editable || newDocument" ng-mouseup="getSelectedText()" ng-cloak>{{data.content}}</p>

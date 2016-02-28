@@ -1,29 +1,25 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1 ng-hide="editable || newDocument">{{document.title}}</h1>
-            <h6 ng-hide="editable || newDocument">
-                Last modified by {{document.user}} on {{document.lastModifiedDate}}
-            </h6>
-            <p ng-hide="editable || newDocument">{{document.content}}</p>
-            <div ng-if="errorred" class="text-danger">{{errorMessage}}</div>
+            <p-pop editable="editable" newDocument="newDocument" data="document"></p-pop>
+            <div ng-if="errorred" class="text-danger" ng-cloak>{{errorMessage}}</div>
             <input ng-show="editable" ng-focus="clearError()" ng-model="title" type="text"
                    class="form-control"
-                   placeholder="Enter a title">
+                   placeholder="Enter a title" ng-cloak>
             <textarea ng-show="editable" ng-model="content" type="text" class="form-control"
-                      placeholder="Enter the content" rows="15"></textarea>
+                      placeholder="Enter the content" rows="15" ng-cloak></textarea>
             <input ng-show="newDocument" ng-focus="clearError()" ng-model="newDocumentTitle" type="text"
                    class="form-control"
-                   placeholder="Enter a title">
+                   placeholder="Enter a title" ng-cloak>
             <textarea ng-show="newDocument" ng-model="newDocumentContent" type="text"
                       class="form-control"
-                      placeholder="Enter the content" rows="15"></textarea>
-            <a ng-hide="editable || newDocument" href="#">Like</a>&nbsp;
-            <a ng-hide="editable || newDocument" href="#">Comment</a>&nbsp;
-            <a ng-hide="editable || newDocument" ng-click="editDocument()">Edit</a>&nbsp;
-            <a ng-hide="editable || newDocument" href="#">Delete</a>&nbsp;
-            <a ng-show="editable || newDocument" ng-click="saveDocument()">Save</a>&nbsp;
-            <a ng-show="editable || newDocument" ng-click="discardDocument()">Discard</a>
+                      placeholder="Enter the content" rows="15" ng-cloak></textarea>
+            <a ng-hide="editable || newDocument" href="#" ng-cloak>Like</a>&nbsp;
+            <a ng-hide="editable || newDocument" href="#" ng-cloak>Comment</a>&nbsp;
+            <a ng-hide="editable || newDocument" ng-click="editDocument()" ng-cloak>Edit</a>&nbsp;
+            <a ng-hide="editable || newDocument" href="#" ng-cloak>Delete</a>&nbsp;
+            <a ng-show="editable || newDocument" ng-click="saveDocument()" ng-cloak>Save</a>&nbsp;
+            <a ng-show="editable || newDocument" ng-click="discardDocument()" ng-cloak>Discard</a>
         </div>
     </div>
 </div>
