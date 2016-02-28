@@ -1,4 +1,7 @@
 <h1 ng-hide="editable || newDocument" ng-cloak>{{data.title}}</h1>
+<div id="definitionDialog" title="Definitions">
+    <p>{{definition}}</p>
+</div>
 <h6 ng-hide="editable || newDocument" ng-cloak>
     Last modified by {{data.user}} on {{data.lastModifiedDate}}
 </h6>

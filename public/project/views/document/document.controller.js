@@ -106,7 +106,16 @@
         }
 
         function renderDefinition(response) {
-
+            console.log(response);
+            $scope.definition = "No definitions found"
+            if (response) {
+                if (response.tuc) {
+                    if (response.tuc.length > 0){
+                        $scope.definition = response.tuc[0].meanings[0];
+                    }
+                }
+            }
+            $scope.$broadcast("toggleDialog", $scope.definition);
         }
     }
 }());
