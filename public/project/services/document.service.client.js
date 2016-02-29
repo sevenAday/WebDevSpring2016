@@ -19,7 +19,8 @@
                     "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. " +
                     "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt " +
                     "mollit anim id est laborum.",
-                "like": [345]
+                "like": [345],
+                "comment": [1]
             },
             {
                 "_id": 702,
@@ -38,7 +39,8 @@
                     "commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit " +
                     "esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas " +
                     "nulla pariatur?",
-                "like": [123, 234]
+                "like": [123, 234],
+                "comment": []
             },
             {
                 "_id": 603,
@@ -57,7 +59,8 @@
                     "molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut " +
                     "reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores " +
                     "repellat.",
-                "like": []
+                "like": [],
+                "comment": [2]
             },
             {
                 "_id": 225,
@@ -73,7 +76,8 @@
                     "magnis, praesent ullamcorper cubilia suspendisse massa tellus et, accumsan ipsum. Aliquam " +
                     "libero et purus arcu. Parturient eget, et erat faucibus tincidunt arcu nec curabitur, " +
                     "augue lorem, nibh ac. Et eu.",
-                "like": [123, 456, 234]
+                "like": [123, 456, 234],
+                "comment": []
             },
             {
                 "_id": 126,
@@ -92,7 +96,8 @@
                     "molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut " +
                     "reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores " +
                     "repellat.",
-                "like": []
+                "like": [],
+                "comment": []
             }
         ];
 
