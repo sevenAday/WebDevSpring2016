@@ -123,7 +123,7 @@
 
         function findUserById(userId, callback) {
             var foundUser = null;
-            for (var idx = 0; idx <= users.length; idx++) {
+            for (var idx = 0; idx < users.length; idx++) {
                 if (users[idx]._id === userId) {
                     foundUser = users[idx];
                     break;

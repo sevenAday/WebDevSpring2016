@@ -5,7 +5,7 @@
         .module("DocumentCallaborationApp")
         .directive("pPop", pPop);
 
-    function pPop() {
+    function pPop($rootScope) {
         return {
             controller: "DocumentController",
             link: function ($scope) {
@@ -18,7 +18,6 @@
             restrict: "AE",
             scope: {
                 "editable": "=",
-                "newDocument": "=",
                 "showDefinition": "=",
                 "definition": "=",
                 "data": "="

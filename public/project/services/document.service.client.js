@@ -18,7 +18,8 @@
                     "exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute irure " +
                     "dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. " +
                     "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt " +
-                    "mollit anim id est laborum."
+                    "mollit anim id est laborum.",
+                "like": [345]
             },
             {
                 "_id": 702,
@@ -36,7 +37,8 @@
                     "nostrum exercitationem ullam corporis suscipit laboriosam, nisi ut aliquid ex ea " +
                     "commodi consequatur? Quis autem vel eum iure reprehenderit qui in ea voluptate velit " +
                     "esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas " +
-                    "nulla pariatur?"
+                    "nulla pariatur?",
+                "like": [123, 234]
             },
             {
                 "_id": 603,
@@ -54,7 +56,8 @@
                     "debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et " +
                     "molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut " +
                     "reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores " +
-                    "repellat."
+                    "repellat.",
+                "like": []
             },
             {
                 "_id": 225,
@@ -69,7 +72,8 @@
                     "ac primis suspendisse elit faucibus rhoncus donec, aliquet per pharetra nunc. Ultricies " +
                     "magnis, praesent ullamcorper cubilia suspendisse massa tellus et, accumsan ipsum. Aliquam " +
                     "libero et purus arcu. Parturient eget, et erat faucibus tincidunt arcu nec curabitur, " +
-                    "augue lorem, nibh ac. Et eu."
+                    "augue lorem, nibh ac. Et eu.",
+                "like": [123, 456, 234]
             },
             {
                 "_id": 126,
@@ -87,7 +91,8 @@
                     "debitis aut rerum necessitatibus saepe eveniet ut et voluptates repudiandae sint et " +
                     "molestiae non recusandae. Itaque earum rerum hic tenetur a sapiente delectus, ut aut " +
                     "reiciendis voluptatibus maiores alias consequatur aut perferendis doloribus asperiores " +
-                    "repellat."
+                    "repellat.",
+                "like": []
             }
         ];
 
@@ -95,7 +100,8 @@
             getAllDocuments: getAllDocuments,
             updateDocumentById: updateDocumentById,
             addNewDocument: addNewDocument,
-            getDocumentsModifiedByUserId: getDocumentsModifiedByUserId
+            getDocumentsModifiedByUserId: getDocumentsModifiedByUserId,
+            deleteDocumentById: deleteDocumentById
         };
         return service;
 
@@ -120,6 +126,7 @@
                     documents[idx].title = newDocument.title;
                     documents[idx].content = newDocument.content;
                     documents[idx].lastModified = newDocument.lastModified;
+                    documents[idx].like = newDocument.like;
                     return callback(documents[idx]);
                 }
             }
@@ -129,6 +136,18 @@
             newDocument._id = (new Date()).getTime();
             documents.push(newDocument);
             return callback(newDocument);
+        }
+
+        function deleteDocumentById(documentId) {
+            var idx = -1;
+            for (idx = 0; idx < documents.length; idx++) {
+                if (documents[idx]._id === documentId) {
+                    break;
+                }
+            }
+            if (idx >= 0) {
+                documents.splice(idx, 1);
+            }
         }
     }
 }());

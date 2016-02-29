@@ -1,8 +1,8 @@
-<h1 ng-hide="editable || newDocument" ng-cloak>{{data.title}}</h1>
+<h1 ng-hide="editable || $root.newDocument" ng-mouseup="getSelectedText()" ng-cloak>{{data.title}}</h1>
 <div id="definitionDialog" title="Definitions">
     <p>{{definition}}</p>
 </div>
-<h6 ng-hide="editable || newDocument" ng-cloak>
+<h6 ng-hide="editable ||  $root.newDocument" ng-cloak>
     Last modified by {{data.user}} on {{data.lastModifiedDate}}
 </h6>
-<p ng-hide="editable || newDocument" ng-mouseup="getSelectedText()" ng-cloak>{{data.content}}</p>
+<p ng-hide="editable ||  $root.newDocument" ng-mouseup="getSelectedText()" ng-cloak>{{data.content}}</p>

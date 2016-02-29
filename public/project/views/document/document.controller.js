@@ -15,7 +15,7 @@
         $scope.$location = $location;
         if ($rootScope.user && $rootScope.document) {
             if ($rootScope.document.newDocument) {
-
+                // There is nothing to do
             } else {
                 var dd = $rootScope.document.lastModified;
                 var dispDate = (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear();
@@ -28,16 +28,19 @@
                 $rootScope.document.lastModifiedDate = dispDate;
                 $scope.title = $rootScope.document.title;
                 $scope.content = $rootScope.document.content;
+                getLikeInformation($rootScope.document.like);
             }
         } else {
             $location.path("/home");
         }
 
-        $scope.editDocument = editDocument;
         $scope.discardDocument = discardDocument;
+        $scope.deleteDocument = deleteDocument;
+        $scope.editDocument = editDocument;
         $scope.saveDocument = saveDocument;
         $scope.clearError = clearError;
         $scope.getSelectedText = getSelectedText;
+        $scope.expandAllLikers = expandAllLikers;
 
         function editDocument() {
             $rootScope.editable = true;
@@ -64,6 +67,7 @@
             if ($rootScope.editable) {
                 newDocument.title = $scope.title;
                 newDocument.content = $scope.content;
+                newDocument.like = $rootScope.document.like;
                 DocumentService.updateDocumentById($rootScope.document._id, newDocument, function (document) {
                     $rootScope.document = document;
                 });
@@ -84,6 +88,7 @@
             $rootScope.document.lastModifiedDate = (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear();
             $scope.title = $rootScope.document.title;
             $scope.content = $rootScope.document.content;
+            getLikeInformation($rootScope.document.like);
         }
 
         function clearError() {
@@ -107,7 +112,7 @@
 
         function renderDefinition(response) {
             console.log(response);
-            $scope.definition = "No definitions found"
+            $scope.definition = "No definitions found";
             if (response) {
                 if (response.tuc) {
                     if (response.tuc.length > 0){
@@ -116,6 +121,70 @@
                 }
             }
             $scope.$broadcast("toggleDialog", $scope.definition);
+        }
+
+        function deleteDocument() {
+            DocumentService.deleteDocumentById($rootScope.document._id);
+            $rootScope.document = null;
+            $location.url("/home");
+        }
+
+        function getLikeInformation(like) {
+            $scope.likeMessage = "";
+            $scope.youLike = false;
+            $scope.showAll = true;
+            if (like && like.length > 0) {
+                var youIdx = like.indexOf($rootScope.user._id);
+                if (youIdx >= 0) {
+                    $scope.youLike = true;
+                    $scope.likeMessage = $scope.likeMessage + "You ";
+                } else {
+                    UserService.findUserById(like[0], function (user) {
+                        $scope.likeMessage = $scope.likeMessage + user.firstName + " " + user.lastName + " ";
+                    });
+                }
+                if (like.length === 2) {
+                    var Udx = 1;
+                    if (youIdx >= 0) {
+                        if (youIdx === 1) {
+                            Udx = 0;
+                        }
+                    }
+                    UserService.findUserById(like[Udx], function (user) {
+                        $scope.likeMessage = $scope.likeMessage + "and " + user.firstName + " " + user.lastName + " ";
+                    });
+                } else if (like.length > 2) {
+                    $scope.likeMessage = $scope.likeMessage + "and " + (like.length - 1) + " others ";
+                    $scope.showAll = false;
+                }
+                if (like.length == 1 && youIdx < 0) {
+                    $scope.likeMessage = $scope.likeMessage + "likes this";
+                } else {
+                    $scope.likeMessage = $scope.likeMessage + "like this";
+                }
+            }
+        }
+
+        function expandAllLikers() {
+            var like = $rootScope.document.like;
+            for (var idx = 0; idx < like.length; idx++) {
+                UserService.findUserById(like[idx], function (user) {
+                    if (idx === 0) {
+                        $scope.likeMessage = user.firstName + " " + user.lastName;
+                    } else if (idx == (like.length - 1)) {
+                        $scope.likeMessage = $scope.likeMessage + " and " + user.firstName + " " + user.lastName;
+                    } else {
+                        $scope.likeMessage = $scope.likeMessage + ", " + user.firstName + " " + user.lastName;
+                    }
+                });
+            }
+            if (like.length == 1) {
+                $scope.likeMessage = $scope.likeMessage + " likes this";
+            } else {
+                $scope.likeMessage = $scope.likeMessage + " like this";
+            }
+            $scope.showAll = true;
+
         }
     }
 }());
