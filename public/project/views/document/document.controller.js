@@ -76,6 +76,7 @@
             } else if ($rootScope.newDocument) {
                 newDocument.title = $scope.newDocumentTitle;
                 newDocument.content = $scope.newDocumentContent;
+                newDocument.like = [];
                 DocumentService.addNewDocument(newDocument, function (document) {
                     $rootScope.document = document;
                 });
