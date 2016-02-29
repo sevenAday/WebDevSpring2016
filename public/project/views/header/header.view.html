@@ -14,15 +14,11 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a ng-href="#">
-                        <div class="input-group">
-                            <a ng-click="searchForDocuments()">
-                                <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
-                            </a>
-                            <input class="text-normal"
-                                   name="keyWord" ng-model="keyWord"
-                                   type="text" placeholder="Search for...">
-                        </div>
+                    <a ng-click="searchForDocuments()">
+                        <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
+                        <input class="input-small text-normal"
+                               name="keyWord" ng-model="keyWord"
+                               type="text" placeholder="Search for...">
                     </a>
                 </li>
                 <li ng-show="user">
