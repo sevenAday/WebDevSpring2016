@@ -101,7 +101,8 @@
             updateDocumentById: updateDocumentById,
             addNewDocument: addNewDocument,
             getDocumentsModifiedByUserId: getDocumentsModifiedByUserId,
-            deleteDocumentById: deleteDocumentById
+            deleteDocumentById: deleteDocumentById,
+            rateDocument: rateDocument
         };
         return service;
 
@@ -147,6 +148,24 @@
             }
             if (idx >= 0) {
                 documents.splice(idx, 1);
+            }
+        }
+
+        function rateDocument(documentId, userId, liked, callback) {
+            for (var idx = 0; idx < documents.length; idx++) {
+                if (documents[idx]._id === documentId) {
+                    if (liked) {
+                        documents[idx].like.push(userId);
+                    } else {
+                        for (var idy = 0; idy < documents[idx].like.length; idy++) {
+                            if (documents[idx].like[idy] === userId) {
+                                documents[idx].like.splice(idy, 1);
+                                break;
+                            }
+                        }
+                    }
+                    return callback(documents[idx].like);
+                }
             }
         }
     }

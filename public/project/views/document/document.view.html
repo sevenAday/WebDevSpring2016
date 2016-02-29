@@ -18,8 +18,8 @@
             <textarea ng-show="newDocument" ng-model="newDocumentContent" type="text"
                       class="form-control"
                       placeholder="Enter the content" rows="15" ng-cloak></textarea>
-            <a ng-hide="editable || newDocument || youLike" href="#" ng-cloak>Like </a>
-            <a ng-hide="editable || newDocument || !youLike" href="#" ng-cloak>Unlike </a>
+            <a ng-hide="editable || newDocument || youLike" ng-click="rateDocument(true)" ng-cloak>Like </a>
+            <a ng-hide="editable || newDocument || !youLike" ng-click="rateDocument(false)" ng-cloak>Unlike </a>
             <a ng-hide="editable || newDocument" href="#" ng-cloak>Comment</a>
             <a ng-hide="editable || newDocument" ng-click="editDocument()" ng-cloak>Edit </a>
             <a ng-hide="editable || newDocument" ng-click="deleteDocument()" ng-cloak>Delete</a>

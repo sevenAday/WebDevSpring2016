@@ -28,7 +28,7 @@
                 $rootScope.document.lastModifiedDate = dispDate;
                 $scope.title = $rootScope.document.title;
                 $scope.content = $rootScope.document.content;
-                getLikeInformation($rootScope.document.like);
+                getLikeInformation();
             }
         } else {
             $location.path("/home");
@@ -41,6 +41,7 @@
         $scope.clearError = clearError;
         $scope.getSelectedText = getSelectedText;
         $scope.expandAllLikers = expandAllLikers;
+        $scope.rateDocument = rateDocument;
 
         function editDocument() {
             $rootScope.editable = true;
@@ -88,7 +89,7 @@
             $rootScope.document.lastModifiedDate = (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear();
             $scope.title = $rootScope.document.title;
             $scope.content = $rootScope.document.content;
-            getLikeInformation($rootScope.document.like);
+            getLikeInformation();
         }
 
         function clearError() {
@@ -129,7 +130,8 @@
             $location.url("/home");
         }
 
-        function getLikeInformation(like) {
+        function getLikeInformation() {
+            var like = $rootScope.document.like;
             $scope.likeMessage = "";
             $scope.youLike = false;
             $scope.showAll = true;
@@ -184,7 +186,16 @@
                 $scope.likeMessage = $scope.likeMessage + " like this";
             }
             $scope.showAll = true;
+        }
 
+        function rateDocument(liked) {
+            DocumentService.rateDocument($rootScope.document._id, $rootScope.user._id, liked, function (like) {
+                $rootScope.document.like = like;
+                if (!liked) {
+                    $scope.youLike = false;
+                }
+            });
+            getLikeInformation();
         }
     }
 }());
