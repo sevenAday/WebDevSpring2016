@@ -27,7 +27,8 @@
                         "content": document.content,
                         "abstract": asbtractStr,
                         "lastModified": document.lastModified,
-                        "like": document.like
+                        "like": document.like,
+                        "comment": document.comment
                     };
                     $scope.documents.push(newDocument);
                 });

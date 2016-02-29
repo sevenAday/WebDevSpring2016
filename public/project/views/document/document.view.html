@@ -31,6 +31,12 @@
                 <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
                 {{likeMessage}}
             </a>
+            <br/>
+            <div ng-repeat="comment in comments">
+                <hr/>
+                <h5>{{comment.userName}} wrote on {{comment.commentDate}}:</h5>
+                <input ng-model="comment.content" type="text" class="form-control" readonly="true">
+            </div>
         </div>
     </div>
 </div>

@@ -57,5 +57,18 @@
                 "reply": []
             }
         ];
+
+        var service = {
+            findCommentById: findCommentById
+        };
+        return service;
+
+        function findCommentById(commentId, callback) {
+            for (var idx = 0; idx < comments.length; idx++) {
+                if (comments[idx]._id === commentId) {
+                    return callback(comments[idx]);
+                }
+            }
+        }
     }
 }());

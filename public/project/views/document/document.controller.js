@@ -11,7 +11,7 @@
         console.log(response);
     }
 
-    function DocumentController($scope, $rootScope, $location, $http, UserService, DocumentService) {
+    function DocumentController($scope, $rootScope, $location, $http, UserService, DocumentService, CommentService) {
         $scope.$location = $location;
         if ($rootScope.user && $rootScope.document) {
             if ($rootScope.document.newDocument) {
@@ -29,6 +29,7 @@
                 $scope.title = $rootScope.document.title;
                 $scope.content = $rootScope.document.content;
                 getLikeInformation();
+                getComments();
             }
         } else {
             $location.path("/home");
@@ -69,6 +70,7 @@
                 newDocument.title = $scope.title;
                 newDocument.content = $scope.content;
                 newDocument.like = $rootScope.document.like;
+                newDocument.comment = $rootScope.document.comment;
                 DocumentService.updateDocumentById($rootScope.document._id, newDocument, function (document) {
                     $rootScope.document = document;
                 });
@@ -77,6 +79,7 @@
                 newDocument.title = $scope.newDocumentTitle;
                 newDocument.content = $scope.newDocumentContent;
                 newDocument.like = [];
+                newDocument.comment = [];
                 DocumentService.addNewDocument(newDocument, function (document) {
                     $rootScope.document = document;
                 });
@@ -91,6 +94,7 @@
             $scope.title = $rootScope.document.title;
             $scope.content = $rootScope.document.content;
             getLikeInformation();
+            getComments();
         }
 
         function clearError() {
@@ -197,6 +201,25 @@
                 }
             });
             getLikeInformation();
+        }
+
+        function getComments() {
+            var docComments = $rootScope.document.comment;
+            $scope.comments = [];
+            for (var idx = 0; idx < docComments.length; idx++) {
+                CommentService.findCommentById(docComments[idx], function (comment) {
+                    var userName = "";
+                    var dd = comment.lastModified;
+                    UserService.findUserById(comment.userId, function (user) {
+                        userName = userName + user.firstName + " " + user.lastName;
+                    });
+                    $scope.comments.push({
+                        "userName": userName,
+                        "content": comment.content,
+                        "commentDate": (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear()
+                    });
+                });
+            }
         }
     }
 }());
