@@ -46,6 +46,8 @@
         $scope.editComment = editComment;
         $scope.saveComment = saveComment;
         $scope.deleteComment = deleteComment;
+        $scope.createComment = createComment;
+        $scope.addNewComment = addNewComment;
 
         function editDocument() {
             $rootScope.editable = true;
@@ -247,6 +249,27 @@
                     $scope.comments.splice($index, 1);
                 });
             });
+        }
+
+        function createComment() {
+            $scope.createNewDocument();
+        }
+
+        function addNewComment() {
+            var newComment = {"userId": $rootScope.user._id, "content": $scope.newCcommentContent};
+            CommentService.addComment(newComment, function (comment) {
+                DocumentService.addCommentIdToDocummentId(comment._id, $rootScope.document._id, function (comments) {
+                    var dd = comment.lastModified;
+                    $scope.comments.push({
+                        "_id": comment._id,
+                        "userId": comment.userId,
+                        "userName": $rootScope.user.firstName + " " + $rootScope.user.lastName,
+                        "content": comment.content,
+                        "commentDate": (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear()
+                    });
+                });
+            });
+            $scope.newCcommentContent = "";
         }
     }
 }());

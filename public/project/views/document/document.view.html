@@ -20,7 +20,7 @@
                       placeholder="Enter the content" rows="15" ng-cloak></textarea>
             <a ng-hide="editable || newDocument || youLike" ng-click="rateDocument(true)" ng-cloak>Like </a>
             <a ng-hide="editable || newDocument || !youLike" ng-click="rateDocument(false)" ng-cloak>Unlike </a>
-            <a ng-hide="editable || newDocument" href="#" ng-cloak>Comment</a>
+            <a ng-hide="editable || newDocument" ng-click="createComment()" ng-cloak>Comment</a>
             <a ng-hide="editable || newDocument" ng-click="editDocument()" ng-cloak>Edit </a>
             <a ng-hide="editable || newDocument" ng-click="deleteDocument()" ng-cloak>Delete</a>
             <a ng-show="editable || newDocument" ng-click="saveDocument()" ng-cloak>Save </a>
@@ -44,6 +44,10 @@
                 <a ng-show="comment.userId === user._id && $index === editCommentIndex"
                    ng-click="saveComment()" ng-cloak>Save</a>
             </div>
+            <hr/>
+            <textarea ng-model="newCcommentContent" class="form-control" placeholder="Write a comment"
+                      focus-on="createNewDocument"></textarea>
+            <a ng-click="addNewComment()" ng-cloak>Add Comment</a>
         </div>
     </div>
 </div>

@@ -108,7 +108,8 @@
             getDocumentsModifiedByUserId: getDocumentsModifiedByUserId,
             deleteDocumentById: deleteDocumentById,
             rateDocument: rateDocument,
-            deleteCommentIdxFromDocumentId: deleteCommentIdxFromDocumentId
+            deleteCommentIdxFromDocumentId: deleteCommentIdxFromDocumentId,
+            addCommentIdToDocummentId: addCommentIdToDocummentId
         };
         return service;
 
@@ -179,6 +180,15 @@
             for (var idx = 0; idx < documents.length; idx++) {
                 if (documents[idx]._id === documentId) {
                     documents[idx].comment.splice(commentIdx, 1);
+                    return callback(documents[idx].comment);
+                }
+            }
+        }
+
+        function addCommentIdToDocummentId(commentId, documentId, callback) {
+            for (var idx = 0; idx < documents.length; idx++) {
+                if (documents[idx]._id === documentId) {
+                    documents[idx].comment.push(commentId);
                     return callback(documents[idx].comment);
                 }
             }

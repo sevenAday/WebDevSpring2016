@@ -55,7 +55,8 @@
         var service = {
             findCommentById: findCommentById,
             deleteCommentById: deleteCommentById,
-            updateComment: updateComment
+            updateComment: updateComment,
+            addComment: addComment
         };
         return service;
 
@@ -84,6 +85,17 @@
                     return callback(comments);
                 }
             }
+        }
+
+        function addComment(comment, callback) {
+            var newComment = {
+                "_id": (new Date()).getTime(),
+                "userId": comment.userId,
+                "lastModified": new Date(),
+                "content": comment.content
+            };
+            comments.push(newComment);
+            return callback(newComment);
         }
     }
 }());
