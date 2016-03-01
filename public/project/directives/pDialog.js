@@ -3,9 +3,9 @@
 
     angular
         .module("DocumentCallaborationApp")
-        .directive("pPop", pPop);
+        .directive("pDialog", pDialog);
 
-    function pPop($rootScope) {
+    function pDialog($rootScope) {
         return {
             controller: "DocumentController",
             link: function ($scope) {
@@ -22,7 +22,7 @@
                 "definition": "=",
                 "data": "="
             },
-            templateUrl: "directives/ppop.html"
+            templateUrl: "directives/pDialog.html"
         };
     }
 }());

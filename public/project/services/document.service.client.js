@@ -20,7 +20,7 @@
                     "Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt " +
                     "mollit anim id est laborum.",
                 "like": [345],
-                "comment": [1]
+                "comment": [3, 1]
             },
             {
                 "_id": 702,
@@ -40,7 +40,7 @@
                     "esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas " +
                     "nulla pariatur?",
                 "like": [123, 234],
-                "comment": []
+                "comment": [4, 5, 6]
             },
             {
                 "_id": 603,
@@ -77,7 +77,7 @@
                     "libero et purus arcu. Parturient eget, et erat faucibus tincidunt arcu nec curabitur, " +
                     "augue lorem, nibh ac. Et eu.",
                 "like": [123, 456, 234],
-                "comment": []
+                "comment": [7]
             },
             {
                 "_id": 126,
@@ -107,7 +107,8 @@
             addNewDocument: addNewDocument,
             getDocumentsModifiedByUserId: getDocumentsModifiedByUserId,
             deleteDocumentById: deleteDocumentById,
-            rateDocument: rateDocument
+            rateDocument: rateDocument,
+            deleteCommentIdxFromDocumentId: deleteCommentIdxFromDocumentId
         };
         return service;
 
@@ -170,6 +171,15 @@
                         }
                     }
                     return callback(documents[idx].like);
+                }
+            }
+        }
+
+        function deleteCommentIdxFromDocumentId(commentIdx, documentId, callback) {
+            for (var idx = 0; idx < documents.length; idx++) {
+                if (documents[idx]._id === documentId) {
+                    documents[idx].comment.splice(commentIdx, 1);
+                    return callback(documents[idx].comment);
                 }
             }
         }

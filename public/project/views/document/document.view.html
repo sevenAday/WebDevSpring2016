@@ -1,11 +1,11 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <p-pop editable="editable"
+            <p-dialog editable="editable"
                    newDocument="newDocument"
                    showDefinition="showDefinition"
                    definition="definition"
-                   data="document"></p-pop>
+                   data="document"></p-dialog>
             <div ng-if="errorred" class="text-danger" ng-cloak>{{errorMessage}}</div>
             <input ng-show="editable" ng-focus="clearError()" ng-model="title" type="text"
                    class="form-control"
@@ -31,11 +31,18 @@
                 <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
                 {{likeMessage}}
             </a>
-            <br/>
             <div ng-repeat="comment in comments">
                 <hr/>
-                <h5>{{comment.userName}} wrote on {{comment.commentDate}}:</h5>
-                <input ng-model="comment.content" type="text" class="form-control" readonly="true">
+                <h6>{{comment.userName}} wrote on {{comment.commentDate}}:</h6>
+                <p ng-hide="$index === editCommentIndex">{{comment.content}}</p>
+                <textarea ng-show="$index === editCommentIndex" ng-model="comment.content"
+                          class="form-control"></textarea>
+                <a ng-show="comment.userId === user._id && $index != editCommentIndex"
+                   ng-click="editComment($index)" ng-cloak>Edit</a>
+                <a ng-show="comment.userId === user._id && $index != editCommentIndex"
+                   ng-click="deleteComment($index)" ng-cloak> Delete</a>
+                <a ng-show="comment.userId === user._id && $index === editCommentIndex"
+                   ng-click="saveComment()" ng-cloak>Save</a>
             </div>
         </div>
     </div>

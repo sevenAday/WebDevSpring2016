@@ -43,6 +43,9 @@
         $scope.getSelectedText = getSelectedText;
         $scope.expandAllLikers = expandAllLikers;
         $scope.rateDocument = rateDocument;
+        $scope.editComment = editComment;
+        $scope.saveComment = saveComment;
+        $scope.deleteComment = deleteComment;
 
         function editDocument() {
             $rootScope.editable = true;
@@ -214,12 +217,36 @@
                         userName = userName + user.firstName + " " + user.lastName;
                     });
                     $scope.comments.push({
+                        "_id": comment._id,
+                        "userId": comment.userId,
                         "userName": userName,
                         "content": comment.content,
                         "commentDate": (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear()
                     });
                 });
             }
+        }
+
+        function editComment($index) {
+            $scope.editCommentIndex = $index;
+        }
+
+        function saveComment() {
+            CommentService.updateComment($scope.comments[$scope.editCommentIndex]._id,
+                $scope.comments[$scope.editCommentIndex].content, function (comment) {
+                    var dd = comment.lastModified;
+                    $scope.comments[$scope.editCommentIndex].commentDate = (dd.getMonth() + 1)
+                        + "/" + dd.getDate() + "/" + dd.getFullYear();
+                });
+            $scope.editCommentIndex = -1;
+        }
+
+        function deleteComment($index) {
+            DocumentService.deleteCommentIdxFromDocumentId($index, $rootScope.document._id, function (comment) {
+                CommentService.deleteCommentById($scope.comments[$index]._id, function (comments) {
+                    $scope.comments.splice($index, 1);
+                });
+            });
         }
     }
 }());
