@@ -31,8 +31,8 @@
                 <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
                 {{likeMessage}}
             </a>
-            <div ng-repeat="comment in comments">
-                <hr/>
+            <div ng-hide="editable || newDocument" ng-repeat="comment in comments">
+                <hr ng-hide="editable || newDocument"/>
                 <h6>{{comment.userName}} wrote on {{comment.commentDate}}:</h6>
                 <p ng-hide="$index === editCommentIndex">{{comment.content}}</p>
                 <textarea ng-show="$index === editCommentIndex" ng-model="comment.content"
@@ -45,9 +45,12 @@
                    ng-click="saveComment()" ng-cloak>Save</a>
             </div>
             <hr/>
-            <textarea ng-model="newCcommentContent" class="form-control" placeholder="Write a comment"
+            <textarea ng-hide="editable || newDocument"
+                      ng-model="newCcommentContent"
+                      class="form-control"
+                      placeholder="Write a comment"
                       focus-on="createNewDocument"></textarea>
-            <a ng-click="addNewComment()" ng-cloak>Add Comment</a>
+            <a ng-hide="editable || newDocument" ng-click="addNewComment()" ng-cloak>Add Comment</a>
         </div>
     </div>
 </div>

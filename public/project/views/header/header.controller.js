@@ -15,6 +15,7 @@
         function createDocument() {
             $rootScope.document = {"newDocument": true};
             $rootScope.newDocument = true;
+            $rootScope.editable = false;
             $location.path("/document");
         }
 

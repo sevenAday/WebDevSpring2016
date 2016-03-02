@@ -35,6 +35,10 @@
                 templateUrl: "views/document/document.view.html",
                 controller: "DocumentController"
             })
+            .when("/document/:documentTitle", {
+                templateUrl: "views/document/document.view.html",
+                controller: "DocumentController"
+            })
             .when("/results", {
                 templateUrl: "views/search/results.view.html",
                 controller: "ResultsController"

@@ -40,7 +40,7 @@
                     "esse quam nihil molestiae consequatur, vel illum qui dolorem eum fugiat quo voluptas " +
                     "nulla pariatur?",
                 "like": [123, 234],
-                "comment": [4, 5, 6]
+                "comment": [4, 6, 5]
             },
             {
                 "_id": 603,
