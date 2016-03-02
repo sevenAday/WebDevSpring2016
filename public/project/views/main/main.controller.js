@@ -11,6 +11,7 @@
         $rootScope.numberOfPages = 10;
         $rootScope.numberOfActivities = 10;
 
+        /*
         $rootScope.user = {"_id":345,
             "firstName":"Charlie",
             "lastName":"Brown",
@@ -18,5 +19,6 @@
             "password":"charlie",
             "email":"cb@cc.au",
             "roles":["trainer"]};
+            */
     }
 }());

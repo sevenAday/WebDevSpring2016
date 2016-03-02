@@ -12,6 +12,7 @@
             return;
         }
         $scope.keyWord = $routeParams.keyWord;
+        $rootScope.keyWord = $routeParams.keyWord;
         $scope.documents = [];
         DocumentService.getAllDocuments(function (documents) {
             documents.forEach(function (document) {

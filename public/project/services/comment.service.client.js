@@ -62,7 +62,7 @@
 
         function findCommentById(commentId, callback) {
             for (var idx = 0; idx < comments.length; idx++) {
-                if (comments[idx]._id === commentId) {
+                if (comments[idx]._id == commentId) {
                     return callback(comments[idx]);
                 }
             }
@@ -70,7 +70,7 @@
 
         function updateComment(commentId, commentContent, callback) {
             for (var idx = 0; idx < comments.length; idx++) {
-                if (comments[idx]._id === commentId) {
+                if (comments[idx]._id == commentId) {
                     comments[idx].content = commentContent;
                     comments[idx].lastModified = new Date();
                     return callback(comments[idx]);
@@ -80,7 +80,7 @@
 
         function deleteCommentById(commentId, callback) {
             for (var idx = 0; idx < comments.length; idx++) {
-                if (comments[idx]._id === commentId) {
+                if (comments[idx]._id == commentId) {
                     comments.splice(idx, 1);
                     return callback(comments);
                 }

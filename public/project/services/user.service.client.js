@@ -86,7 +86,7 @@
         function deleteUserById(userId, callback) {
             var idx = users.length;
             for (idx = 0; idx < users.length; idx++) {
-                if (users[idx]._id === userId) {
+                if (users[idx]._id == userId) {
                     break;
                 }
             }
@@ -97,7 +97,7 @@
         function updateUser(userId, user, callback) {
             var foundUser = null;
             for (var idx = 0; idx < users.length; idx++) {
-                if (users[idx]._id === userId) {
+                if (users[idx]._id == userId) {
                     foundUser = users[idx];
                     break;
                 }
@@ -124,7 +124,7 @@
         function findUserById(userId, callback) {
             var foundUser = null;
             for (var idx = 0; idx < users.length; idx++) {
-                if (users[idx]._id === userId) {
+                if (users[idx]._id == userId) {
                     foundUser = users[idx];
                     break;
                 }

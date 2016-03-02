@@ -12,7 +12,7 @@
         $scope.$location = $location;
         $rootScope.newDocument = true;
         if ($routeParams.documentId) {
-            console.log($routeParams.documentId);
+            $rootScope.document = null;
             DocumentService.getDocumentById($routeParams.documentId, function (document) {
                 $rootScope.document = document;
             });
@@ -23,7 +23,7 @@
         }
         if ($rootScope.user && $rootScope.document) {
             if ($rootScope.newDocument) {
-                console.log("There is nothing to do");
+                //console.log("There is nothing to do");
             } else {
                 var dd = $rootScope.document.lastModified;
                 var dispDate = (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear();
@@ -143,7 +143,12 @@
         }
 
         function deleteDocument() {
-            DocumentService.deleteDocumentById($rootScope.document._id);
+            DocumentService.deleteDocumentById($rootScope.document._id, function (commentIds) {
+                commentIds.forEach(function (commentId) {
+                    CommentService.deleteCommentById(commentId, function (comments) {
+                    });
+                });
+            });
             $rootScope.document = null;
             $location.url("/home");
         }

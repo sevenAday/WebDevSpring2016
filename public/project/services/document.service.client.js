@@ -147,15 +147,18 @@
             return callback(newDocument);
         }
 
-        function deleteDocumentById(documentId) {
+        function deleteDocumentById(documentId, callback) {
             var idx = -1;
+            var comments;
             for (idx = 0; idx < documents.length; idx++) {
                 if (documents[idx]._id == documentId) {
+                    comments = documents[idx].comment;
                     break;
                 }
             }
             if (idx >= 0) {
                 documents.splice(idx, 1);
+                callback(comments);
             }
         }
 
@@ -197,7 +200,6 @@
 
         function getDocumentById(documentId, callback) {
             for (var idx = 0; idx < documents.length; idx++) {
-                console.log(documentId + " " + documents[idx]._id);
                 if (documents[idx]._id == documentId) {
                     return callback(documents[idx]);
                 }
