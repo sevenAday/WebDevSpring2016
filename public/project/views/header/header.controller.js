@@ -29,9 +29,10 @@
 
         function searchForDocuments() {
             if ($scope.keyWord) {
-                $rootScope.keyWord = $scope.keyWord;
+                $rootScope.rootKeyWord = $scope.keyWord;
                 $rootScope.searching = true;
                 $location.url("/results/" + $scope.keyWord);
+                $scope.keyWord = "";
             }
         }
     }
