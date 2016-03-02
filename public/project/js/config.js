@@ -35,7 +35,7 @@
                 templateUrl: "views/document/document.view.html",
                 controller: "DocumentController"
             })
-            .when("/document/:documentTitle", {
+            .when("/document/:documentId", {
                 templateUrl: "views/document/document.view.html",
                 controller: "DocumentController"
             })

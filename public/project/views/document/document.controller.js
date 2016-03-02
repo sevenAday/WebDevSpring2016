@@ -7,15 +7,23 @@
         .module("DocumentCallaborationApp")
         .controller("DocumentController", DocumentController);
 
-    function AAA(response) {
-        console.log(response);
-    }
-
-    function DocumentController($scope, $rootScope, $location, $http, UserService, DocumentService, CommentService) {
+    function DocumentController($scope, $rootScope, $location, $http, $routeParams,
+                                UserService, DocumentService, CommentService) {
         $scope.$location = $location;
+        $rootScope.newDocument = true;
+        if ($routeParams.documentId) {
+            console.log($routeParams.documentId);
+            DocumentService.getDocumentById($routeParams.documentId, function (document) {
+                $rootScope.document = document;
+            });
+            if ($rootScope.document) {
+                $rootScope.editable = false;
+                $rootScope.newDocument = false;
+            }
+        }
         if ($rootScope.user && $rootScope.document) {
-            if ($rootScope.document.newDocument) {
-                // There is nothing to do
+            if ($rootScope.newDocument) {
+                console.log("There is nothing to do");
             } else {
                 var dd = $rootScope.document.lastModified;
                 var dispDate = (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear();
@@ -100,6 +108,7 @@
             $scope.content = $rootScope.document.content;
             getLikeInformation();
             getComments();
+            $location.path("/document/" + $rootScope.document._id);
         }
 
         function clearError() {
@@ -122,7 +131,6 @@
         }
 
         function renderDefinition(response) {
-            console.log(response);
             $scope.definition = "No definitions found";
             if (response) {
                 if (response.tuc) {

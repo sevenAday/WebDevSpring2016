@@ -109,7 +109,8 @@
             deleteDocumentById: deleteDocumentById,
             rateDocument: rateDocument,
             deleteCommentIdxFromDocumentId: deleteCommentIdxFromDocumentId,
-            addCommentIdToDocummentId: addCommentIdToDocummentId
+            addCommentIdToDocummentId: addCommentIdToDocummentId,
+            getDocumentById: getDocumentById
         };
         return service;
 
@@ -120,7 +121,7 @@
         function getDocumentsModifiedByUserId(userId, callback) {
             var foundDocuments = [];
             documents.forEach(function (document) {
-               if (document.userId === userId) {
+               if (document.userId == userId) {
                    foundDocuments.push(document);
                }
             });
@@ -129,7 +130,7 @@
 
         function updateDocumentById(documentId, newDocument, callback) {
             for (var idx = 0; idx < documents.length; idx++) {
-                if (documents[idx]._id === documentId) {
+                if (documents[idx]._id == documentId) {
                     documents[idx].userId = newDocument.userId;
                     documents[idx].title = newDocument.title;
                     documents[idx].content = newDocument.content;
@@ -149,7 +150,7 @@
         function deleteDocumentById(documentId) {
             var idx = -1;
             for (idx = 0; idx < documents.length; idx++) {
-                if (documents[idx]._id === documentId) {
+                if (documents[idx]._id == documentId) {
                     break;
                 }
             }
@@ -160,12 +161,12 @@
 
         function rateDocument(documentId, userId, liked, callback) {
             for (var idx = 0; idx < documents.length; idx++) {
-                if (documents[idx]._id === documentId) {
+                if (documents[idx]._id == documentId) {
                     if (liked) {
                         documents[idx].like.push(userId);
                     } else {
                         for (var idy = 0; idy < documents[idx].like.length; idy++) {
-                            if (documents[idx].like[idy] === userId) {
+                            if (documents[idx].like[idy] == userId) {
                                 documents[idx].like.splice(idy, 1);
                                 break;
                             }
@@ -178,7 +179,7 @@
 
         function deleteCommentIdxFromDocumentId(commentIdx, documentId, callback) {
             for (var idx = 0; idx < documents.length; idx++) {
-                if (documents[idx]._id === documentId) {
+                if (documents[idx]._id == documentId) {
                     documents[idx].comment.splice(commentIdx, 1);
                     return callback(documents[idx].comment);
                 }
@@ -187,9 +188,18 @@
 
         function addCommentIdToDocummentId(commentId, documentId, callback) {
             for (var idx = 0; idx < documents.length; idx++) {
-                if (documents[idx]._id === documentId) {
+                if (documents[idx]._id == documentId) {
                     documents[idx].comment.push(commentId);
                     return callback(documents[idx].comment);
+                }
+            }
+        }
+
+        function getDocumentById(documentId, callback) {
+            for (var idx = 0; idx < documents.length; idx++) {
+                console.log(documentId + " " + documents[idx]._id);
+                if (documents[idx]._id == documentId) {
+                    return callback(documents[idx]);
                 }
             }
         }

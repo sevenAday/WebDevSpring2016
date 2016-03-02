@@ -45,7 +45,7 @@
             if ($rootScope.user) {
                 $rootScope.newDocument = false;
                 $rootScope.editable = false;
-                $location.path("/document");
+                $location.path("/document/" + $rootScope.document._id);
             } else {
                 $location.path("/login");
             }
