@@ -39,6 +39,10 @@
                 templateUrl: "views/search/results.view.html",
                 controller: "ResultsController"
             })
+            .when("/results/:keyWord", {
+                templateUrl: "views/search/results.view.html",
+                controller: "ResultsController"
+            })
             .otherwise({
                 redirectTo: "/home"
             });

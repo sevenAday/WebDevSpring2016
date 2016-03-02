@@ -5,12 +5,13 @@
         .module("DocumentCallaborationApp")
         .controller("ResultsController", ResultsController);
 
-    function ResultsController($scope, $rootScope, $location, DocumentService) {
+    function ResultsController($scope, $rootScope, $location, DocumentService, $routeParams) {
         $scope.$location = $location;
         if (!$rootScope.searching) {
             $location.url("/home");
             return;
         }
+        $scope.keyWord = $routeParams.keyWord;
         $scope.documents = [];
         DocumentService.getAllDocuments(function (documents) {
             documents.forEach(function (document) {

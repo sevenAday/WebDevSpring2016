@@ -42,7 +42,7 @@
                 </li>
                 <li ng-show="searching" class="hidden-lg"
                     ng-class="{'active': $location.url().indexOf('results') != -1}">
-                    <a href="#/results">Search Results</a>
+                    <a href="#/results/{{keyWord}}">Search Results</a>
                 </li>
                 <li ng-show="user" ng-class="{'active': $location.url().indexOf('profile') != -1 || $location.url().indexOf('username') != -1}">
                     <a href="#/username">{{user.username}}</a>

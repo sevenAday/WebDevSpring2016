@@ -30,7 +30,7 @@
             if ($scope.keyWord) {
                 $rootScope.keyWord = $scope.keyWord;
                 $rootScope.searching = true;
-                $location.url("/results");
+                $location.url("/results/" + $scope.keyWord);
             }
         }
     }
