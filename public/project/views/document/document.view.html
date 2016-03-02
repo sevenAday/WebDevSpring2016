@@ -32,7 +32,7 @@
                 {{likeMessage}}
             </a>
             <div ng-hide="editable || newDocument" ng-repeat="comment in comments">
-                <hr ng-hide="editable || newDocument"/>
+                <hr/>
                 <h6>{{comment.userName}} wrote on {{comment.commentDate}}:</h6>
                 <p ng-hide="$index === editCommentIndex">{{comment.content}}</p>
                 <textarea ng-show="$index === editCommentIndex" ng-model="comment.content"
@@ -44,7 +44,7 @@
                 <a ng-show="comment.userId === user._id && $index === editCommentIndex"
                    ng-click="saveComment()" ng-cloak>Save</a>
             </div>
-            <hr/>
+            <hr ng-hide="editable || newDocument"/>
             <textarea ng-hide="editable || newDocument"
                       ng-model="newCcommentContent"
                       class="form-control"
