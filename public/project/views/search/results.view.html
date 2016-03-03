@@ -8,7 +8,7 @@
                     <tbody>
                     <tr ng-repeat="document in documents | filter:keyWord">
                         <td>
-                            <a ng-click="openDocument($index)">
+                            <a ng-click="openDocument(document)">
                                 <span class="text-nowrap">{{document.title}}</span>
                             </a>
                             <br/>

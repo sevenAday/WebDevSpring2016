@@ -46,8 +46,8 @@
 
         $scope.openDocument = openDocument;
 
-        function openDocument($index) {
-            $rootScope.document = $scope.documents[$index];
+        function openDocument(selectedDocument) {
+            $rootScope.document = selectedDocument;
             if ($rootScope.user) {
                 $rootScope.newDocument = false;
                 $rootScope.editable = false;
