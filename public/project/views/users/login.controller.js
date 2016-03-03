@@ -22,6 +22,8 @@
                     }
                     if ($rootScope.document) {
                         $location.path("/document/" + $rootScope.document._id);
+                    } else if ($rootScope.isAdmin) {
+                        $location.path("/admin");
                     } else {
                         $location.path("/profile");
                     }
