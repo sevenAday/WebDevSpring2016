@@ -22,7 +22,7 @@
                 "definition": "=",
                 "data": "="
             },
-            templateUrl: "directives/pDialog.html"
+            templateUrl: "directives/pdialog.html"
         };
     }
 }());
