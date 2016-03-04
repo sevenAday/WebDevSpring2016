@@ -11,6 +11,14 @@
         $scope.alertMessage = $rootScope.alertMessageToAll;
         $scope.numberOfRecentPages = $rootScope.numberOfPages;
         $scope.numberOfRecentActivities = $rootScope.numberOfActivities;
+        $scope.showPostPopover = false;
+        $scope.postPopover = {
+            hint: 'Post'
+        };
+        $scope.showRemovePopover = false;
+        $scope.removePopover = {
+            hint: 'Remove'
+        };
         if ($rootScope.user && $rootScope.isAdmin) {
             UserService.findAllUsers(function (users) {
                 $scope.users = [];

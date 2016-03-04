@@ -57,12 +57,25 @@
                             <label for="alertMessage"><h4>Alert Message</h4></label>
                         </div>
                         <div class="col-xs-2">
-                            <button ng-click="postAlertMessage()" type="submit"
-                                    class="btn btn-success pull-right">Post</button>
+                            <a ng-click="postAlertMessage()"
+                               ng-mouseover="showPostPopover=true;" ng-mouseleave="showPostPopover=false;">
+                                <div class="popover text-center" ng-show="showPostPopover">{{postPopover.hint}}</div>
+                                <h4>
+                                    <span class="glyphicon glyphicon-alert pull-right" aria-hidden="true">
+                                    </span>
+                                </h4>
+                            </a>
                         </div>
                         <div class="col-xs-2">
-                            <button ng-click="removeAlertMessage()" type="submit"
-                                    class="btn btn-danger pull-right">Remove</button>
+                            <a ng-click="removeAlertMessage()"
+                               ng-mouseover="showRemovePopover=true;" ng-mouseleave="showRemovePopover=false;">
+                                <div class="popover" ng-show="showRemovePopover">{{removePopover.hint}}</div>
+                                <h4>
+                                    <span class="glyphicon glyphicon-remove-circle pull-right" aria-hidden="true">
+
+                                    </span>
+                                </h4>
+                            </a>
                         </div>
                     </div>
                 </div>
@@ -77,13 +90,13 @@
                     <thead/>
                     <tbody>
                         <tr>
-                            <td><label>Number of recent pages to show:</label></td>
+                            <td><label>Recent pages:</label></td>
                             <td><input ng-model="numberOfRecentPages"
                                        ng-blur="updateNumberOfPages()"
                                        type="number" class="form-control"></td>
                         </tr>
                         <tr>
-                            <td><label>Number of recent activities to show:</label></td>
+                            <td><label>Recent activities:</label></td>
                             <td><input ng-model="numberOfRecentActivities"
                                        ng-blur="updateNumberOfActivities()"
                                        type="number" class="form-control"></td>

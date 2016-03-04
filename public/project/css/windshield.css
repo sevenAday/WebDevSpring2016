@@ -49,3 +49,11 @@ textarea {
 .input-small {
     height: 21px;
 }
+
+.popover {
+    text-decoration: none;
+    color: gray;
+    position: absolute;
+    top: 0;
+    display: block;
+}
