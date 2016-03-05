@@ -11,7 +11,7 @@
                 <li ng-show="isAdmin" ng-class="{'active': $location.url().indexOf('admin') != -1}">
                     <a href="#/admin">Admin</a>
                 </li>
-                <li ng-show="document" ng-class="{'active': $location.url().indexOf('document') != -1}">
+                <li ng-show="document && user" ng-class="{'active': $location.url().indexOf('document') != -1}">
                     <a href="#/document/{{document._id}}">Document</a>
                 </li>
                 <li ng-show="searching" ng-class="{'active': $location.url().indexOf('results') != -1}">

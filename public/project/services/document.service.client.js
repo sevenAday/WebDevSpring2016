@@ -111,7 +111,9 @@
             deleteCommentIdxFromDocumentId: deleteCommentIdxFromDocumentId,
             addCommentIdToDocummentId: addCommentIdToDocummentId,
             getDocumentById: getDocumentById,
-            getDocumentsLikedByUserId: getDocumentsLikedByUserId
+            getDocumentsLikedByUserId: getDocumentsLikedByUserId,
+            removeAllLikeUserIds: removeAllLikeUserIds,
+            removeAllCommentIds: removeAllCommentIds
         };
         return service;
 
@@ -215,6 +217,27 @@
                 }
             }
             return callback(likedDocuments);
+        }
+
+        function removeAllLikeUserIds(userId, callback) {
+            for (var idx = 0; idx < documents.length; idx++) {
+                var likedIdx = documents[idx].like.indexOf(userId);
+                if (likedIdx >= 0) {
+                    documents[idx].like.splice(likedIdx, 1);
+                }
+            }
+            return callback(documents);
+        }
+
+        function removeAllCommentIds(commentIds) {
+            for (var idx = 0; idx < documents.length; idx++) {
+                for (var idy = 0; idy < documents[idx].comment.length; idy++) {
+                    var commentIdx = commentIds.indexOf(documents[idx].comment[idy]);
+                    if (commentIdx >= 0) {
+                        documents[idx].comment.splice(idy, 1);
+                    }
+                }
+            }
         }
     }
 }());

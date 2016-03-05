@@ -5,7 +5,7 @@
         .module("DocumentCallaborationApp")
         .controller("AdminController", AdminController);
 
-    function AdminController($scope, $rootScope, $location, UserService) {
+    function AdminController($scope, $rootScope, $location, UserService, DocumentService, CommentService) {
         $scope.$location = $location;
         var selectedUserIndex = -1;
         $scope.alertMessage = $rootScope.alertMessageToAll;
@@ -73,8 +73,13 @@
         }
 
         function deleteUser($index) {
-            UserService.deleteUserById($scope.users[$index]._id, function (users) {
-                $scope.users.splice($index, 1);
+            DocumentService.removeAllLikeUserIds($scope.users[$index]._id, function (documents) {
+                CommentService.removeAllUserComments($scope.users[$index]._id, function (commentIds) {
+                    DocumentService.removeAllCommentIds(commentIds);
+                    UserService.deleteUserById($scope.users[$index]._id, function (users) {
+                        $scope.users.splice($index, 1);
+                    });
+                });
             });
         }
 

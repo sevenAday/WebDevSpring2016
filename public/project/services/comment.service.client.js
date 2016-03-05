@@ -56,7 +56,8 @@
             findCommentById: findCommentById,
             deleteCommentById: deleteCommentById,
             updateComment: updateComment,
-            addComment: addComment
+            addComment: addComment,
+            removeAllUserComments: removeAllUserComments
         };
         return service;
 
@@ -96,6 +97,17 @@
             };
             comments.push(newComment);
             return callback(newComment);
+        }
+
+        function removeAllUserComments(userId, callback) {
+            var removedCommentIds = [];
+            for (var idx = 0; idx < comments.length; idx++) {
+                if (comments[idx].userId == userId) {
+                    removedCommentIds.push(comments[idx]._id);
+                    comments.splice(idx, 1);
+                }
+            }
+            return callback(removedCommentIds);
         }
     }
 }());

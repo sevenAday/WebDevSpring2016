@@ -36,7 +36,7 @@
                     ng-class="{'active': $location.url().indexOf('admin') != -1}">
                     <a href="#/admin">Admin</a>
                 </li>
-                <li ng-show="document" class="hidden-lg"
+                <li ng-show="document && user" class="hidden-lg"
                     ng-class="{'active': $location.url().indexOf('document') != -1}">
                     <a href="#/document/{{document._id}}">Document</a>
                 </li>
