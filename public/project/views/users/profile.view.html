@@ -77,11 +77,55 @@
             </form>
             <div class="table-responsive">
                 <table class="table table-striped">
-                    <thead></thead>
+                    <thead>
+                        <tr>
+                            <th>Documents last modified by {{firstName}}:</th>
+                        </tr>
+                    </thead>
                     <tbody>
                     <tr ng-repeat="document in documents">
                         <td>
-                            <a ng-click="openDocument($index)">
+                            <a ng-click="openDocument(0, $index)">
+                                <span class="text-nowrap">{{document.title}}</span>
+                            </a>
+                            <br/>
+                            <span>{{document.abstract}} ...</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>{{firstName}} likes:</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="document in likedDocuments">
+                        <td>
+                            <a ng-click="openDocument(1, $index)">
+                                <span class="text-nowrap">{{document.title}}</span>
+                            </a>
+                            <br/>
+                            <span>{{document.abstract}} ...</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>{{firstName}} commented on:</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="document in documentsCommentedOn">
+                        <td>
+                            <a ng-click="openDocument(2, $index)">
                                 <span class="text-nowrap">{{document.title}}</span>
                             </a>
                             <br/>

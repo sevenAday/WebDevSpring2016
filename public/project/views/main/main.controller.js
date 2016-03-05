@@ -17,7 +17,8 @@
             "username": "bob",
             "password": "bob",
             "email": "bh@bo.org",
-            "roles": ["admin"]};
+            "roles": ["admin"],
+            "commentedOn": [603, 702]};
         $rootScope.isAdmin = true;
 
     }

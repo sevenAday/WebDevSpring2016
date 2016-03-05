@@ -280,6 +280,10 @@
                         "content": comment.content,
                         "commentDate": (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear()
                     });
+                    UserService.addCommentedOnByUserId($rootScope.user._id,
+                        $rootScope.document._id, function (commentedOn) {
+                            $rootScope.user.commentedOn = commentedOn;
+                        });
                 });
             });
             $scope.newCcommentContent = "";

@@ -55,7 +55,8 @@
             createUser: createUser,
             deleteUserById: deleteUserById,
             updateUser: updateUser,
-            findUserById: findUserById
+            findUserById: findUserById,
+            addCommentedOnByUserId: addCommentedOnByUserId
         };
         return service;
 
@@ -135,6 +136,15 @@
                 }
             }
             return callback(foundUser);
+        }
+
+        function addCommentedOnByUserId(userId, documentId, callback) {
+            for (var idx = 0; idx < users.length; idx++) {
+                if (users[idx]._id == userId) {
+                    users[idx].commentedOn.push(documentId);
+                    return callback(users[idx].commentedOn);
+                }
+            };
         }
     }
 }());

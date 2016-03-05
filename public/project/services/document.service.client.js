@@ -110,7 +110,8 @@
             rateDocument: rateDocument,
             deleteCommentIdxFromDocumentId: deleteCommentIdxFromDocumentId,
             addCommentIdToDocummentId: addCommentIdToDocummentId,
-            getDocumentById: getDocumentById
+            getDocumentById: getDocumentById,
+            getDocumentsLikedByUserId: getDocumentsLikedByUserId
         };
         return service;
 
@@ -204,6 +205,16 @@
                     return callback(documents[idx]);
                 }
             }
+        }
+
+        function getDocumentsLikedByUserId(userId, callback) {
+            var likedDocuments = [];
+            for (var idx = 0; idx < documents.length; idx++) {
+                if (documents[idx].like.indexOf(userId) >= 0) {
+                    likedDocuments.push(documents[idx]);
+                }
+            }
+            return callback(likedDocuments);
         }
     }
 }());
