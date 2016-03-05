@@ -124,7 +124,7 @@
                 selectedText = document.selection.createRange().text;
             }
             if (selectedText) {
-                var defineUrl = DEFINE_URL + selectedText;
+                var defineUrl = DEFINE_URL + selectedText.toLowerCase();
                 $http.jsonp(defineUrl)
                     .success(renderDefinition);
             }

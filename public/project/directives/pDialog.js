@@ -5,12 +5,14 @@
         .module("DocumentCallaborationApp")
         .directive("pDialog", pDialog);
 
-    function pDialog($rootScope) {
+    function pDialog() {
         return {
             controller: "DocumentController",
             link: function ($scope) {
                 $scope.$on("toggleDialog", function (event, args) {
+                    $scope.definition = args;
                     $(function() {
+                        $("#definitionDialog").text(args.text);
                         $("#definitionDialog").dialog();
                     });
                 });
