@@ -12,7 +12,11 @@
                 $scope.$on("toggleDialog", function (event, args) {
                     $scope.definition = args;
                     $(function() {
-                        $("#definitionDialog").text(args.text);
+                        if (args.text) {
+                            $("#definitionDialog").html(args.text);
+                        } else {
+                            $("#definitionDialog").html(args);
+                        }
                         $("#definitionDialog").dialog();
                     });
                 });
