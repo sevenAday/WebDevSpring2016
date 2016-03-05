@@ -141,8 +141,10 @@
         function addCommentedOnByUserId(userId, documentId, callback) {
             for (var idx = 0; idx < users.length; idx++) {
                 if (users[idx]._id == userId) {
-                    users[idx].commentedOn.push(documentId);
-                    return callback(users[idx].commentedOn);
+                    if (users[idx].commentedOn.indexOf(documentId) < 0) {
+                        users[idx].commentedOn.push(documentId);
+                        return callback(users[idx].commentedOn);
+                    }
                 }
             };
         }
