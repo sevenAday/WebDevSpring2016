@@ -56,7 +56,8 @@
             deleteUserById: deleteUserById,
             updateUser: updateUser,
             findUserById: findUserById,
-            addCommentedOnByUserId: addCommentedOnByUserId
+            addCommentedOnByUserId: addCommentedOnByUserId,
+            removeCommentedOnIdByUserId: removeCommentedOnIdByUserId
         };
         return service;
 
@@ -143,6 +144,18 @@
                 if (users[idx]._id == userId) {
                     if (users[idx].commentedOn.indexOf(documentId) < 0) {
                         users[idx].commentedOn.push(documentId);
+                        return callback(users[idx].commentedOn);
+                    }
+                }
+            };
+        }
+
+        function removeCommentedOnIdByUserId(userId, documentId, callback) {
+            for (var idx = 0; idx < users.length; idx++) {
+                if (users[idx]._id == userId) {
+                    var documentIdx = users[idx].commentedOn.indexOf(documentId);
+                    if (documentIdx >= 0) {
+                        users[idx].commentedOn.splice(documentIdx, 1);
                         return callback(users[idx].commentedOn);
                     }
                 }

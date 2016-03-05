@@ -260,6 +260,11 @@
             DocumentService.deleteCommentIdxFromDocumentId($index, $rootScope.document._id, function (comment) {
                 CommentService.deleteCommentById($scope.comments[$index]._id, function (comments) {
                     $scope.comments.splice($index, 1);
+                    UserService.removeCommentedOnIdByUserId($rootScope.user._id,
+                        $rootScope.document._id, function (commentedOn) {
+                            $rootScope.user.commentedOn = commentedOn;
+                        }
+                    );
                 });
             });
         }
