@@ -34,18 +34,18 @@
                     };
                     $scope.documents.push(newDocument);
                 });
-            });
 
-            $scope.documents.sort(function (x, y) {
-                var xDate = x.lastModified;
-                var yDate = y.lastModified;
-                return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
-            });
+                $scope.documents.sort(function (x, y) {
+                    var xDate = x.lastModified;
+                    var yDate = y.lastModified;
+                    return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
+                });
 
-            if ($rootScope.numberOfActivities < $scope.documents.length) {
-                $scope.documents.splice($rootScope.numberOfActivities,
-                    $scope.documents.length - $rootScope.numberOfActivities);
-            }
+                if ($rootScope.numberOfActivities < $scope.documents.length) {
+                    $scope.documents.splice($rootScope.numberOfActivities,
+                        $scope.documents.length - $rootScope.numberOfActivities);
+                }
+            });
 
             DocumentService.getDocumentsLikedByUserId($rootScope.user._id, function (documents) {
                 documents.forEach(function (document) {
@@ -65,37 +65,50 @@
                     };
                     $scope.likedDocuments.push(newDocument);
                 });
+
+                $scope.likedDocuments.sort(function (x, y) {
+                    var xDate = x.lastModified;
+                    var yDate = y.lastModified;
+                    return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
+                });
+
+                if ($rootScope.numberOfActivities < $scope.likedDocuments.length) {
+                    $scope.likedDocuments.splice($rootScope.numberOfActivities,
+                        $scope.likedDocuments.length - $rootScope.numberOfActivities);
+                }
             });
 
-            $rootScope.user.commentedOn.forEach(function (documentId) {
-               DocumentService.getDocumentById(documentId, function (document) {
-                   var asbtractStr = "";
-                   if (document.content) {
-                       asbtractStr = document.content.substring(0, 160);
-                   }
-                   var newDocument = {
-                       "_id": document._id,
-                       "userId": document.userId,
-                       "title": document.title,
-                       "content": document.content,
-                       "abstract": asbtractStr,
-                       "lastModified": document.lastModified,
-                       "like": document.like,
-                       "comment": document.comment
-                   };
-                   $scope.documentsCommentedOn.push(newDocument);
-               });
-            });
+            if ($rootScope.user.commentedOn) {
+                $rootScope.user.commentedOn.forEach(function (documentId) {
+                   DocumentService.getDocumentById(documentId, function (document) {
+                       var asbtractStr = "";
+                       if (document.content) {
+                           asbtractStr = document.content.substring(0, 160);
+                       }
+                       var newDocument = {
+                           "_id": document._id,
+                           "userId": document.userId,
+                           "title": document.title,
+                           "content": document.content,
+                           "abstract": asbtractStr,
+                           "lastModified": document.lastModified,
+                           "like": document.like,
+                           "comment": document.comment
+                       };
+                       $scope.documentsCommentedOn.push(newDocument);
+                   });
+                });
 
-            $scope.documentsCommentedOn.sort(function (x, y) {
-                var xDate = x.lastModified;
-                var yDate = y.lastModified;
-                return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
-            });
+                $scope.documentsCommentedOn.sort(function (x, y) {
+                    var xDate = x.lastModified;
+                    var yDate = y.lastModified;
+                    return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
+                });
 
-            if ($rootScope.numberOfActivities < $scope.documentsCommentedOn.length) {
-                $scope.documentsCommentedOn.splice($rootScope.numberOfActivities,
-                    $scope.documentsCommentedOn.length - $rootScope.numberOfActivities);
+                if ($rootScope.numberOfActivities < $scope.documentsCommentedOn.length) {
+                    $scope.documentsCommentedOn.splice($rootScope.numberOfActivities,
+                        $scope.documentsCommentedOn.length - $rootScope.numberOfActivities);
+                }
             }
         } else {
             $location.path("/login");

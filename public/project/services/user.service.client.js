@@ -84,7 +84,8 @@
                 "username": user.username,
                 "password": user.password,
                 "email": user.email,
-                "roles": user.roles
+                "roles": user.roles,
+                "commentedOn": user.commentedOn
             };
             users.push(newUser);
             return callback(newUser);
@@ -123,6 +124,9 @@
                 }
                 if (user.roles) {
                     foundUser.roles = user.roles;
+                }
+                if (user.comentedOn) {
+                    foundUser.comentedOn = user.comentedOn;
                 }
             }
             return callback(foundUser);

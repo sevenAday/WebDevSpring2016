@@ -22,7 +22,9 @@
             }
         }
         if ($rootScope.user && $rootScope.document) {
-            if ($rootScope.newDocument) {
+            if (!$rootScope.user.firstName || !$rootScope.user.lastName) {
+                $location.url("/profile");
+            } else if ($rootScope.newDocument) {
                 //console.log("There is nothing to do");
             } else {
                 var dd = $rootScope.document.lastModified;
@@ -270,10 +272,13 @@
         }
 
         function createComment() {
-            $scope.createNewDocument();
+            $scope.createNewComment();
         }
 
         function addNewComment() {
+            if (!$scope.newCcommentContent) {
+                return;
+            }
             var newComment = {"userId": $rootScope.user._id, "content": $scope.newCcommentContent};
             CommentService.addComment(newComment, function (comment) {
                 DocumentService.addCommentIdToDocummentId(comment._id, $rootScope.document._id, function (comments) {

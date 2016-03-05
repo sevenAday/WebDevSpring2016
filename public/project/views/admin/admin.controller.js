@@ -53,7 +53,8 @@
                 var newUser = {
                     "username": $scope.username,
                     "password": $scope.password,
-                    "roles": $scope.role.replace(/\s/g, "").split("|")
+                    "roles": $scope.role.replace(/\s/g, "").split("|"),
+                    "commentedOn": []
                 };
                 if ($scope.username && $scope.password && $scope.role && $rootScope.user && $rootScope.isAdmin) {
                     UserService.createUser(newUser, function (user) {
