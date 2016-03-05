@@ -19,6 +19,9 @@
                         }
                         $("#definitionDialog").dialog();
                     });
+                    $(window).resize(function() {
+                        $("#definitionDialog").dialog("option", "position", {my: "center", at: "center", of: window});
+                    });
                 });
             },
             restrict: "AE",
