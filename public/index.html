@@ -1,24 +1,26 @@
-<!DOCTYPE html>
-<html lang="en">
+<html lang="en" ng-app="HomePageApp">
 <head>
     <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
     <title>ALE CS5610 CCIS NEU</title>
+
+    <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" rel="stylesheet">
+    <link href="css/dashboard.css" rel="stylesheet">
+
+    <script src="https://code.jquery.com/jquery-1.12.0.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0-beta.0/angular-route.js"></script>
+
+    <script src="app.js"></script>
+    <script src="config.js"></script>
 </head>
-<body>
-    <h1>Allen L&#234;</h1>
-    <img src="images/ME_ALE.png">
-    <h2>CS5610</h2>
-    <h3>College of Computer and Information Science</h3>
-    <h3>Northeastern University</h3>
-    <h1><a href="assignment/">Assignment</a></h1>
-    <h1><a href="experiments/">Experiments</a></h1>
-    <h1><a href="project/">Project</a></h1>
-    <p>
-        <h3>Link to <a href="https://docs.google.com/document/d/1XShwoZ0J8MR712u4f9hH0rQxJtszBWjBK5kYEYyA3N4/edit?usp=sharing">project proposal Google doc</a>:
-        <a href="https://docs.google.com/document/d/1XShwoZ0J8MR712u4f9hH0rQxJtszBWjBK5kYEYyA3N4/edit?usp=sharing">https://docs.google.com/document/d/1XShwoZ0J8MR712u4f9hH0rQxJtszBWjBK5kYEYyA3N4/edit?usp=sharing</a></h3>
-        <h3>Link to <a href="https://moqups.com/sevenADay/PZ5fXa5b/p:a733fdbf1">wireframes for portrait phone</a>: <a href="https://moqups.com/sevenADay/PZ5fXa5b/p:a733fdbf1">https://moqups.com/sevenADay/PZ5fXa5b/p:a733fdbf1</a></h3>
-        <h3>Link to <a href="https://moqups.com/sevenADay/MBXmfVNf/p:a16b2c2a4">wireframes for landscape tablet</a>: <a href="https://moqups.com/sevenADay/MBXmfVNf/p:a16b2c2a4">https://moqups.com/sevenADay/MBXmfVNf/p:a16b2c2a4</a></h3>
-        <h3>Link to <a href="https://www.lucidchart.com/invitations/accept/24454b04-b5cf-45ea-9b1a-6b6025302ed8">architectural diagram</a>: <a href="https://www.lucidchart.com/invitations/accept/24454b04-b5cf-45ea-9b1a-6b6025302ed8">https://www.lucidchart.com/invitations/accept/24454b04-b5cf-45ea-9b1a-6b6025302ed8</a></h3>
-    </p>
+<body controller="MainController">
+    <ng-include src="'views/header/header.view.html'"></ng-include>
+    <ng-include src="'views/sidebar/sidebar.view.html'"></ng-include>
+    <div ng-view class="container-fluid"></div>
 </body>
 </html>
