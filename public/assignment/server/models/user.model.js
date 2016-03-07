@@ -3,6 +3,7 @@ module.exports = function () {
     var api = {
         findUserByCredentials: findUserByCredentials,
         findUserByUsername: findUserByUsername,
+        findUserById: findUserById,
         createUser: createUser
     };
     return api;
@@ -10,6 +11,15 @@ module.exports = function () {
     function findUserByUsername(username) {
         for (var u in mock) {
             if (mock[u].username == username) {
+                return mock[u];
+            }
+        }
+        return null;
+    }
+
+    function findUserById(userId) {
+        for (var u in mock) {
+            if (mock[u]._id === userId) {
                 return mock[u];
             }
         }
