@@ -4,7 +4,10 @@ module.exports = function () {
         findUserByCredentials: findUserByCredentials,
         findUserByUsername: findUserByUsername,
         findUserById: findUserById,
-        createUser: createUser
+        findAllUsers: findAllUsers,
+        createUser: createUser,
+        updateUserById: updateUserById,
+        deleteUserById: deleteUserById
     };
     return api;
 
@@ -29,7 +32,7 @@ module.exports = function () {
     function createUser(user) {
         user._id = "ID_" + (new Date()).getTime();
         mock.push(user);
-        return user;
+        return mock;
     }
 
     function findUserByCredentials(credentials) {
@@ -40,5 +43,30 @@ module.exports = function () {
             }
         }
         return null;
+    }
+
+    function findAllUsers() {
+        return mock;
+    }
+
+    function updateUserById(userId, user) {
+        var foundUser = finduserById(userId);
+        if (foundUser) {
+            foundUser.firstName = user.firstName;
+            foundUser.lastName = user.lastName;
+            foundUser.username = user.username;
+            foundUser.password = user.password;
+        }
+        return mock;
+    }
+
+    function deleteUserById(userId) {
+        for (var u in mock) {
+            if (mock[u]._id === userId) {
+                mock.splice(u, 1);
+                break;
+            }
+        }
+        return users;
     }
 };
