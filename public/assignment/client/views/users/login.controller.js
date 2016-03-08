@@ -13,17 +13,18 @@
             $scope.showError = true;
             delete $scope.signin.password.$error.invalidLogin;
             if (!isNotEmpty($scope.signin.username.$error) && !isNotEmpty($scope.signin.password.$error)) {
-                UserService.findUserByCredentials($scope.username, $scope.password, function (user) {
-                    UserService.setCurrentUser(user);
-                });
-                if (!!$rootScope.user) {
-                    if ($rootScope.user.roles.indexOf("admin") != -1) {
-                        $rootScope.isAdmin = true;
-                    }
-                    $location.path("/profile");
-                } else {
-                    $scope.signin.password.$error = {"invalidLogin": true};
-                }
+                UserService.findUserByCredentials($scope.username, $scope.password)
+                    .then(function (user) {
+                        UserService.setCurrentUser(user);
+                        if (!!$rootScope.user) {
+                            if ($rootScope.user.roles.indexOf("admin") != -1) {
+                                $rootScope.isAdmin = true;
+                            }
+                            $location.path("/profile");
+                        } else {
+                            $scope.signin.password.$error = {"invalidLogin": true};
+                        }
+                    });
             }
         }
 
