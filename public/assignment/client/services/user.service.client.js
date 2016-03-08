@@ -6,7 +6,6 @@
         .factory("UserService", UserService);
 
     function UserService($http) {
-        var users = [];
 
         var service = {
             findUserByUsername: findUserByUsername,
