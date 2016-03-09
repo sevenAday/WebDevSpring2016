@@ -14,8 +14,8 @@
             delete $scope.signin.password.$error.invalidLogin;
             if (!isNotEmpty($scope.signin.username.$error) && !isNotEmpty($scope.signin.password.$error)) {
                 UserService.findUserByCredentials($scope.username, $scope.password)
-                    .then(function (user) {
-                        UserService.setCurrentUser(user.data);
+                    .then(function (response) {
+                        UserService.setCurrentUser(response.data);
                         if (!!$rootScope.user) {
                             if ($rootScope.user.roles.indexOf("admin") != -1) {
                                 $rootScope.isAdmin = true;

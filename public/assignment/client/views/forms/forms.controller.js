@@ -9,9 +9,10 @@
         var selectedFormIndex = -1;
         $scope.$location = $location;
         if ($rootScope.user) {
-            FormService.findAllFormsForUser($rootScope.user._id, function (forms) {
-                $scope.forms = forms;
-            });
+            FormService.findAllFormsForUser($rootScope.user._id)
+                .then(function (response) {
+                    $scope.forms = response.data;
+                });
         } else {
             $location.path("/login");
         }
@@ -24,17 +25,19 @@
         function addForm() {
             var newForm = {"title": $scope.formName};
             if ($scope.formName && $rootScope.user) {
-                FormService.createFormForUser($rootScope.user._id, newForm, function (form) {
-                    $scope.forms.push(form);
-                    $scope.formName = "";
-                });
+                FormService.createFormForUser($rootScope.user._id, newForm)
+                    .then(function (response) {
+                        $scope.forms.push(response.data);
+                        $scope.formName = "";
+                    });
             }
         }
 
         function deleteForm($index) {
-            FormService.deleteFormById($scope.forms[$index]._id, function (forms) {
-                $scope.forms.splice($index, 1); //only one user's forms, not everyone's
-            });
+            FormService.deleteFormById($scope.forms[$index]._id)
+                .then(function (response) {
+                    $scope.forms.splice($index, 1); //only one user's forms, not everyone's
+                });
         }
 
         function selectForm($index) {
@@ -45,11 +48,12 @@
         function updateForm() {
             var newForm = {"title": $scope.formName};
             if (selectedFormIndex >= 0) {
-                FormService.updateFormById($scope.forms[selectedFormIndex]._id, newForm, function (form) {
-                    $scope.forms[selectedFormIndex].title = form.title;
-                    $scope.formName = "";
-                });
-                selectedFormIndex = -1;
+                FormService.updateFormById($scope.forms[selectedFormIndex]._id, newForm)
+                    .then(function (response) {
+                        $scope.forms[selectedFormIndex].title = response.data.title;
+                        $scope.formName = "";
+                        selectedFormIndex = -1;
+                    });
             }
         }
     }
