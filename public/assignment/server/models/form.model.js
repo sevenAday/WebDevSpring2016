@@ -1,5 +1,5 @@
 var mock = require("./form.mock.json");
-module.exports = function () {
+module.exports = function (uuid) {
     var api = {
         findFormByTitle: findFormByTitle,
         findFormsByUserId: findFormsByUserId,
