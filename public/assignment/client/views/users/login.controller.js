@@ -15,7 +15,7 @@
             if (!isNotEmpty($scope.signin.username.$error) && !isNotEmpty($scope.signin.password.$error)) {
                 UserService.findUserByCredentials($scope.username, $scope.password)
                     .then(function (user) {
-                        UserService.setCurrentUser(user);
+                        UserService.setCurrentUser(user.data);
                         if (!!$rootScope.user) {
                             if ($rootScope.user.roles.indexOf("admin") != -1) {
                                 $rootScope.isAdmin = true;
