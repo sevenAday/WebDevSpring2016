@@ -27,10 +27,12 @@
                 "password": $scope.password,
                 "email": $scope.email
             };
-            UserService.createUser(newUser, function (user) {
-                $rootScope.user = user;
-            });
-            $location.path("/profile");
+            UserService.createUser(newUser)
+                .then(function (response) {
+                    var users = response.data;
+                    $rootScope.user = users[users.length - 1];
+                    $location.path("/profile");
+                });
         }
 
         function isNotEmpty(obj) {
