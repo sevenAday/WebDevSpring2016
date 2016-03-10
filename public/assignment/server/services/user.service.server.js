@@ -28,20 +28,20 @@ module.exports = function (app, userModel) {
     }
 
     function findUserById(req, res) {
-        var userId = req.params.userId;
+        var userId = req.params.id;
         var user = userModel.findUserById(userId);
         res.json(user);
     }
 
     function updateUserById(req, res) {
-        var userId = req.params.userId;
+        var userId = req.params.id;
         var user = req.body;
         var users = userModel.updateUserById(userId, user);
         res.json(users);
     }
 
     function deleteUserById(req, res) {
-        var userId = req.params.userId;
+        var userId = req.params.id;
         var users = userModel.deleteUserById(userId);
         res.json(users);
     }

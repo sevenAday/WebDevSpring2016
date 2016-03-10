@@ -22,7 +22,7 @@ module.exports = function (uuid) {
 
     function findUserById(userId) {
         for (var u in mock) {
-            if (mock[u]._id === userId) {
+            if (mock[u]._id == userId) {
                 return mock[u];
             }
         }
@@ -50,23 +50,28 @@ module.exports = function (uuid) {
     }
 
     function updateUserById(userId, user) {
-        var foundUser = finduserById(userId);
+        var foundUser = findUserById(userId);
         if (foundUser) {
-            foundUser.firstName = user.firstName;
-            foundUser.lastName = user.lastName;
+            if (user.firstName) {
+                foundUser.firstName = user.firstName;
+            }
+            if (user.lastName) {
+                foundUser.lastName = user.lastName;
+            }
             foundUser.username = user.username;
             foundUser.password = user.password;
+            foundUser.roles = user.roles;
         }
         return mock;
     }
 
     function deleteUserById(userId) {
         for (var u in mock) {
-            if (mock[u]._id === userId) {
+            if (mock[u]._id == userId) {
                 mock.splice(u, 1);
                 break;
             }
         }
-        return users;
+        return mock;
     }
 };

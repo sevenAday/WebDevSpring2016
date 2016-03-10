@@ -9,31 +9,38 @@
         $scope.$location = $location;
         var selectedUserIndex = -1;
 
-        if ($rootScope.user && $rootScope.isAdmin) {
-            UserService.findAllUsers(function (users) {
-                $scope.users = [];
-                for (var idx = 0; idx < users.length; idx++) {
-                    var roles = "";
-                    if (users[idx].roles) {
-                        roles = users[idx].roles.join(" | ");
-                    }
-                    $scope.users[idx] = {
-                        "_id": users[idx]._id,
-                        "username": users[idx].username,
-                        "password": users[idx].password,
-                        "roles": roles
-                    };
-                }
-
-            });
-        } else {
-            $location.path("/login");
+        function init() {
+            if ($rootScope.user && $rootScope.isAdmin) {
+                UserService.findAllUsers()
+                    .then(function (response) {
+                        populateUsers(response.data);
+                    });
+            } else {
+                $location.path("/login");
+            }
         }
+        init();
 
         $scope.addUser = addUser;
         $scope.deleteUser = deleteUser;
         $scope.selectUser = selectUser;
         $scope.updateUser = updateUser;
+
+        function populateUsers(users) {
+            $scope.users = [];
+            for (var idx = 0; idx < users.length; idx++) {
+                var roles = "";
+                if (users[idx].roles) {
+                    roles = users[idx].roles.join(" | ");
+                }
+                $scope.users[idx] = {
+                    "_id": users[idx]._id,
+                    "username": users[idx].username,
+                    "password": users[idx].password,
+                    "roles": roles
+                };
+            }
+        }
 
         function addUser() {
             if ($scope.username && $scope.password && $scope.role) {
@@ -43,25 +50,22 @@
                     "roles": $scope.role.replace(/\s/g, "").split("|")
                 };
                 if ($scope.username && $scope.password && $scope.role && $rootScope.user && $rootScope.isAdmin) {
-                    UserService.createUser(newUser, function (user) {
-                        $scope.users.push({
-                            "_id": user._id,
-                            "username": user.username,
-                            "password": user.password,
-                            "roles": $scope.role
+                    UserService.createUser(newUser)
+                        .then(function (response) {
+                            populateUsers(response.data);
+                            $scope.username = "";
+                            $scope.password = "";
+                            $scope.role = "";
                         });
-                        $scope.username = "";
-                        $scope.password = "";
-                        $scope.role = "";
-                    });
                 }
             }
         }
 
         function deleteUser($index) {
-            UserService.deleteUserById($scope.users[$index]._id, function (users) {
-                $scope.users.splice($index, 1);
-            });
+            UserService.deleteUserById($scope.users[$index]._id)
+                .then(function (response) {
+                    populateUsers(response.data);
+                });
         }
 
         function selectUser($index) {
@@ -79,16 +83,14 @@
                     "roles": $scope.role.replace(/\s/g, "").split("|")
                 };
                 if (selectedUserIndex >= 0) {
-                    UserService.updateUser($scope.users[selectedUserIndex]._id, newUser, function (user) {
-                        $scope.users[selectedUserIndex]._id = user._id;
-                        $scope.users[selectedUserIndex].username = user.username;
-                        $scope.users[selectedUserIndex].password = user.password;
-                        $scope.users[selectedUserIndex].roles = $scope.role;
-                        $scope.username = "";
-                        $scope.password = "";
-                        $scope.role = "";
-                    });
-                    selectedUserIndex = -1;
+                    UserService.updateUser($scope.users[selectedUserIndex]._id, newUser)
+                        .then(function (response) {
+                            populateUsers(response.data);
+                            $scope.username = "";
+                            $scope.password = "";
+                            $scope.role = "";
+                            selectedUserIndex = -1;
+                        });
                 }
             }
         }
