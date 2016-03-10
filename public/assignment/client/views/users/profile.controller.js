@@ -7,15 +7,19 @@
 
     function ProfileController($scope, $rootScope, $location, UserService) {
         $scope.$location = $location;
-        if ($rootScope.user) {
-            $scope.username = $rootScope.user.username;
-            $scope.password = $rootScope.user.password;
-            $scope.firstName = $rootScope.user.firstName;
-            $scope.lastName = $rootScope.user.lastName;
-            $scope.email = $rootScope.user.email;
-        } else {
-            $location.path("/login");
+
+        function init() {
+            if ($rootScope.user) {
+                $scope.username = $rootScope.user.username;
+                $scope.password = $rootScope.user.password;
+                $scope.firstName = $rootScope.user.firstName;
+                $scope.lastName = $rootScope.user.lastName;
+                $scope.email = $rootScope.user.email;
+            } else {
+                $location.path("/login");
+            }
         }
+        init();
 
         $scope.update = update;
         $scope.clearMessage = clearMessage;
