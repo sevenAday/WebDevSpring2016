@@ -7,119 +7,46 @@
                 <li role="presentation" class="active"><a href="#fields">Fields</a></li>
             </ul>
 
-            <div id="fields">
+            <div id="fields" ng-repeat="field in model.fields">
                 <br/>
                 <div class="row">
                     <div class="col-xs-5">
-                        <div class="form-group">
-                            <label for="inputFirstName" class="row-xs-2">First Name:</label>
-                            <div class="row-xs-10">
-                                <input type="text" class="form-control" id="inputFirstName" placeholder="First Name">
+                        <div class="form-group" ng-switch on="field.type">
+                            <label class="row-xs-2">{{field.label}}:</label>
+                            <div class="row-xs-10" ng-switch-when="TEXT">
+                                <input type="text" class="form-control" id="inputTextField"
+                                       placeholder="{{field.placeholder}}">
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-2"></div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                    </div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                    </div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-                    </div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-5">
-                        <div class="form-group">
-                            <label for="inputLastName" class="row-xs-2">Last Name:</label>
-                            <div class="row-xs-10">
-                                <input type="text" class="form-control" id="inputLastName" placeholder="Last Name">
+                            <div class="row-xs-10" ng-switch-when="TEXTAREA">
+                                <textarea type="text" rows="2" class="form-control" id="inputTextAreaField"
+                                       placeholder="{{field.placeholder}}"></textarea>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-2"></div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                    </div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                    </div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-                    </div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-5">
-                        <div class="form-group">
-                            <label for="inputDateOfBirth" class="row-xs-2">Date of Birth:</label>
-                            <div class="row-xs-10">
+                            <div class="row-xs-10" ng-switch-when="EMAIL">
+                                <input type="email" class="form-control" id="inputEmailField"
+                                       placeholder="{{field.placeholder}}">
+                            </div>
+                            <div class="row-xs-10" ng-switch-when="DATE">
                                 <input type="text" onfocus="(this.type='date')" onblur="(this.type='text')"
-                                       class="form-control" id="inputDateOfBirth" placeholder="Select Date">
+                                       class="form-control" id="inputDateField" placeholder="Select Date">
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-2"></div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                    </div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                    </div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-                    </div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-5">
-                        <div class="form-group">
-                            <label for="genderDropdown" class="row-xs-2">Gender:</label>
-                            <span class="caret"></span>
-                            <div class="row-xs-10">
-                                <select id="genderDropdown" class="form-control">
-                                    <option value="male">Male</option>
-                                    <option value="female">Female</option>
+                            <div class="row-xs-10" ng-switch-when="OPTIONS">
+                                <select id="dropDownField" class="form-control">
+                                    <option ng-repeat="option in field.options" value="{{option.value}}">
+                                        {{option.label}}
+                                    </option>
                                 </select>
                             </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-2"></div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                    </div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                    </div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-                    </div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
-                    </div>
-                </div>
-                <div class="row">
-                    <div class="col-xs-5">
-                        <div class="form-group">
-                            <label class="row-xs-3">Roles:</label>
-                            <div class="row-xs-3">
-                                <input type="checkbox" id="adminCheckbox" checked="true">
-                                <label for="adminCheckbox">Admin</label>
+                            <div ng-switch-when="CHECKBOX">
+                                <div ng-repeat="chbox in field.checkboxes">
+                                    <input type="checkbox" id="{{chbox.id}}" checked="{{chbox.checked}}">
+                                    <label for="{{chbox.id}}">{{chbox.label}}</label>
+                                </div>
                             </div>
-                            <div class="row-xs-3">
-                                <input type="checkbox" id="studentCheckbox"><label for="studentCheckbox">Student</label>
-                            </div>
-                            <div class="row-xs-3">
-                                <input type="checkbox" id="userCheckbox" checked="true">
-                                <label for="userCheckbox">User</label>
+                            <div ng-switch-when="RADIO">
+                                <div ng-repeat="rad in field.radios">
+                                    <input type="radio" name="radFieldName" id="{{rad.id}}" checked="{{rad.checked}}">
+                                    <label for="{{rad.id}}">{{rad.label}}</label>
+                                </div>
                             </div>
                         </div>
                     </div>
@@ -131,48 +58,23 @@
                         <a href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
                     </div>
                     <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
+                        <a ng-click="removeField(field)">
+                            <span class="glyphicon glyphicon-remove" aria-hidden="true"></span>
+                        </a>
                     </div>
                     <div class="col-xs-1">
                         <a href="#"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
                     </div>
                 </div>
-                <div class="row">
-                    <div class="col-xs-5">
-                        <div class="form-group">
-                            <label class="row-xs-2">License Agreement:</label>
-                            <div class="row-xs-5">
-                                <input type="radio" id="yesRadion" name="licenseAgreement" checked="true">
-                                <label for="yesRadion">Yes</label>
-                            </div>
-                            <div class="row-xs-5">
-                                <input type="radio" id="noRadio" name="licenseAgreement"><label for="noRadio">No</label>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-xs-2"></div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-pencil" aria-hidden="true"></span></a>
-                    </div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
-                    </div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-remove" aria-hidden="true"></span></a>
-                    </div>
-                    <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
-                    </div>
-                </div>
-                <hr/>
 
+                <hr/>
                 <div class="row">
                     <div class="col-xs-5">
                         <div class="form-group">
                             <label for="addNewFieldDropdown" class="row-xs-2">Add New Field:</label>
                             <span class="caret"></span>
                             <div class="row-xs-10">
-                                <select id="addNewFieldDropdown" class="form-control">
+                                <select id="addNewFieldDropdown" class="form-control" ng-model="model.fieldType">
                                     <option value="singleLineText">Single Line Text</option>
                                     <option value="date">Date</option>
                                     <option value="dropDowm">Dropdown</option>
@@ -185,7 +87,9 @@
                     </div>
                     <div class="col-xs-3"></div>
                     <div class="col-xs-1">
-                        <a href="#"><span class="glyphicon glyphicon-plus" aria-hidden="true"></span></a>
+                        <a ng-click="addField(model.fieldType)">
+                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                        </a>
                     </div>
                 </div>
             </div>
