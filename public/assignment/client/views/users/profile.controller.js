@@ -42,16 +42,16 @@
                 "lastName": $scope.lastName,
                 "email": $scope.email
             };
-            UserService.updateUser($rootScope.user._id, currentUser, function (user) {
-                $rootScope.user.username = user.username;
-                $rootScope.user.password = user.password;
-                $rootScope.user.firstName = user.firstName;
-                $rootScope.user.lastName = user.lastName;
-                $rootScope.user.email = user.email;
-                $rootScope.user.roles = user.roles;
-            });
-            $scope.successful = true;
-            $location.path("/profile");
+            UserService.updateUser($rootScope.user._id, currentUser)
+                .then(function (response) {
+                    $rootScope.user.username = $scope.username;
+                    $rootScope.user.password = $scope.password;
+                    $rootScope.user.firstName = $scope.firstName;
+                    $rootScope.user.lastName = $scope.lastName;
+                    $rootScope.user.email = $scope.email;
+                    $scope.successful = true;
+                    $location.path("/profile");
+                });
         }
 
         function isNotEmpty(obj) {

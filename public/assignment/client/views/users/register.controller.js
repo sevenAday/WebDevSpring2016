@@ -10,7 +10,6 @@
         $scope.register = register;
 
         function register() {
-            var newUser = null;
             $scope.showError = true;
             delete $scope.registration.verifyPassword.$error.notMatching;
             if ($scope.password !== $scope.verifyPassword) {
@@ -22,7 +21,7 @@
                     || isNotEmpty($scope.registration.inputEmail.$error)) {
                 return;
             }
-            newUser = {
+            var newUser = {
                 "username": $scope.username,
                 "password": $scope.password,
                 "email": $scope.email

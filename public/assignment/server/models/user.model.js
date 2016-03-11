@@ -60,7 +60,10 @@ module.exports = function (uuid) {
             }
             foundUser.username = user.username;
             foundUser.password = user.password;
-            foundUser.roles = user.roles;
+            foundUser.email = user.email;
+            if (user.roles) {
+                foundUser.roles = user.roles;
+            }
         }
         return mock;
     }
