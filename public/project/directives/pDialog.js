@@ -11,7 +11,7 @@
             link: function ($scope) {
                 $scope.$on("toggleDialog", function (event, args) {
                     $scope.definition = args;
-                    $(function() {
+                    $(function () {
                         if (args.text) {
                             $("#definitionDialog").html(args.text);
                         } else {
@@ -19,7 +19,7 @@
                         }
                         $("#definitionDialog").dialog();
                     });
-                    $(window).resize(function() {
+                    $(window).resize(function () {
                         $("#definitionDialog").dialog("option", "position", {my: "center", at: "center", of: window});
                     });
                 });
