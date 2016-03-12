@@ -5,8 +5,9 @@
         .module("FormBuilderApp")
         .controller("FieldController", FieldController);
 
-    function FieldController($scope, $rootScope, $location, $routeParams, FieldService) {
-        $scope.$location = $location;
+    function FieldController($rootScope, $location, $routeParams, FieldService) {
+        var model = this;
+        model.addField = addField;
 
         function init() {
             if ($rootScope.user) {
@@ -17,8 +18,6 @@
         }
 
         init();
-
-        $scope.addField = addField;
 
         function addField(fieldType) {
             var fieldToAdd = null;
