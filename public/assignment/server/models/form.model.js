@@ -64,8 +64,12 @@ module.exports = function (uuid) {
         var foundForm = findFormById(formId);
         if (foundForm) {
             foundForm.title = form.title;
-            foundForm.userId = form.userId;
-            foundForm.fields = form.fields;
+            if (form.userId) {
+                foundForm.userId = form.userId;
+            }
+            if (form.fields) {
+                foundForm.fields = form.fields;
+            }
         }
         return foundForm;
     }

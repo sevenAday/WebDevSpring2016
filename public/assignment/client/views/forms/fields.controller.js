@@ -11,7 +11,9 @@
 
         function init() {
             if ($rootScope.user) {
-                // do nothing right now
+                model.fields = [];
+                var formId = $routeParams.formId;
+                var userId = $routeParams.userId;
             } else {
                 $location.path("/login");
             }

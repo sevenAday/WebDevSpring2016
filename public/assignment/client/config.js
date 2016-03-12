@@ -26,11 +26,27 @@
                 templateUrl: "views/admin/admin.view.html",
                 controller: "AdminController"
             })
-            .when("/forms", {
+            .when("/form", {
                 templateUrl: "views/forms/forms.view.html",
-                controller: "FormController"
+                controller: "FormController",
+                controllerAs: "model"
             })
-            .when("/fields", {
+            .when("/form/:formId", {
+                templateUrl: "views/forms/forms.view.html",
+                controller: "FormController",
+                controllerAs: "model"
+            })
+            .when("/field", {
+                templateUrl: "views/forms/fields.view.html",
+                controller: "FieldController",
+                controllerAs: "model"
+            })
+            .when("/form/:formId/field", {
+                templateUrl: "views/forms/fields.view.html",
+                controller: "FieldController",
+                controllerAs: "model"
+            })
+            .when("/:userId/form/:formId/field", {
                 templateUrl: "views/forms/fields.view.html",
                 controller: "FieldController",
                 controllerAs: "model"
