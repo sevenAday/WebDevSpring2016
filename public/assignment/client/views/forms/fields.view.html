@@ -36,16 +36,17 @@
                                     </option>
                                 </select>
                             </div>
-                            <div ng-switch-when="CHECKBOX">
-                                <div ng-repeat="chbox in field.checkboxes">
-                                    <input type="checkbox" id="{{chbox.id}}" checked="{{chbox.checked}}">
-                                    <label for="{{chbox.id}}">{{chbox.label}}</label>
+                            <div ng-switch-when="CHECKBOXES">
+                                <div ng-repeat="option in field.options">
+                                    <input type="checkbox" value="{{option.value}}" checked="{{option.checked}}">
+                                    <label>{{option.label}}</label>
                                 </div>
                             </div>
-                            <div ng-switch-when="RADIO">
-                                <div ng-repeat="rad in field.radios">
-                                    <input type="radio" name="radFieldName" id="{{rad.id}}" checked="{{rad.checked}}">
-                                    <label for="{{rad.id}}">{{rad.label}}</label>
+                            <div ng-switch-when="RADIOS">
+                                <div ng-repeat="option in field.options">
+                                    <input type="radio" name="radioFieldName" value="{{option.value}}"
+                                           checked="{{option.checked}}">
+                                    <label>{{option.label}}</label>
                                 </div>
                             </div>
                         </div>
