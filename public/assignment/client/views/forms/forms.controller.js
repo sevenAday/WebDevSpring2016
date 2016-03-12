@@ -8,14 +8,19 @@
     function FormController($scope, $rootScope, $location, FormService) {
         var selectedFormIndex = -1;
         $scope.$location = $location;
-        if ($rootScope.user) {
-            FormService.findAllFormsForUser($rootScope.user._id)
-                .then(function (response) {
-                    $scope.forms = response.data;
-                });
-        } else {
-            $location.path("/login");
+
+        function init() {
+            if ($rootScope.user) {
+                FormService.findAllFormsForUser($rootScope.user._id)
+                    .then(function (response) {
+                        $scope.forms = response.data;
+                    });
+            } else {
+                $location.path("/login");
+            }
         }
+
+        init();
 
         $scope.addForm = addForm;
         $scope.deleteForm = deleteForm;
