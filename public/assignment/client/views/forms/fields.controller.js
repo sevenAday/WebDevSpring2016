@@ -12,9 +12,9 @@
         function init() {
             if ($rootScope.user) {
                 model.fields = [];
-                var formId = $routeParams.formId;
+                model.formId = $routeParams.formId;
                 var userId = $routeParams.userId;
-                FieldService.getFieldsForUserForm(userId, formId)
+                FieldService.getFieldsForUserForm(userId, model.formId)
                     .then(function (response) {
                         model.fields = response.data;
                     });
