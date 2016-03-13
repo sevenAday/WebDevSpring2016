@@ -66,31 +66,31 @@
                         <a href="#"><span class="glyphicon glyphicon-align-justify" aria-hidden="true"></span></a>
                     </div>
                 </div>
+            </div>
 
-                <hr/>
-                <div class="row">
-                    <div class="col-xs-5">
-                        <div class="form-group">
-                            <label for="addNewFieldDropdown" class="row-xs-2">Add New Field:</label>
-                            <span class="caret"></span>
-                            <div class="row-xs-10">
-                                <select id="addNewFieldDropdown" class="form-control" ng-model="model.fieldType">
-                                    <option value="singleLineText">Single Line Text</option>
-                                    <option value="date">Date</option>
-                                    <option value="dropDowm">Dropdown</option>
-                                    <option value="checkboxes">Checkboxes</option>
-                                    <option value="radioButtons">Radio Buttons</option>
-                                    <option value="multiLineText">Multi Line Text</option>
-                                </select>
-                            </div>
+            <hr/>
+            <div class="row">
+                <div class="col-xs-5">
+                    <div class="form-group">
+                        <label for="addNewFieldDropdown" class="row-xs-2">Add New Field:</label>
+                        <span class="caret"></span>
+                        <div class="row-xs-10">
+                            <select id="addNewFieldDropdown" class="form-control" ng-model="model.fieldType">
+                                <option value="singleLineText">Single Line Text</option>
+                                <option value="date">Date</option>
+                                <option value="dropDowm">Dropdown</option>
+                                <option value="checkboxes">Checkboxes</option>
+                                <option value="radioButtons">Radio Buttons</option>
+                                <option value="multiLineText">Multi Line Text</option>
+                            </select>
                         </div>
                     </div>
-                    <div class="col-xs-3"></div>
-                    <div class="col-xs-1">
-                        <a ng-click="model.addField(model.fieldType)">
-                            <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
-                        </a>
-                    </div>
+                </div>
+                <div class="col-xs-3"></div>
+                <div class="col-xs-1">
+                    <a ng-click="model.addField(model.fieldType)">
+                        <span class="glyphicon glyphicon-plus" aria-hidden="true"></span>
+                    </a>
                 </div>
             </div>
         </div>
