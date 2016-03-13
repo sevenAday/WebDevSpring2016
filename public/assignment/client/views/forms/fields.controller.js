@@ -25,7 +25,7 @@
 
         init();
 
-        $scope.$on("fieldsSorted",function(event, args){
+        $scope.$on("fieldsSorted", function (event, args) {
             model.fields.splice(args.y2, 0, model.fields.splice(args.y1, 1)[0]);
         });
 
