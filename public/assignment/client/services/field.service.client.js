@@ -10,6 +10,7 @@
         var service = {
             createFieldForForm: createFieldForForm,
             getFieldsForForm: getFieldsForForm,
+            getFieldsForUserForm: getFieldsForUserForm,
             getFieldForForm: getFieldForForm,
             deleteFieldFromForm: deleteFieldFromForm,
             updateField: updateField
@@ -22,6 +23,10 @@
 
         function getFieldsForForm(formId) {
             return $http.get("/api/assignment/form/" + formId + "/field");
+        }
+
+        function getFieldsForUserForm(userId, formId) {
+            return $http.get("/api/assignment/" + userId + "/form/" + formId + "/field");
         }
 
         function getFieldForForm(formId, fieldId) {

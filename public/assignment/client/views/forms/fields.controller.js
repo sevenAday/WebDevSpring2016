@@ -5,7 +5,7 @@
         .module("FormBuilderApp")
         .controller("FieldController", FieldController);
 
-    function FieldController($rootScope, $location, $routeParams, FieldService) {
+    function FieldController($scope, $rootScope, $location, $routeParams, FieldService) {
         var model = this;
         model.addField = addField;
 
@@ -14,12 +14,20 @@
                 model.fields = [];
                 var formId = $routeParams.formId;
                 var userId = $routeParams.userId;
+                FieldService.getFieldsForUserForm(userId, formId)
+                    .then(function (response) {
+                        model.fields = response.data;
+                    });
             } else {
                 $location.path("/login");
             }
         }
 
         init();
+
+        $scope.$on("fieldsSorted",function(event, args){
+            model.fields.splice(args.y2, 0, model.fields.splice(args.y1, 1)[0]);
+        });
 
         function addField(fieldType) {
             var fieldToAdd = null;

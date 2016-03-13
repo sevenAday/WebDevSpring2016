@@ -8,6 +8,7 @@ module.exports = function (uuid) {
         addFormWithUserId: addFormWithUserId,
         updateFormById: updateFormById,
         findFieldsByFormId: findFieldsByFormId,
+        findFieldsByUserIdAndFormId: findFieldsByUserIdAndFormId,
         findFieldByFormIdAndFieldId: findFieldByFormIdAndFieldId,
         deleteFieldByFormIdAndFieldId: deleteFieldByFormIdAndFieldId,
         addFieldByFormId: addFieldByFormId,
@@ -37,6 +38,15 @@ module.exports = function (uuid) {
     function findFormById(formId) {
         for (var f in mock) {
             if (mock[f]._id == formId) {
+                return mock[f];
+            }
+        }
+        return null;
+    }
+
+    function findFormByIdAndUserId(userId, formId) {
+        for (var f in mock) {
+            if (mock[f]._id == formId && mock[f].userId == userId) {
                 return mock[f];
             }
         }
@@ -76,6 +86,14 @@ module.exports = function (uuid) {
 
     function findFieldsByFormId(formId) {
         var foundForm = findFormById(formId);
+        if (foundForm) {
+            return foundForm.fields;
+        }
+        return null;
+    }
+
+    function findFieldsByUserIdAndFormId(userId, formId) {
+        var foundForm = findFormByIdAndUserId(userId, formId);
         if (foundForm) {
             return foundForm.fields;
         }

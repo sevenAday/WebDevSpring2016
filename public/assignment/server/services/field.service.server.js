@@ -1,5 +1,6 @@
 module.exports = function(app, formModel) {
     app.get("/api/assignment/form/:formId/field", findFieldsByFormId);
+    app.get("/api/assignment/:userId/form/:formId/field", findFieldsByUserIdAndFormId);
     app.get("/api/assignment/form/:formId/field/:fieldId", findFieldByFormIdAndFieldId);
     app.delete("/api/assignment/form/:formId/field/:fieldId", deleteFieldByFormIdAndFieldId);
     app.post("/api/assignment/form/:formId/field", addFieldByFormId);
@@ -8,6 +9,13 @@ module.exports = function(app, formModel) {
     function findFieldsByFormId(req, res) {
         var formId = req.params.formId;
         var fields = formModel.findFieldsByFormId(formId);
+        res.json(fields);
+    }
+
+    function findFieldsByUserIdAndFormId(req, res) {
+        var formId = req.params.formId;
+        var userId = req.params.userId;
+        var fields = formModel.findFieldsByUserIdAndFormId(userId, formId);
         res.json(fields);
     }
 
