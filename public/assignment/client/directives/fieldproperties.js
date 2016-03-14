@@ -30,17 +30,10 @@
                         scope.$parent[attrs.visible] = false;
                     });
                 });
-
-                $(window).resize(function () {
-                    $(element).dialog("option", "position");
-                });
             },
             restrict: "E",
             transclude: true,
             replace: true,
-            scope: {
-                "data": "="
-            },
             templateUrl: "directives/fieldproperties.html"
         };
     }

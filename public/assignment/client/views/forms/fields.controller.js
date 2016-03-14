@@ -7,7 +7,10 @@
 
     function FieldController($scope, $rootScope, $location, $routeParams, FieldService) {
         var model = this;
+        model.showProperties = false;
+
         model.addField = addField;
+        model.editField = editField;
 
         function init() {
             if ($rootScope.user) {
@@ -63,6 +66,25 @@
                     ]
                 };
             }
+        }
+
+        function editField(field) {
+            model.field = field;
+            if (model.field.type == "TEXT") {
+                model.field.propertiesTitle = "Single Line Text Field";
+            } else if (model.field.type == "TEXTAREA") {
+                model.field.propertiesTitle = "Multi Line Text Field";
+            } else if (model.field.type == "OPTIONS") {
+                model.field.propertiesTitle = "Dropdown Field";
+                model.field.stringifiedOptions = JSON.stringify(model.field.options);
+            } else if (model.field.type == "CHECKBOXES") {
+                model.field.propertiesTitle = "Checkboxes Field";
+                model.field.stringifiedOptions = JSON.stringify(model.field.options);
+            } else if (model.field.type == "RADIOS") {
+                model.field.propertiesTitle = "Radio Buttons Field";
+                model.field.stringifiedOptions = JSON.stringify(model.field.options);
+            }
+            model.showProperties = true;
         }
     }
 }());
