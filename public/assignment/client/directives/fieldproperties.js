@@ -11,23 +11,28 @@
             link: function (scope, element, attrs) {
                 scope.title = attrs.title;
 
-                scope.$watch(attrs.visible, function (value) {
-                    if (value == true)
+                scope.$watch(attrs.visible, function (toShow) {
+                    if (toShow == true) {
                         $(element).modal("show");
-                    else
+                    } else {
                         $(element).modal("hide");
+                    }
                 });
 
-                $(element).on("show.modal", function () {
+                $(element).on("showModal", function () {
                     scope.$apply(function () {
                         scope.$parent[attrs.visible] = true;
                     });
                 });
 
-                $(element).on("hide.modal", function () {
+                $(element).on("hideModal", function () {
                     scope.$apply(function () {
                         scope.$parent[attrs.visible] = false;
                     });
+                });
+
+                $(window).resize(function () {
+                    $(element).dialog("option", "position", {my: "center", at: "center", of: window});
                 });
             },
             restrict: "E",

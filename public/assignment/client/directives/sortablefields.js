@@ -8,19 +8,15 @@
     function sortableFields() {
         return {
             link: function (scope, element, attrs) {
-                element.sortable({
-                    revert: true
-                });
+                element.sortable();
                 element.disableSelection();
 
-                element.on("sortdeactivate", function (event, args) {
-                    var y1 = angular.element(args.item).scope().$index;
+                element.on("reordering", function (event, args) {
+                    var y1 = $(args.item).scope().$index;
                     var y2 = element.children().index(args.item);
-                    if (y2 >= 0) {
+                    if (y1 >= 0 && y2 >= 0) {
                         scope.$apply(function () {
-                            if (y1 >= 0) {
-                                scope.$emit('fieldsSorted', {y1: y1, y2: y2});
-                            }
+                            scope.$emit('fieldsReordering', {y1: y1, y2: y2});
                         })
                     }
                 });

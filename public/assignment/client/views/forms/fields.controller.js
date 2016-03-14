@@ -25,8 +25,9 @@
 
         init();
 
-        $scope.$on("fieldsSorted", function (event, args) {
-            model.fields.splice(args.y2, 0, model.fields.splice(args.y1, 1)[0]);
+        $scope.$on("fieldsReordering", function (event, args) {
+            var removedField = model.fields.splice(args.y1, 1);
+            model.fields.splice(args.y2, 0, removedField[0]);
         });
 
         function addField(fieldType) {
