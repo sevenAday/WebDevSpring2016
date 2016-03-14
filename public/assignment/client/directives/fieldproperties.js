@@ -32,7 +32,7 @@
                 });
 
                 $(window).resize(function () {
-                    $(element).dialog("option", "position", {my: "center", at: "center", of: window});
+                    $(element).dialog("option", "position");
                 });
             },
             restrict: "E",
