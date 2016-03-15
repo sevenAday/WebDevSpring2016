@@ -19,13 +19,13 @@
                     }
                 });
 
-                $(element).on("showModal", function () {
+                $(element).on("shown.bs.modal", function () {
                     scope.$apply(function () {
                         scope.$parent[attrs.visible] = true;
                     });
                 });
 
-                $(element).on("hideModal", function () {
+                $(element).on("hidden.bs.modal", function () {
                     scope.$apply(function () {
                         scope.$parent[attrs.visible] = false;
                     });

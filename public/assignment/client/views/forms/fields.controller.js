@@ -16,8 +16,8 @@
             if ($rootScope.user) {
                 model.fields = [];
                 model.formId = $routeParams.formId;
-                var userId = $routeParams.userId;
-                FieldService.getFieldsForUserForm(userId, model.formId)
+                model.userId = $routeParams.userId;
+                FieldService.getFieldsForUserForm(model.userId, model.formId)
                     .then(function (response) {
                         model.fields = response.data;
                     });

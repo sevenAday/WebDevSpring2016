@@ -20,10 +20,10 @@
                 FormService.findAllFormsForUser($rootScope.user._id)
                     .then(function (response) {
                         model.forms = response.data;
-                        var formId = $routeParams.formId;
-                        if (formId) {
+                        model.formId = $routeParams.formId;
+                        if (model.formId) {
                             for (var f in model.forms) {
-                                if (model.forms[f]._id == formId) {
+                                if (model.forms[f]._id == model.formId) {
                                     model.selectedFormIndex = f;
                                     model.formName = model.forms[model.selectedFormIndex].title;
                                     break;
