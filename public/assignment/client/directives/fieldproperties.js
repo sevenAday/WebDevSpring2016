@@ -7,12 +7,11 @@
 
     function fieldProperties() {
         return {
-            controller: "FieldController",
-            link: function postLink(scope, element, attrs) {
+            link: function (scope, element, attrs) {
                 scope.title = attrs.title;
 
                 scope.$watch(attrs.visible, function (toShow) {
-                    if (toShow == true) {
+                    if (toShow) {
                         $(element).modal("show");
                     } else {
                         $(element).modal("hide");
@@ -34,6 +33,7 @@
             restrict: "E",
             transclude: true,
             replace: true,
+            scope: true,
             templateUrl: "directives/fieldproperties.html"
         };
     }
