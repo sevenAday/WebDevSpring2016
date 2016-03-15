@@ -7,7 +7,7 @@
 
     function FieldController($scope, $rootScope, $location, $routeParams, FieldService) {
         var model = this;
-        model.showProperties = false;
+        $scope.showProperties = false;
 
         model.addField = addField;
         model.editField = editField;
@@ -84,7 +84,7 @@
                 model.field.propertiesTitle = "Radio Buttons Field";
                 model.field.stringifiedOptions = JSON.stringify(model.field.options);
             }
-            model.showProperties = true;
+            $scope.showProperties = !$scope.showProperties;
         }
     }
 }());
