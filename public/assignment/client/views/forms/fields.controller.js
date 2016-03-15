@@ -68,6 +68,14 @@
             }
         }
 
+        function getOptionString(options) {
+            var optionString = "";
+            for (var o in options) {
+                optionString += options[o].label + ":" + options[o].value + "\n";
+            }
+            return optionString;
+        }
+
         function editField(field) {
             model.field = field;
             if (model.field.type == "TEXT") {
@@ -76,15 +84,15 @@
                 model.field.propertiesTitle = "Multi Line Text Field";
             } else if (model.field.type == "OPTIONS") {
                 model.field.propertiesTitle = "Dropdown Field";
-                model.field.stringifiedOptions = JSON.stringify(model.field.options);
+                model.field.stringifiedOptions = getOptionString(model.field.options);
             } else if (model.field.type == "CHECKBOXES") {
                 model.field.propertiesTitle = "Checkboxes Field";
-                model.field.stringifiedOptions = JSON.stringify(model.field.options);
+                model.field.stringifiedOptions = getOptionString(model.field.options);
             } else if (model.field.type == "RADIOS") {
                 model.field.propertiesTitle = "Radio Buttons Field";
-                model.field.stringifiedOptions = JSON.stringify(model.field.options);
+                model.field.stringifiedOptions = getOptionString(model.field.options);
             }
-            $scope.showProperties = !$scope.showProperties;
+            $scope.showProperties = true;
         }
     }
 }());

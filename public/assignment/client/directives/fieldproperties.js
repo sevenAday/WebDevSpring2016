@@ -8,10 +8,10 @@
     function fieldProperties() {
         return {
             link: function (scope, element, attrs) {
-                scope.title = attrs.title;
 
                 scope.$watch(attrs.visible, function (toShow) {
                     if (toShow) {
+                        scope.title = attrs.title;
                         $(element).modal("show");
                     } else {
                         $(element).modal("hide");
