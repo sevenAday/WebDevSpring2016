@@ -8,7 +8,7 @@
     function fieldProperties() {
         return {
             controller: "FieldController",
-            link: function (scope, element, attrs) {
+            link: function postLink(scope, element, attrs) {
                 scope.title = attrs.title;
 
                 scope.$watch(attrs.visible, function (toShow) {
