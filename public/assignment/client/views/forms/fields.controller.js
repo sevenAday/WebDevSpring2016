@@ -49,8 +49,10 @@
             if (fieldType == "singleLineText") {
                 fieldToAdd = {"_id": null, "label": "New Text Field", "type": "TEXT", "placeholder": "New Field"};
             } else if (fieldType == "multiLineText") {
-                fieldToAdd = {"_id": null, "label": "New Multi Line Text Field", "type": "TEXTAREA",
-                    "placeholder": "New Field"};
+                fieldToAdd = {
+                    "_id": null, "label": "New Multi Line Text Field", "type": "TEXTAREA",
+                    "placeholder": "New Field"
+                };
             } else if (fieldType == "date") {
                 fieldToAdd = {"_id": null, "label": "New Date Field", "type": "DATE"};
             } else if (fieldType == "dropDowm") {
@@ -143,7 +145,10 @@
         }
 
         function deleteField(field) {
-
+            FieldService.deleteFieldFromForm(model.formId, field._id)
+                .then(function (response) {
+                    model.fields = response.data;
+                });
         }
     }
 }());

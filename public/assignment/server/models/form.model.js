@@ -119,11 +119,10 @@ module.exports = function (uuid) {
             for (var f in foundFields) {
                 if (foundFields[f]._id == fieldId) {
                     foundFields.splice(f, 1);
-                    return true;
                 }
             }
         }
-        return false;
+        return foundFields;
     }
 
     function addFieldByFormId(formId, field) {

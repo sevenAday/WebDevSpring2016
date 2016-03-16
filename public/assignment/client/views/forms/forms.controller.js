@@ -39,7 +39,7 @@
         init();
 
         function addForm() {
-            var newForm = {"title": model.formName};
+            var newForm = {"title": model.formName, "fields": []};
             if (model.formName && $rootScope.user) {
                 FormService.createFormForUser($rootScope.user._id, newForm)
                     .then(function (response) {
