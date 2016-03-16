@@ -101,6 +101,10 @@
             <div class="form-group" ng-switch on="model.field.type">
                 <label>Label</label>
                 <input type="text" class="form-control" ng-model="model.field.label">
+                <div ng-switch-when="EMAIL">
+                    <label>Placeholder</label>
+                    <input type="text" class="form-control" ng-model="model.field.placeholder">
+                </div>
                 <div ng-switch-when="TEXT">
                     <label>Placeholder</label>
                     <input type="text" class="form-control" ng-model="model.field.placeholder">
@@ -128,8 +132,8 @@
                     </textarea>
                 </div>
             </div>
-            <button type="submit" class="btn btn-default">Cancel</button>
-            <button type="submit" class="btn btn-default">OK</button>
+            <button ng-click="model.cancelEditing()" type="submit" class="btn btn-default">Cancel</button>
+            <button ng-click="model.saveField()" type="submit" class="btn btn-default">OK</button>
         </form>
     </field-properties>
 </div>

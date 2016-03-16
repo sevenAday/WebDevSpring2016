@@ -11,16 +11,25 @@
 
         model.addField = addField;
         model.editField = editField;
+        model.saveField = saveField;
+        model.cancelEditing = cancelEditing;
 
         function init() {
             if ($rootScope.user) {
                 model.fields = [];
                 model.formId = $routeParams.formId;
                 model.userId = $routeParams.userId;
-                FieldService.getFieldsForUserForm(model.userId, model.formId)
-                    .then(function (response) {
-                        model.fields = response.data;
-                    });
+                if (model.userId) {
+                    FieldService.getFieldsForUserForm(model.userId, model.formId)
+                        .then(function (response) {
+                            model.fields = response.data;
+                        });
+                } else {
+                    FieldService.getFieldsForForm(model.formId)
+                        .then(function (response) {
+                            model.fields = response.data;
+                        });
+                }
             } else {
                 $location.path("/login");
             }
@@ -77,8 +86,8 @@
         }
 
         function editField(field) {
-            model.field = field;
-            if (model.field.type == "TEXT") {
+            model.field = JSON.parse(JSON.stringify(field));
+            if (model.field.type == "TEXT" || model.field.type == "EMAIL") {
                 model.field.propertiesTitle = "Single Line Text Field";
             } else if (model.field.type == "TEXTAREA") {
                 model.field.propertiesTitle = "Multi Line Text Field";
@@ -93,6 +102,31 @@
                 model.field.stringifiedOptions = getOptionString(model.field.options);
             }
             $scope.showProperties = true;
+        }
+
+        function cancelEditing() {
+            $scope.showProperties = false;
+        }
+
+        function getOptionsFromString(optionsString) {
+            var optionPairsString = optionsString.split("\n");
+            var options = [];
+            for (var ops in optionPairsString) {
+                var optionPairs = optionPairsString[ops].split(":");
+                options.push({"label": optionPairs[0], "value": optionPairs[1]});
+            }
+            return options;
+        }
+
+        function saveField() {
+            if (model.field.type == "OPTIONS" || model.field.type == "CHECKBOXES" || model.field.type == "RADIOS") {
+                model.field.options = getOptionsFromString(model.field.stringifiedOptions);
+            }
+            $scope.showProperties = false;
+            FieldService.updateField(model.formId, model.field._id, model.field)
+                .then(function (response) {
+                    model.fields = response.data;
+                });
         }
     }
 }());

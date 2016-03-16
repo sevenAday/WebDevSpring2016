@@ -142,10 +142,10 @@ module.exports = function (uuid) {
                     foundFields[f].label = field.label;
                     foundFields[f].type = field.type;
                     foundFields[f].placeholder = field.placeholder;
-                    return true;
+                    foundFields[f].options = field.options;
                 }
             }
         }
-        return false;
+        return foundFields;
     }
 };
