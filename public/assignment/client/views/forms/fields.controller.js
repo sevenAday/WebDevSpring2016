@@ -10,6 +10,7 @@
         $scope.showProperties = false;
 
         model.addField = addField;
+        model.deleteField = deleteField;
         model.editField = editField;
         model.saveField = saveField;
         model.cancelEditing = cancelEditing;
@@ -40,17 +41,19 @@
         $scope.$on("fieldsReordering", function (event, args) {
             var removedField = model.fields.splice(args.y1, 1);
             model.fields.splice(args.y2, 0, removedField[0]);
+            FieldService.updateFields(model.formId, model.fields);
         });
 
         function addField(fieldType) {
             var fieldToAdd = null;
-            if (fieldType.value == "singleLineText") {
+            if (fieldType == "singleLineText") {
                 fieldToAdd = {"_id": null, "label": "New Text Field", "type": "TEXT", "placeholder": "New Field"};
-            } else if (fieldType.value == "multiLineText") {
-                fieldToAdd = {"_id": null, "label": "New Text Field", "type": "TEXTAREA", "placeholder": "New Field"};
-            } else if (fieldType.value == "date") {
+            } else if (fieldType == "multiLineText") {
+                fieldToAdd = {"_id": null, "label": "New Multi Line Text Field", "type": "TEXTAREA",
+                    "placeholder": "New Field"};
+            } else if (fieldType == "date") {
                 fieldToAdd = {"_id": null, "label": "New Date Field", "type": "DATE"};
-            } else if (fieldType.value == "dropDowm") {
+            } else if (fieldType == "dropDowm") {
                 fieldToAdd = {
                     "_id": null, "label": "New Dropdown", "type": "OPTIONS", "options": [
                         {"label": "Option 1", "value": "OPTION_1"},
@@ -58,7 +61,7 @@
                         {"label": "Option 3", "value": "OPTION_3"}
                     ]
                 };
-            } else if (fieldType.value == "checkboxes") {
+            } else if (fieldType == "checkboxes") {
                 fieldToAdd = {
                     "_id": null, "label": "New Checkboxes", "type": "CHECKBOXES", "options": [
                         {"label": "Option A", "value": "OPTION_A"},
@@ -66,7 +69,7 @@
                         {"label": "Option C", "value": "OPTION_C"}
                     ]
                 };
-            } else if (fieldType.value == "radioButtons") {
+            } else if (fieldType == "radioButtons") {
                 fieldToAdd = {
                     "_id": null, "label": "New Radio Buttons", "type": "RADIOS", "options": [
                         {"label": "Option X", "value": "OPTION_X"},
@@ -75,12 +78,20 @@
                     ]
                 };
             }
+            if (fieldToAdd) {
+                FieldService.createFieldForForm(model.formId, fieldToAdd)
+                    .then(function (response) {
+                        model.fields.push(response.data);
+                    });
+            }
         }
 
         function getOptionString(options) {
             var optionString = "";
-            for (var o in options) {
-                optionString += options[o].label + ":" + options[o].value + "\n";
+            if (options) {
+                for (var o in options) {
+                    optionString += options[o].label + ":" + options[o].value + "\n";
+                }
             }
             return optionString;
         }
@@ -113,7 +124,9 @@
             var options = [];
             for (var ops in optionPairsString) {
                 var optionPairs = optionPairsString[ops].split(":");
-                options.push({"label": optionPairs[0], "value": optionPairs[1]});
+                if (optionPairs[0]) {
+                    options.push({"label": optionPairs[0], "value": optionPairs[1]});
+                }
             }
             return options;
         }
@@ -127,6 +140,10 @@
                 .then(function (response) {
                     model.fields = response.data;
                 });
+        }
+
+        function deleteField(field) {
+
         }
     }
 }());

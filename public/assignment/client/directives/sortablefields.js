@@ -11,12 +11,12 @@
                 element.sortable();
                 element.disableSelection();
 
-                element.on("reordering", function (event, args) {
+                element.on("sortdeactivate", function (event, args) {
                     var y1 = $(args.item).scope().$index;
                     var y2 = element.children().index(args.item);
                     if (y1 >= 0 && y2 >= 0) {
                         scope.$apply(function () {
-                            scope.$emit('fieldsReordering', {y1: y1, y2: y2});
+                            scope.$emit("fieldsReordering", {y1: y1, y2: y2});
                         })
                     }
                 });

@@ -12,7 +12,8 @@ module.exports = function (uuid) {
         findFieldByFormIdAndFieldId: findFieldByFormIdAndFieldId,
         deleteFieldByFormIdAndFieldId: deleteFieldByFormIdAndFieldId,
         addFieldByFormId: addFieldByFormId,
-        updateFieldByFormIdAndFieldId: updateFieldByFormIdAndFieldId
+        updateFieldByFormIdAndFieldId: updateFieldByFormIdAndFieldId,
+        updateFieldsForForm: updateFieldsForForm
     };
     return api;
 
@@ -147,5 +148,12 @@ module.exports = function (uuid) {
             }
         }
         return foundFields;
+    }
+
+    function updateFieldsForForm(formId, fields) {
+        var foundForm = findFormById(formId);
+        if (foundForm) {
+            foundForm.fields = fields;
+        }
     }
 };
