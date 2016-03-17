@@ -5,71 +5,23 @@
         .module("DocumentCallaborationApp")
         .factory("UserService", UserService);
 
-    function UserService() {
-        var users = [
-            {"_id": 123,
-                "firstName": "Alice",
-                "lastName": "Wonderland",
-                "username": "alice",
-                "password": "alice",
-                "email": "aw@al.net",
-                "roles": ["business analyst"],
-                "commentedOn": [225, 801]},
-            {"_id": 234,
-                "firstName": "Bob",
-                "lastName": "Hope",
-                "username": "bob",
-                "password": "bob",
-                "email": "bh@bo.org",
-                "roles": ["admin"],
-                "commentedOn": [603, 702]},
-            {"_id": 345,
-                "firstName": "Charlie",
-                "lastName": "Brown",
-                "username": "charlie",
-                "password": "charlie",
-                "email": "cb@cc.au",
-                "roles": ["trainer"],
-                "commentedOn": [702, 801]},
-            {"_id": 456,
-                "firstName": "Dan",
-                "lastName": "Craig",
-                "username": "dan",
-                "password": "dan",
-                "email": "dc@dan.com",
-                "roles": ["developer", "admin"],
-                "commentedOn": [702]},
-            {"_id": 567,
-                "firstName": "Edward",
-                "lastName": "Norton",
-                "username": "ed",
-                "password": "ed",
-                "email": "en@ed.edu",
-                "roles": ["developer"],
-                "commentedOn": []}
-        ];
+    function UserService($http, $rootScope) {
 
         var service = {
-            findUserByUsernameAndPassword: findUserByUsernameAndPassword,
+            findUserByCredentials: findUserByCredentials,
             findAllUsers: findAllUsers,
             createUser: createUser,
             deleteUserById: deleteUserById,
             updateUser: updateUser,
             findUserById: findUserById,
             addCommentedOnByUserId: addCommentedOnByUserId,
-            removeCommentedOnIdByUserId: removeCommentedOnIdByUserId
+            removeCommentedOnIdByUserId: removeCommentedOnIdByUserId,
+            setCurrentUser: setCurrentUser
         };
         return service;
 
-        function findUserByUsernameAndPassword(username, password, callback) {
-            var foundUser = null;
-            for (var idx = 0; idx < users.length; idx++) {
-                if (users[idx].username == username && users[idx].password == password) {
-                    foundUser = users[idx];
-                    break;
-                }
-            }
-            return callback(foundUser);
+        function findUserByCredentials(username, password) {
+            return $http.get("/api/project/user?username=" + username + "&password=" + password);
         }
 
         function findAllUsers(callback) {
@@ -164,6 +116,10 @@
                     }
                 }
             };
+        }
+
+        function setCurrentUser(user) {
+            $rootScope.user = user;
         }
     }
 }());
