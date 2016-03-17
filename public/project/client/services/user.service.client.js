@@ -16,7 +16,9 @@
             findUserById: findUserById,
             addCommentedOnByUserId: addCommentedOnByUserId,
             removeCommentedOnIdByUserId: removeCommentedOnIdByUserId,
-            setCurrentUser: setCurrentUser
+            setCurrentUser: setCurrentUser,
+            getCurrentUser: getCurrentUser,
+            logout: logout
         };
         return service;
 
@@ -24,8 +26,8 @@
             return $http.get("/api/project/user?username=" + username + "&password=" + password);
         }
 
-        function findAllUsers(callback) {
-            return callback(users);
+        function findAllUsers() {
+            return $http.get("/api/project/user");
         }
 
         function createUser(user, callback) {
@@ -120,6 +122,14 @@
 
         function setCurrentUser(user) {
             $rootScope.user = user;
+        }
+
+        function logout() {
+            return $http.post("/api/project/logout");
+        }
+
+        function getCurrentUser() {
+            return $http.get("/api/project/loggedin");
         }
     }
 }());

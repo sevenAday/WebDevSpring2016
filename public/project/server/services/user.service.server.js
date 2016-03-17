@@ -1,6 +1,8 @@
 module.exports = function (app, userModel) {
     app.post("/api/project/user", createUser);
     app.get("/api/project/user", findUser);
+    app.get("/api/project/loggedin", loggedIn);
+    app.post("/api/project/logout", logOut);
     app.get("/api/project/user/:id", findUserById);
     app.put("/api/project/user/:id", updateUserById);
     app.delete("/api/project/user/:id", deleteUserById);
@@ -17,6 +19,7 @@ module.exports = function (app, userModel) {
         if (username && password) {
             var credentials = {"username": username, "password": password};
             var user = userModel.findUserByCredentials(credentials);
+            req.session.user = user;
             res.json(user);
         } else if (username) {
             var user = userModel.findUserByUsername(username);
@@ -44,5 +47,14 @@ module.exports = function (app, userModel) {
         var userId = req.params.id;
         var users = userModel.deleteUserById(userId);
         res.json(users);
+    }
+
+    function loggedIn(req, res) {
+        res.json(req.session.user);
+    }
+
+    function logOut(req, res) {
+        req.session.destroy();
+        res.send(200);
     }
 };
