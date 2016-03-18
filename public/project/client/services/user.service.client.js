@@ -38,34 +38,8 @@
             return $http.delete("/api/project/user/" + userId);
         }
 
-        function updateUser(userId, user, callback) {
-            var foundUser = null;
-            for (var idx = 0; idx < users.length; idx++) {
-                if (users[idx]._id == userId) {
-                    foundUser = users[idx];
-                    break;
-                }
-            }
-            if (!!foundUser) {
-                if (user.firstName) {
-                    foundUser.firstName = user.firstName;
-                }
-                if (user.lastName) {
-                    foundUser.lastName = user.lastName;
-                }
-                foundUser.username = user.username;
-                foundUser.password = user.password;
-                if (user.email) {
-                    foundUser.email = user.email;
-                }
-                if (user.roles) {
-                    foundUser.roles = user.roles;
-                }
-                if (user.comentedOn) {
-                    foundUser.comentedOn = user.comentedOn;
-                }
-            }
-            return callback(foundUser);
+        function updateUser(userId, user) {
+            return $http.put("/api/project/user/" + userId, user);
         }
 
         function findUserById(userId, callback) {

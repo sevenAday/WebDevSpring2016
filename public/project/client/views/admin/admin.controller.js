@@ -100,8 +100,28 @@
             model.role = model.users[selectedUserIndex].roles;
         }
 
-        function updateUser(userId, user) {
-            return $http.put("/api/project/user/" + userId, user);
+        function updateUser() {
+            if (model.username && model.password && model.role) {
+                var newUser = {
+                    "username": model.username,
+                    "password": model.password,
+                    "roles": model.role.replace(/\s/g, "").split("|")
+                };
+                if (selectedUserIndex >= 0) {
+                    UserService.updateUser(model.users[selectedUserIndex]._id, newUser)
+                        .then(function (response) {
+                            var user = response.data;
+                            model.users[selectedUserIndex]._id = user._id;
+                            model.users[selectedUserIndex].username = user.username;
+                            model.users[selectedUserIndex].password = user.password;
+                            model.users[selectedUserIndex].roles = model.role;
+                            model.username = "";
+                            model.password = "";
+                            model.role = "";
+                            selectedUserIndex = -1;
+                        });
+                }
+            }
         }
 
         function postAlertMessage() {
