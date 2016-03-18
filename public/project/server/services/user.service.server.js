@@ -9,8 +9,9 @@ module.exports = function (app, userModel) {
 
     function createUser(req, res) {
         var user = req.body;
-        var users = userModel.createUser(user);
-        res.json(users);
+        user = userModel.createUser(user);
+        req.session.user = user;
+        res.json(user);
     }
 
     function findUser(req, res) {

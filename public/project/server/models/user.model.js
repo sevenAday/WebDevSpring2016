@@ -32,7 +32,7 @@ module.exports = function (uuid) {
     function createUser(user) {
         user._id = uuid.v4();
         mock.push(user);
-        return mock;
+        return user;
     }
 
     function findUserByCredentials(credentials) {

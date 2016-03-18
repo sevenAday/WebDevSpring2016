@@ -5,7 +5,7 @@
         .module("DocumentCallaborationApp")
         .controller("HeaderController", HeaderController);
 
-    function HeaderController($scope, $rootScope, $location) {
+    function HeaderController($scope, $rootScope, $location, UserService) {
         $scope.$location = $location;
 
         $scope.createDocument = createDocument;
@@ -20,11 +20,16 @@
         }
 
         function logout() {
-            delete $rootScope.document;
-            delete $rootScope.isAdmin;
-            delete $rootScope.searching;
-            delete $rootScope.user;
-            $location.url("/home");
+            UserService.logout()
+                .then(function (response) {
+                    if (response.status == 200) {
+                        delete $rootScope.document;
+                        delete $rootScope.isAdmin;
+                        delete $rootScope.searching;
+                        delete $rootScope.user;
+                        $location.url("/home");
+                    }
+                });
         }
 
         function searchForDocuments() {

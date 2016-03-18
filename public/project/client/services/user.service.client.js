@@ -30,19 +30,8 @@
             return $http.get("/api/project/user");
         }
 
-        function createUser(user, callback) {
-            var newUser = {
-                "_id": (new Date()).getTime(),
-                "firstName": user.firstName,
-                "lastName": user.lastName,
-                "username": user.username,
-                "password": user.password,
-                "email": user.email,
-                "roles": user.roles,
-                "commentedOn": user.commentedOn
-            };
-            users.push(newUser);
-            return callback(newUser);
+        function createUser(user) {
+            return $http.post("/api/project/user", user);
         }
 
         function deleteUserById(userId, callback) {

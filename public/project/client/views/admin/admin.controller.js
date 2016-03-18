@@ -5,79 +5,86 @@
         .module("DocumentCallaborationApp")
         .controller("AdminController", AdminController);
 
-    function AdminController($scope, $rootScope, $location, UserService, DocumentService, CommentService) {
-        $scope.$location = $location;
+    function AdminController($rootScope, $location, UserService, DocumentService, CommentService) {
+        var model = this;
         var selectedUserIndex = -1;
-        $scope.alertMessage = $rootScope.alertMessageToAll;
-        $scope.numberOfRecentPages = $rootScope.numberOfPages;
-        $scope.numberOfRecentActivities = $rootScope.numberOfActivities;
-        $scope.showPostPopover = false;
-        $scope.postPopover = {
-            hint: 'Post'
-        };
-        $scope.showRemovePopover = false;
-        $scope.removePopover = {
-            hint: 'Remove'
-        };
-        if ($rootScope.user && $rootScope.isAdmin) {
-            UserService.findAllUsers(function (users) {
-                $scope.users = [];
-                for (var idx = 0; idx < users.length; idx++) {
-                    var roles = "";
-                    if (users[idx].roles) {
-                        roles = users[idx].roles.join(" | ");
-                    }
-                    $scope.users[idx] = {
-                        "_id": users[idx]._id,
-                        "username": users[idx].username,
-                        "password": users[idx].password,
-                        "roles": roles
-                    };
-                }
-            });
-        } else {
-            $location.path("/login");
+
+        model.addUser = addUser;
+        model.deleteUser = deleteUser;
+        model.selectUser = selectUser;
+        model.updateUser = updateUser;
+        model.postAlertMessage = postAlertMessage;
+        model.removeAlertMessage = removeAlertMessage;
+        model.updateNumberOfPages = updateNumberOfPages;
+        model.updateNumberOfActivities = updateNumberOfActivities;
+
+        function init() {
+            model.alertMessage = $rootScope.alertMessageToAll;
+            model.numberOfRecentPages = $rootScope.numberOfPages;
+            model.numberOfRecentActivities = $rootScope.numberOfActivities;
+            model.showPostPopover = false;
+            model.postPopover = {
+                hint: 'Post'
+            };
+            model.showRemovePopover = false;
+            model.removePopover = {
+                hint: 'Remove'
+            };
+            if ($rootScope.user && $rootScope.isAdmin) {
+                UserService.findAllUsers()
+                    .then(function (users) {
+                        model.users = [];
+                        for (var u in users) {
+                            var roles = "";
+                            if (users[u].roles) {
+                                roles = users[u].roles.join(" | ");
+                            }
+                            model.users[u] = {
+                                "_id": users[u]._id,
+                                "username": users[u].username,
+                                "password": users[u].password,
+                                "roles": roles
+                            };
+                        }
+                    });
+            } else {
+                $location.path("/login");
+            }
         }
 
-        $scope.addUser = addUser;
-        $scope.deleteUser = deleteUser;
-        $scope.selectUser = selectUser;
-        $scope.updateUser = updateUser;
-        $scope.postAlertMessage = postAlertMessage;
-        $scope.removeAlertMessage = removeAlertMessage;
-        $scope.updateNumberOfPages = updateNumberOfPages;
-        $scope.updateNumberOfActivities = updateNumberOfActivities;
+        init();
 
         function addUser() {
-            if ($scope.username && $scope.password && $scope.role) {
+            if (model.username && model.password && model.role) {
                 var newUser = {
-                    "username": $scope.username,
-                    "password": $scope.password,
-                    "roles": $scope.role.replace(/\s/g, "").split("|"),
+                    "username": model.username,
+                    "password": model.password,
+                    "roles": model.role.replace(/\s/g, "").split("|"),
                     "commentedOn": []
                 };
-                if ($scope.username && $scope.password && $scope.role && $rootScope.user && $rootScope.isAdmin) {
-                    UserService.createUser(newUser, function (user) {
-                        $scope.users.push({
-                            "_id": user._id,
-                            "username": user.username,
-                            "password": user.password,
-                            "roles": $scope.role
+                if (model.username && model.password && model.role && $rootScope.user && $rootScope.isAdmin) {
+                    UserService.createUser(newUser)
+                        .then(function (user) {
+                            model.users.push({
+                                "_id": user._id,
+                                "username": user.username,
+                                "password": user.password,
+                                "roles": model.role
+                            });
+                            model.username = "";
+                            model.password = "";
+                            model.role = "";
                         });
-                        $scope.username = "";
-                        $scope.password = "";
-                        $scope.role = "";
-                    });
                 }
             }
         }
 
         function deleteUser($index) {
-            DocumentService.removeAllLikeUserIds($scope.users[$index]._id, function (documents) {
-                CommentService.removeAllUserComments($scope.users[$index]._id, function (commentIds) {
+            DocumentService.removeAllLikeUserIds(model.users[$index]._id, function (documents) {
+                CommentService.removeAllUserComments(model.users[$index]._id, function (commentIds) {
                     DocumentService.removeAllCommentIds(commentIds);
-                    UserService.deleteUserById($scope.users[$index]._id, function (users) {
-                        $scope.users.splice($index, 1);
+                    UserService.deleteUserById(model.users[$index]._id, function (users) {
+                        model.users.splice($index, 1);
                     });
                 });
             });
@@ -85,25 +92,27 @@
 
         function selectUser($index) {
             selectedUserIndex = $index;
-            $scope.username = $scope.users[selectedUserIndex].username;
-            $scope.password = $scope.users[selectedUserIndex].password;
-            $scope.role = $scope.users[selectedUserIndex].roles;
+            model.username = model.users[selectedUserIndex].username;
+            model.password = model.users[selectedUserIndex].password;
+            model.role = model.users[selectedUserIndex].roles;
         }
 
         function updateUser() {
-            if ($scope.username && $scope.password && $scope.role) {
-                var newUser = {"username": $scope.username,
-                    "password": $scope.password,
-                    "roles": $scope.role.replace(/\s/g, "").split("|")};
+            if (model.username && model.password && model.role) {
+                var newUser = {
+                    "username": model.username,
+                    "password": model.password,
+                    "roles": model.role.replace(/\s/g, "").split("|")
+                };
                 if (selectedUserIndex >= 0) {
-                    UserService.updateUser($scope.users[selectedUserIndex]._id, newUser, function (user) {
-                        $scope.users[selectedUserIndex]._id = user._id;
-                        $scope.users[selectedUserIndex].username = user.username;
-                        $scope.users[selectedUserIndex].password = user.password;
-                        $scope.users[selectedUserIndex].roles = $scope.role;
-                        $scope.username = "";
-                        $scope.password = "";
-                        $scope.role = "";
+                    UserService.updateUser(model.users[selectedUserIndex]._id, newUser, function (user) {
+                        model.users[selectedUserIndex]._id = user._id;
+                        model.users[selectedUserIndex].username = user.username;
+                        model.users[selectedUserIndex].password = user.password;
+                        model.users[selectedUserIndex].roles = model.role;
+                        model.username = "";
+                        model.password = "";
+                        model.role = "";
                     });
                     selectedUserIndex = -1;
                 }
@@ -112,20 +121,20 @@
 
         function postAlertMessage() {
             $rootScope.showAlertMessage = true;
-            $rootScope.alertMessageToAll = $scope.alertMessage;
+            $rootScope.alertMessageToAll = model.alertMessage;
         }
 
         function removeAlertMessage() {
             $rootScope.showAlertMessage = false;
-            $scope.alertMessage = "";
+            model.alertMessage = "";
         }
 
         function updateNumberOfPages() {
-            $rootScope.numberOfPages = $scope.numberOfRecentPages;
+            $rootScope.numberOfPages = model.numberOfRecentPages;
         }
 
         function updateNumberOfActivities() {
-            $rootScope.numberOfActivities = $scope.numberOfRecentActivities;
+            $rootScope.numberOfActivities = model.numberOfRecentActivities;
         }
     }
 }());
