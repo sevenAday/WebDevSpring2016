@@ -30,16 +30,18 @@
                 var dd = $rootScope.document.lastModified;
                 var dispDate = (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear();
                 $rootScope.editable = false;
-                UserService.findUserById($rootScope.document.userId, function (user) {
-                    if (!!user) {
-                        $rootScope.document.user = user.firstName + " " + user.lastName;
-                    }
-                });
-                $rootScope.document.lastModifiedDate = dispDate;
-                $scope.title = $rootScope.document.title;
-                $scope.content = $rootScope.document.content;
-                getLikeInformation();
-                getComments();
+                UserService.findUserById($rootScope.document.userId)
+                    .then(function (response) {
+                        var user = response.data;
+                        if (!!user) {
+                            $rootScope.document.user = user.firstName + " " + user.lastName;
+                        }
+                        $rootScope.document.lastModifiedDate = dispDate;
+                        $scope.title = $rootScope.document.title;
+                        $scope.content = $rootScope.document.content;
+                        getLikeInformation();
+                        getComments();
+                    });
             }
         } else {
             $location.path("/home");
@@ -136,7 +138,7 @@
             $scope.definition = "No definitions found";
             if (response) {
                 if (response.tuc) {
-                    if (response.tuc.length > 0){
+                    if (response.tuc.length > 0) {
                         $scope.definition = response.tuc[0].meanings[0];
                     }
                 }

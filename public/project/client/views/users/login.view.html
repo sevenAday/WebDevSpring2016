@@ -3,14 +3,14 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1>Login</h1>
             <br/>
-            <form name="signin" class="form-horizontal">
+            <form name="model.signin" class="form-horizontal">
                 <div class="form-group">
                     <label for="inputUsername" class="col-sm-2">Username:</label>
                     <div class="col-sm-10">
-                        <input name="username" required ng-model="username" type="text" class="form-control"
+                        <input name="username" required ng-model="model.username" type="text" class="form-control"
                                id="inputUsername" placeholder="Username">
-                        <div ng-messages="signin.username.$error" role="error">
-                            <div ng-if="showError" class="text-danger">
+                        <div ng-messages="model.signin.username.$error" role="error">
+                            <div ng-if="model.showError" class="text-danger">
                                 <div ng-message="required">Please enter your username.</div>
                             </div>
                         </div>
@@ -19,10 +19,10 @@
                 <div class="form-group">
                     <label for="inputPassword" class="col-sm-2">Password:</label>
                     <div class="col-sm-10">
-                        <input name="password" required ng-model="password" type="password" class="form-control"
+                        <input name="password" required ng-model="model.password" type="password" class="form-control"
                                id="inputPassword" placeholder="Password">
-                        <div ng-messages="signin.password.$error" role="alert">
-                            <div ng-if="showError" class="text-danger">
+                        <div ng-messages="model.signin.password.$error" role="alert">
+                            <div ng-if="model.showError" class="text-danger">
                                 <div ng-message="required">Please enter your password.</div>
                                 <div ng-message="invalidLogin">Invalid username or password.</div>
                             </div>
@@ -33,7 +33,7 @@
             <form class="form-horizontal">
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button ng-click="login()" type="submit" class="btn btn-block"><b>Login</b></button>
+                        <button ng-click="model.login()" type="submit" class="btn btn-block"><b>Login</b></button>
                     </div>
                 </div>
             </form>

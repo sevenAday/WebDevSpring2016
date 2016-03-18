@@ -42,15 +42,8 @@
             return $http.put("/api/project/user/" + userId, user);
         }
 
-        function findUserById(userId, callback) {
-            var foundUser = null;
-            for (var idx = 0; idx < users.length; idx++) {
-                if (users[idx]._id == userId) {
-                    foundUser = users[idx];
-                    break;
-                }
-            }
-            return callback(foundUser);
+        function findUserById(userId) {
+            return $http.get("/api/project/user/" + userId);
         }
 
         function addCommentedOnByUserId(userId, documentId, callback) {
