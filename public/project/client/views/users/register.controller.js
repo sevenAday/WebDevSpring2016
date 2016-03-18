@@ -30,8 +30,8 @@
                 "commentedOn": []
             };
             UserService.createUser(newUser)
-                .then(function (user) {
-                    UserService.setCurrentUser(user);
+                .then(function (response) {
+                    UserService.setCurrentUser(response.data);
                     $location.path("/profile");
                 });
         }

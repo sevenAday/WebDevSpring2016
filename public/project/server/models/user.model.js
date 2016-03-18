@@ -60,15 +60,17 @@ module.exports = function (uuid) {
             }
             foundUser.username = user.username;
             foundUser.password = user.password;
-            foundUser.email = user.email;
+            if (user.email) {
+                foundUser.email = user.email;
+            }
             if (user.roles) {
                 foundUser.roles = user.roles;
             }
-            if (user.commentedOn) {
-                foundUser.commentedOn = user.commentedOn;
+            if (user.comentedOn) {
+                foundUser.comentedOn = user.comentedOn;
             }
         }
-        return mock;
+        return foundUser;
     }
 
     function deleteUserById(userId) {

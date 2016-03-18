@@ -32,19 +32,20 @@
             };
             if ($rootScope.user && $rootScope.isAdmin) {
                 UserService.findAllUsers()
-                    .then(function (users) {
+                    .then(function (response) {
+                        var users = response.data;
                         model.users = [];
                         for (var u in users) {
                             var roles = "";
                             if (users[u].roles) {
                                 roles = users[u].roles.join(" | ");
                             }
-                            model.users[u] = {
+                            model.users.push({
                                 "_id": users[u]._id,
                                 "username": users[u].username,
                                 "password": users[u].password,
                                 "roles": roles
-                            };
+                            });
                         }
                     });
             } else {
@@ -64,7 +65,8 @@
                 };
                 if (model.username && model.password && model.role && $rootScope.user && $rootScope.isAdmin) {
                     UserService.createUser(newUser)
-                        .then(function (user) {
+                        .then(function (response) {
+                            var user = response.data;
                             model.users.push({
                                 "_id": user._id,
                                 "username": user.username,
@@ -83,9 +85,10 @@
             DocumentService.removeAllLikeUserIds(model.users[$index]._id, function (documents) {
                 CommentService.removeAllUserComments(model.users[$index]._id, function (commentIds) {
                     DocumentService.removeAllCommentIds(commentIds);
-                    UserService.deleteUserById(model.users[$index]._id, function (users) {
-                        model.users.splice($index, 1);
-                    });
+                    UserService.deleteUserById(model.users[$index]._id)
+                        .then(function (response) {
+                            model.users.splice($index, 1);
+                        });
                 });
             });
         }
@@ -97,26 +100,8 @@
             model.role = model.users[selectedUserIndex].roles;
         }
 
-        function updateUser() {
-            if (model.username && model.password && model.role) {
-                var newUser = {
-                    "username": model.username,
-                    "password": model.password,
-                    "roles": model.role.replace(/\s/g, "").split("|")
-                };
-                if (selectedUserIndex >= 0) {
-                    UserService.updateUser(model.users[selectedUserIndex]._id, newUser, function (user) {
-                        model.users[selectedUserIndex]._id = user._id;
-                        model.users[selectedUserIndex].username = user.username;
-                        model.users[selectedUserIndex].password = user.password;
-                        model.users[selectedUserIndex].roles = model.role;
-                        model.username = "";
-                        model.password = "";
-                        model.role = "";
-                    });
-                    selectedUserIndex = -1;
-                }
-            }
+        function updateUser(userId, user) {
+            return $http.put("/api/project/user/" + userId, user);
         }
 
         function postAlertMessage() {

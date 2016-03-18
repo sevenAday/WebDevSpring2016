@@ -34,15 +34,8 @@
             return $http.post("/api/project/user", user);
         }
 
-        function deleteUserById(userId, callback) {
-            var idx = users.length;
-            for (idx = 0; idx < users.length; idx++) {
-                if (users[idx]._id == userId) {
-                    break;
-                }
-            }
-            users.splice(idx, 1);
-            return callback(users);
+        function deleteUserById(userId) {
+            return $http.delete("/api/project/user/" + userId);
         }
 
         function updateUser(userId, user, callback) {

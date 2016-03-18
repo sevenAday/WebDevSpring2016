@@ -80,23 +80,23 @@
 
             if ($rootScope.user.commentedOn) {
                 $rootScope.user.commentedOn.forEach(function (documentId) {
-                   DocumentService.getDocumentById(documentId, function (document) {
-                       var asbtractStr = "";
-                       if (document.content) {
-                           asbtractStr = document.content.substring(0, 160);
-                       }
-                       var newDocument = {
-                           "_id": document._id,
-                           "userId": document.userId,
-                           "title": document.title,
-                           "content": document.content,
-                           "abstract": asbtractStr,
-                           "lastModified": document.lastModified,
-                           "like": document.like,
-                           "comment": document.comment
-                       };
-                       $scope.documentsCommentedOn.push(newDocument);
-                   });
+                    DocumentService.getDocumentById(documentId, function (document) {
+                        var asbtractStr = "";
+                        if (document.content) {
+                            asbtractStr = document.content.substring(0, 160);
+                        }
+                        var newDocument = {
+                            "_id": document._id,
+                            "userId": document.userId,
+                            "title": document.title,
+                            "content": document.content,
+                            "abstract": asbtractStr,
+                            "lastModified": document.lastModified,
+                            "like": document.like,
+                            "comment": document.comment
+                        };
+                        $scope.documentsCommentedOn.push(newDocument);
+                    });
                 });
 
                 $scope.documentsCommentedOn.sort(function (x, y) {
@@ -149,16 +149,18 @@
                 "lastName": $scope.lastName,
                 "email": $scope.email
             };
-            UserService.updateUser($rootScope.user._id, currentUser, function (user) {
-                $rootScope.user.username = user.username;
-                $rootScope.user.password = user.password;
-                $rootScope.user.firstName = user.firstName;
-                $rootScope.user.lastName = user.lastName;
-                $rootScope.user.email = user.email;
-                $rootScope.user.roles = user.roles;
-            });
-            $scope.successful = true;
-            $location.path("/profile");
+            UserService.updateUser($rootScope.user._id, currentUser)
+                .then(function (response) {
+                    var user = response.data;
+                    $rootScope.user.username = user.username;
+                    $rootScope.user.password = user.password;
+                    $rootScope.user.firstName = user.firstName;
+                    $rootScope.user.lastName = user.lastName;
+                    $rootScope.user.email = user.email;
+                    $rootScope.user.roles = user.roles;
+                    $scope.successful = true;
+                    $location.path("/profile");
+                });
         }
 
         function isNotEmpty(obj) {

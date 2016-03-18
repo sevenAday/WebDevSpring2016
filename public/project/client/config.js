@@ -39,7 +39,11 @@
             })
             .when("/username", {
                 templateUrl: "views/users/profile.view.html",
-                controller: "ProfileController"
+                controller: "ProfileController",
+                controllerAs: "model",
+                resolve: {
+                    checkLoggedIn: checkLoggedIn
+                }
             })
             .when("/document", {
                 templateUrl: "views/document/document.view.html",

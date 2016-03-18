@@ -40,8 +40,8 @@ module.exports = function (app, userModel) {
     function updateUserById(req, res) {
         var userId = req.params.id;
         var user = req.body;
-        var users = userModel.updateUserById(userId, user);
-        res.json(users);
+        user = userModel.updateUserById(userId, user);
+        res.json(user);
     }
 
     function deleteUserById(req, res) {
