@@ -102,17 +102,19 @@
                 });
                 $rootScope.newDocument = false;
             }
-            UserService.findUserById($rootScope.document.userId, function (user) {
-                if (!!user) {
-                    $rootScope.document.user = user.firstName + " " + user.lastName;
-                }
-            });
-            $rootScope.document.lastModifiedDate = (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear();
-            $scope.title = $rootScope.document.title;
-            $scope.content = $rootScope.document.content;
-            getLikeInformation();
-            getComments();
-            $location.path("/document/" + $rootScope.document._id);
+            UserService.findUserById($rootScope.document.userId)
+                .then(function (response) {
+                    var user = response.data;
+                    if (!!user) {
+                        $rootScope.document.user = user.firstName + " " + user.lastName;
+                    }
+                    $rootScope.document.lastModifiedDate = (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear();
+                    $scope.title = $rootScope.document.title;
+                    $scope.content = $rootScope.document.content;
+                    getLikeInformation();
+                    getComments();
+                    $location.path("/document/" + $rootScope.document._id);
+                });
         }
 
         function clearError() {
@@ -167,52 +169,68 @@
                 if (youIdx >= 0) {
                     $scope.youLike = true;
                     $scope.likeMessage = $scope.likeMessage + "You ";
+                    addMoreThan2(like, youIdx);
                 } else {
-                    UserService.findUserById(like[0], function (user) {
-                        $scope.likeMessage = $scope.likeMessage + user.firstName + " " + user.lastName + " ";
-                    });
+                    UserService.findUserById(like[0])
+                        .then(function (response) {
+                            var user = response.data;
+                            $scope.likeMessage = $scope.likeMessage + user.firstName + " " + user.lastName + " ";
+                            addMoreThan2(like, -1);
+                        });
                 }
-                if (like.length === 2) {
-                    var Udx = 1;
-                    if (youIdx >= 0) {
-                        if (youIdx === 1) {
-                            Udx = 0;
-                        }
+            }
+        }
+
+        function addMoreThan2(like, youIdx) {
+            if (like.length === 2) {
+                var Udx = 1;
+                if (youIdx >= 0) {
+                    if (youIdx === 1) {
+                        Udx = 0;
                     }
-                    UserService.findUserById(like[Udx], function (user) {
+                }
+                UserService.findUserById(like[Udx])
+                    .then(function (response) {
+                        var user = response.data;
                         $scope.likeMessage = $scope.likeMessage + "and " + user.firstName + " " + user.lastName + " ";
+                        addToLike(like.length, youIdx);
                     });
-                } else if (like.length > 2) {
-                    $scope.likeMessage = $scope.likeMessage + "and " + (like.length - 1) + " others ";
-                    $scope.showAll = false;
-                }
-                if (like.length == 1 && youIdx < 0) {
-                    $scope.likeMessage = $scope.likeMessage + "likes this";
-                } else {
-                    $scope.likeMessage = $scope.likeMessage + "like this";
-                }
+            } else if (like.length > 2) {
+                $scope.likeMessage = $scope.likeMessage + "and " + (like.length - 1) + " others ";
+                $scope.showAll = false;
+                addToLike(like.length, youIdx);
+            }
+        }
+
+        function addToLike(numberOfLikes, youIdx) {
+            if (numberOfLikes == 1 && youIdx < 0) {
+                $scope.likeMessage = $scope.likeMessage + "likes this";
+            } else {
+                $scope.likeMessage = $scope.likeMessage + "like this";
             }
         }
 
         function expandAllLikers() {
             var like = $rootScope.document.like;
             for (var idx = 0; idx < like.length; idx++) {
-                UserService.findUserById(like[idx], function (user) {
-                    if (idx === 0) {
-                        $scope.likeMessage = user.firstName + " " + user.lastName;
-                    } else if (idx == (like.length - 1)) {
-                        $scope.likeMessage = $scope.likeMessage + " and " + user.firstName + " " + user.lastName;
-                    } else {
-                        $scope.likeMessage = $scope.likeMessage + ", " + user.firstName + " " + user.lastName;
-                    }
-                });
+                UserService.findUserById(like[idx])
+                    .then(function (response) {
+                        var user = response.data;
+                        if (idx === 0) {
+                            $scope.likeMessage = user.firstName + " " + user.lastName;
+                        } else if (idx == (like.length - 1)) {
+                            $scope.likeMessage = $scope.likeMessage + " and " + user.firstName + " " + user.lastName;
+                        } else {
+                            $scope.likeMessage = $scope.likeMessage + ", " + user.firstName + " " + user.lastName;
+                        }
+                        if (like.length == 1) {
+                            $scope.likeMessage = $scope.likeMessage + " likes this";
+                        } else {
+                            $scope.likeMessage = $scope.likeMessage + " like this";
+                        }
+                        $scope.showAll = true;
+                    });
             }
-            if (like.length == 1) {
-                $scope.likeMessage = $scope.likeMessage + " likes this";
-            } else {
-                $scope.likeMessage = $scope.likeMessage + " like this";
-            }
-            $scope.showAll = true;
         }
 
         function rateDocument(liked) {
@@ -232,16 +250,18 @@
                 CommentService.findCommentById(docComments[idx], function (comment) {
                     var userName = "";
                     var dd = comment.lastModified;
-                    UserService.findUserById(comment.userId, function (user) {
-                        userName = userName + user.firstName + " " + user.lastName;
-                    });
-                    $scope.comments.push({
-                        "_id": comment._id,
-                        "userId": comment.userId,
-                        "userName": userName,
-                        "content": comment.content,
-                        "commentDate": (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear()
-                    });
+                    UserService.findUserById(comment.userId)
+                        .then(function (response) {
+                            var user = response.data;
+                            userName = userName + user.firstName + " " + user.lastName;
+                            $scope.comments.push({
+                                "_id": comment._id,
+                                "userId": comment.userId,
+                                "userName": userName,
+                                "content": comment.content,
+                                "commentDate": (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear()
+                            });
+                        });
                 });
             }
         }
