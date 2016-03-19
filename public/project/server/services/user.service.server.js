@@ -6,6 +6,8 @@ module.exports = function (app, userModel) {
     app.get("/api/project/user/:id", findUserById);
     app.put("/api/project/user/:id", updateUserById);
     app.delete("/api/project/user/:id", deleteUserById);
+    app.post("/api/project/user/:id/commentedon/:documentId", addCommentedOnByUserId);
+    app.delete("/api/project/user/:id/commentedon/:documentId", removeCommentedOnIdByUserId);
 
     function createUser(req, res) {
         var user = req.body;
@@ -57,5 +59,19 @@ module.exports = function (app, userModel) {
     function logOut(req, res) {
         req.session.destroy();
         res.send(200);
+    }
+
+    function addCommentedOnByUserId(req, res) {
+        var userId = req.params.id;
+        var documentId = req.params.documentId;
+        var commentedOn = userModel.addCommentedOnByUserId(userId, documentId);
+        res.json(commentedOn);
+    }
+
+    function removeCommentedOnIdByUserId(req, res) {
+        var userId = req.params.id;
+        var documentId = req.params.documentId;
+        var commentedOn = userModel.removeCommentedOnIdByUserId(userId, documentId);
+        res.json(commentedOn);
     }
 };

@@ -7,7 +7,9 @@ module.exports = function (uuid) {
         findAllUsers: findAllUsers,
         createUser: createUser,
         updateUserById: updateUserById,
-        deleteUserById: deleteUserById
+        deleteUserById: deleteUserById,
+        addCommentedOnByUserId: addCommentedOnByUserId,
+        removeCommentedOnIdByUserId: removeCommentedOnIdByUserId
     };
     return api;
 
@@ -81,5 +83,28 @@ module.exports = function (uuid) {
             }
         }
         return mock;
+    }
+
+    function addCommentedOnByUserId(userId, documentId) {
+        for (var u in mock) {
+            if (mock[u]._id == userId) {
+                mock[u].commentedOn.push(documentId);
+                return mock[u].commentedOn;
+            }
+        }
+        return [];
+    }
+
+    function removeCommentedOnIdByUserId(userId, documentId) {
+        for (var u in mock) {
+            if (mock[u]._id == userId) {
+                var documentIdx = mock[u].commentedOn.indexOf(documentId);
+                if (documentIdx >= 0) {
+                    mock[u].commentedOn.splice(documentIdx, 1);
+                    return mock[u].commentedOn;
+                }
+            }
+        }
+        return [];
     }
 };

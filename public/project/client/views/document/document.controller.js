@@ -34,7 +34,11 @@
                     .then(function (response) {
                         var user = response.data;
                         if (!!user) {
-                            $rootScope.document.user = user.firstName + " " + user.lastName;
+                            if (user._id == $rootScope.user._id) {
+                                $rootScope.document.user = "you";
+                            } else {
+                                $rootScope.document.user = user.firstName + " " + user.lastName;
+                            }
                         }
                         $rootScope.document.lastModifiedDate = dispDate;
                         $scope.title = $rootScope.document.title;
@@ -106,7 +110,11 @@
                 .then(function (response) {
                     var user = response.data;
                     if (!!user) {
-                        $rootScope.document.user = user.firstName + " " + user.lastName;
+                        if (user._id == $rootScope.user._id) {
+                            $rootScope.document.user = "you";
+                        } else {
+                            $rootScope.document.user = user.firstName + " " + user.lastName;
+                        }
                     }
                     $rootScope.document.lastModifiedDate = (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear();
                     $scope.title = $rootScope.document.title;
@@ -256,12 +264,16 @@
             $scope.comments = [];
             for (var idx = 0; idx < docComments.length; idx++) {
                 CommentService.findCommentById(docComments[idx], function (comment) {
-                    var userName = "";
+                    var userName;
                     var dd = comment.lastModified;
                     UserService.findUserById(comment.userId)
                         .then(function (response) {
                             var user = response.data;
-                            userName = userName + user.firstName + " " + user.lastName;
+                            if (user._id == $rootScope.user._id) {
+                                userName = "You";
+                            } else {
+                                userName = user.firstName + " " + user.lastName;
+                            }
                             $scope.comments.push({
                                 "_id": comment._id,
                                 "userId": comment.userId,
@@ -292,11 +304,10 @@
             DocumentService.deleteCommentIdxFromDocumentId($index, $rootScope.document._id, function (comment) {
                 CommentService.deleteCommentById($scope.comments[$index]._id, function (comments) {
                     $scope.comments.splice($index, 1);
-                    UserService.removeCommentedOnIdByUserId($rootScope.user._id,
-                        $rootScope.document._id, function (commentedOn) {
-                            $rootScope.user.commentedOn = commentedOn;
-                        }
-                    );
+                    UserService.removeCommentedOnIdByUserId($rootScope.user._id, $rootScope.document._id)
+                        .then(function (response) {
+                            $rootScope.user.commentedOn = response.data;
+                        });
                 });
             });
         }
@@ -316,17 +327,17 @@
                     $scope.comments.push({
                         "_id": comment._id,
                         "userId": comment.userId,
-                        "userName": $rootScope.user.firstName + " " + $rootScope.user.lastName,
+                        "userName": "You",
                         "content": comment.content,
                         "commentDate": (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear()
                     });
-                    UserService.addCommentedOnByUserId($rootScope.user._id,
-                        $rootScope.document._id, function (commentedOn) {
-                            $rootScope.user.commentedOn = commentedOn;
+                    UserService.addCommentedOnByUserId($rootScope.user._id, $rootScope.document._id)
+                        .then(function (response) {
+                            $rootScope.user.commentedOn = response.data;
+                            $scope.newCcommentContent = "";
                         });
                 });
             });
-            $scope.newCcommentContent = "";
         }
     }
 }());
