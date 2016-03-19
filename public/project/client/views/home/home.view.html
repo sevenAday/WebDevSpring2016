@@ -15,9 +15,9 @@
                 <table class="table table-striped">
                     <thead></thead>
                     <tbody>
-                        <tr ng-repeat="document in documents">
+                        <tr ng-repeat="document in model.documents">
                             <td>
-                                <a ng-click="openDocument($index)">
+                                <a ng-click="model.openDocument($index)">
                                     <span class="text-nowrap">{{document.title}}</span>
                                 </a>
                                 <br/>

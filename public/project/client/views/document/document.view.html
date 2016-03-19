@@ -3,54 +3,54 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <p-dialog editable="editable"
                    newDocument="newDocument"
-                   showDefinition="showDefinition"
-                   definition="definition"
+                   showDefinition="model.showDefinition"
+                   definition="model.definition"
                    data="document"></p-dialog>
-            <div ng-if="errorred" class="text-danger" ng-cloak>{{errorMessage}}</div>
-            <input ng-show="editable" ng-focus="clearError()" ng-model="title" type="text"
-                   class="form-control"
-                   placeholder="Enter a title" ng-cloak>
-            <textarea ng-show="editable" ng-model="content" type="text" class="form-control"
+            <div ng-if="model.errorred" class="text-danger" ng-cloak>{{model.errorMessage}}</div>
+            <input ng-show="editable" ng-focus="model.clearError()" ng-model="title" type="text"
+                   class="form-control" placeholder="Enter a title" ng-cloak>
+            <textarea ng-show="editable" ng-model="model.content" type="text" class="form-control"
                       placeholder="Enter the content" rows="15" ng-cloak></textarea>
-            <input ng-show="newDocument" ng-focus="clearError()" ng-model="newDocumentTitle" type="text"
-                   class="form-control"
-                   placeholder="Enter a title" ng-cloak>
+            <input ng-show="newDocument" ng-focus="model.clearError()" ng-model="newDocumentTitle"
+                   type="text" class="form-control" placeholder="Enter a title" ng-cloak>
             <textarea ng-show="newDocument" ng-model="newDocumentContent" type="text"
-                      class="form-control"
-                      placeholder="Enter the content" rows="15" ng-cloak></textarea>
-            <a ng-hide="editable || newDocument || youLike" ng-click="rateDocument(true)" ng-cloak>Like </a>
-            <a ng-hide="editable || newDocument || !youLike" ng-click="rateDocument(false)" ng-cloak>Unlike </a>
-            <a ng-hide="editable || newDocument" ng-click="createComment()" ng-cloak>Comment</a>
-            <a ng-hide="editable || newDocument" ng-click="editDocument()" ng-cloak>Edit </a>
-            <a ng-hide="editable || newDocument" ng-click="deleteDocument()" ng-cloak>Delete</a>
-            <a ng-show="editable || newDocument" ng-click="saveDocument()" ng-cloak>Save </a>
-            <a ng-show="editable || newDocument" ng-click="discardDocument()" ng-cloak>Discard</a>
+                      class="form-control" placeholder="Enter the content" rows="15" ng-cloak></textarea>
+            <a ng-hide="editable || newDocument || model.youLike" ng-click="model.rateDocument(true)"
+               ng-cloak>Like </a>
+            <a ng-hide="editable || newDocument || !model.youLike" ng-click="model.rateDocument(false)"
+               ng-cloak>Unlike </a>
+            <a ng-hide="editable || newDocument" ng-click="createComment()"
+               ng-cloak>Comment</a>
+            <a ng-hide="editable || newDocument" ng-click="model.editDocument()" ng-cloak>Edit </a>
+            <a ng-hide="editable || newDocument" ng-click="model.deleteDocument()" ng-cloak>Delete</a>
+            <a ng-show="editable || newDocument" ng-click="model.saveDocument()" ng-cloak>Save </a>
+            <a ng-show="editable || newDocument" ng-click="model.discardDocument()" ng-cloak>Discard</a>
             <br/>
-            <a ng-hide="editable || newDocument || !likeMessage"
-               class="text-normal" ng-click="expandAllLikers()" ng-disabled="showAll" ng-cloak>
+            <a ng-hide="editable || newDocument || !model.likeMessage"
+               class="text-normal" ng-click="model.expandAllLikers()" ng-disabled="model.showAll" ng-cloak>
                 <span class="glyphicon glyphicon-thumbs-up" aria-hidden="true"></span>
-                {{likeMessage}}
+                {{model.likeMessage}}
             </a>
-            <div ng-hide="editable || newDocument" ng-repeat="comment in comments">
+            <div ng-hide="editable || newDocument" ng-repeat="comment in model.comments">
                 <hr/>
                 <h6>{{comment.userName}} wrote on {{comment.commentDate}}:</h6>
                 <p ng-hide="$index === editCommentIndex">{{comment.content}}</p>
                 <textarea ng-show="$index === editCommentIndex" ng-model="comment.content"
                           class="form-control"></textarea>
                 <a ng-show="comment.userId === user._id && $index != editCommentIndex"
-                   ng-click="editComment($index)" ng-cloak>Edit</a>
+                   ng-click="model.editComment($index)" ng-cloak>Edit</a>
                 <a ng-show="comment.userId === user._id && $index != editCommentIndex"
-                   ng-click="deleteComment($index)" ng-cloak> Delete</a>
+                   ng-click="model.deleteComment($index)" ng-cloak> Delete</a>
                 <a ng-show="comment.userId === user._id && $index === editCommentIndex"
-                   ng-click="saveComment()" ng-cloak>Save</a>
+                   ng-click="model.saveComment()" ng-cloak>Save</a>
             </div>
             <hr ng-hide="editable || newDocument"/>
             <textarea ng-hide="editable || newDocument"
-                      ng-model="newCcommentContent"
+                      ng-model="model.newCommentContent"
                       class="form-control"
                       placeholder="Write a comment"
                       focus-on="createNewComment"></textarea>
-            <a ng-hide="editable || newDocument" ng-click="addNewComment()" ng-cloak>Add Comment</a>
+            <a ng-hide="editable || newDocument" ng-click="model.addNewComment()" ng-cloak>Add Comment</a>
         </div>
     </div>
 </div>

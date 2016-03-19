@@ -55,7 +55,15 @@
         }
 
         function setCurrentUser(user) {
-            $rootScope.user = user;
+            if (user) {
+                var userRoles = user.roles.map(function (role) {
+                    return role.toLowerCase();
+                });
+                $rootScope.user = user;
+                if (userRoles.indexOf("admin") >= 0) {
+                    $rootScope.isAdmin = true;
+                }
+            }
         }
 
         function logout() {

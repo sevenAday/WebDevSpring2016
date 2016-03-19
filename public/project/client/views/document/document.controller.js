@@ -7,63 +7,69 @@
         .module("DocumentCallaborationApp")
         .controller("DocumentController", DocumentController);
 
-    function DocumentController($scope, $rootScope, $location, $http, $routeParams,
-                                UserService, DocumentService, CommentService) {
-        $scope.$location = $location;
-        $rootScope.newDocument = true;
-        if ($routeParams.documentId) {
-            $rootScope.document = null;
-            DocumentService.getDocumentById($routeParams.documentId, function (document) {
-                $rootScope.document = document;
-            });
-            if ($rootScope.document) {
-                $rootScope.editable = false;
-                $rootScope.newDocument = false;
+    function DocumentController($scope, $rootScope, $location, $http, $routeParams, UserService, DocumentService,
+                                CommentService) {
+        var model = this;
+
+        model.discardDocument = discardDocument;
+        model.deleteDocument = deleteDocument;
+        model.editDocument = editDocument;
+        model.saveDocument = saveDocument;
+        model.clearError = clearError;
+        model.getSelectedText = getSelectedText;
+        model.expandAllLikers = expandAllLikers;
+        model.rateDocument = rateDocument;
+        model.editComment = editComment;
+        model.saveComment = saveComment;
+        model.deleteComment = deleteComment;
+        model.addNewComment = addNewComment;
+
+        $scope.createComment = createComment;
+
+        function init() {
+            $rootScope.newDocument = true;
+            if ($routeParams.documentId) {
+                $rootScope.document = null;
+                DocumentService.getDocumentById($routeParams.documentId, function (document) {
+                    $rootScope.document = document;
+                });
+                if ($rootScope.document) {
+                    $rootScope.editable = false;
+                    $rootScope.newDocument = false;
+                }
             }
-        }
-        if ($rootScope.user && $rootScope.document) {
-            if (!$rootScope.user.firstName || !$rootScope.user.lastName) {
-                $location.url("/profile");
-            } else if ($rootScope.newDocument) {
-                //console.log("There is nothing to do");
-            } else {
-                var dd = $rootScope.document.lastModified;
-                var dispDate = (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear();
-                $rootScope.editable = false;
-                UserService.findUserById($rootScope.document.userId)
-                    .then(function (response) {
-                        var user = response.data;
-                        if (!!user) {
-                            if (user._id == $rootScope.user._id) {
-                                $rootScope.document.user = "you";
-                            } else {
-                                $rootScope.document.user = user.firstName + " " + user.lastName;
+            if ($rootScope.user && $rootScope.document) {
+                if (!$rootScope.user.firstName || !$rootScope.user.lastName) {
+                    $location.url("/profile");
+                } else if ($rootScope.newDocument) {
+                    //console.log("There is nothing to do");
+                } else {
+                    var dd = $rootScope.document.lastModified;
+                    var dispDate = (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear();
+                    $rootScope.editable = false;
+                    UserService.findUserById($rootScope.document.userId)
+                        .then(function (response) {
+                            var user = response.data;
+                            if (!!user) {
+                                if (user._id == $rootScope.user._id) {
+                                    $rootScope.document.user = "you";
+                                } else {
+                                    $rootScope.document.user = user.firstName + " " + user.lastName;
+                                }
                             }
-                        }
-                        $rootScope.document.lastModifiedDate = dispDate;
-                        $scope.title = $rootScope.document.title;
-                        $scope.content = $rootScope.document.content;
-                        getLikeInformation();
-                        getComments();
-                    });
+                            $rootScope.document.lastModifiedDate = dispDate;
+                            model.title = $rootScope.document.title;
+                            model.content = $rootScope.document.content;
+                            getLikeInformation();
+                            getComments();
+                        });
+                }
+            } else {
+                $location.path("/home");
             }
-        } else {
-            $location.path("/home");
         }
 
-        $scope.discardDocument = discardDocument;
-        $scope.deleteDocument = deleteDocument;
-        $scope.editDocument = editDocument;
-        $scope.saveDocument = saveDocument;
-        $scope.clearError = clearError;
-        $scope.getSelectedText = getSelectedText;
-        $scope.expandAllLikers = expandAllLikers;
-        $scope.rateDocument = rateDocument;
-        $scope.editComment = editComment;
-        $scope.saveComment = saveComment;
-        $scope.deleteComment = deleteComment;
-        $scope.createComment = createComment;
-        $scope.addNewComment = addNewComment;
+        init();
 
         function editDocument() {
             $rootScope.editable = true;
@@ -79,17 +85,17 @@
         }
 
         function saveDocument() {
-            if (($rootScope.editable && !$scope.title) || ($rootScope.newDocument && !$scope.newDocumentTitle)) {
-                $scope.errorred = true;
-                $scope.errorMessage = "Title required for document";
+            if (($rootScope.editable && !model.title) || ($rootScope.newDocument && !model.newDocumentTitle)) {
+                model.errorred = true;
+                model.errorMessage = "Title required for document";
                 return;
             }
             clearError();
             var newDocument = {"userId": $rootScope.user._id, "lastModified": new Date()};
             var dd = newDocument.lastModified;
             if ($rootScope.editable) {
-                newDocument.title = $scope.title;
-                newDocument.content = $scope.content;
+                newDocument.title = model.title;
+                newDocument.content = model.content;
                 newDocument.like = $rootScope.document.like;
                 newDocument.comment = $rootScope.document.comment;
                 DocumentService.updateDocumentById($rootScope.document._id, newDocument, function (document) {
@@ -97,8 +103,8 @@
                 });
                 $rootScope.editable = false;
             } else if ($rootScope.newDocument) {
-                newDocument.title = $scope.newDocumentTitle;
-                newDocument.content = $scope.newDocumentContent;
+                newDocument.title = model.newDocumentTitle;
+                newDocument.content = model.newDocumentContent;
                 newDocument.like = [];
                 newDocument.comment = [];
                 DocumentService.addNewDocument(newDocument, function (document) {
@@ -117,8 +123,8 @@
                         }
                     }
                     $rootScope.document.lastModifiedDate = (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear();
-                    $scope.title = $rootScope.document.title;
-                    $scope.content = $rootScope.document.content;
+                    model.title = $rootScope.document.title;
+                    model.content = $rootScope.document.content;
                     getLikeInformation();
                     getComments();
                     $location.path("/document/" + $rootScope.document._id);
@@ -126,8 +132,8 @@
         }
 
         function clearError() {
-            $scope.errorred = false;
-            $scope.errorMessage = "";
+            model.errorred = false;
+            model.errorMessage = "";
         }
 
         function getSelectedText() {
@@ -145,15 +151,15 @@
         }
 
         function renderDefinition(response) {
-            $scope.definition = "No definitions found";
+            model.definition = "No definitions found";
             if (response) {
                 if (response.tuc) {
                     if (response.tuc.length > 0) {
-                        $scope.definition = response.tuc[0].meanings[0];
+                        model.definition = response.tuc[0].meanings[0];
                     }
                 }
             }
-            $scope.$broadcast("toggleDialog", $scope.definition);
+            $scope.$broadcast("toggleDialog", model.definition);
         }
 
         function deleteDocument() {
@@ -169,20 +175,20 @@
 
         function getLikeInformation() {
             var like = $rootScope.document.like;
-            $scope.likeMessage = "";
-            $scope.youLike = false;
-            $scope.showAll = true;
+            model.likeMessage = "";
+            model.youLike = false;
+            model.showAll = true;
             if (like && like.length > 0) {
                 var youIdx = like.indexOf($rootScope.user._id);
                 if (youIdx >= 0) {
-                    $scope.youLike = true;
-                    $scope.likeMessage = $scope.likeMessage + "You ";
+                    model.youLike = true;
+                    model.likeMessage = model.likeMessage + "You ";
                     addMoreThan2(like, youIdx);
                 } else {
                     UserService.findUserById(like[0])
                         .then(function (response) {
                             var user = response.data;
-                            $scope.likeMessage = $scope.likeMessage + user.firstName + " " + user.lastName + " ";
+                            model.likeMessage = model.likeMessage + user.firstName + " " + user.lastName + " ";
                             addMoreThan2(like, -1);
                         });
                 }
@@ -200,12 +206,12 @@
                 UserService.findUserById(like[Udx])
                     .then(function (response) {
                         var user = response.data;
-                        $scope.likeMessage = $scope.likeMessage + "and " + user.firstName + " " + user.lastName + " ";
+                        model.likeMessage = model.likeMessage + "and " + user.firstName + " " + user.lastName + " ";
                         addToLike(like.length, youIdx);
                     });
             } else if (like.length > 2) {
-                $scope.likeMessage = $scope.likeMessage + "and " + (like.length - 1) + " others ";
-                $scope.showAll = false;
+                model.likeMessage = model.likeMessage + "and " + (like.length - 1) + " others ";
+                model.showAll = false;
                 addToLike(like.length, youIdx);
             } else {
                 addToLike(like.length, youIdx);
@@ -214,9 +220,9 @@
 
         function addToLike(numberOfLikes, youIdx) {
             if (numberOfLikes == 1 && youIdx < 0) {
-                $scope.likeMessage = $scope.likeMessage + "likes this";
+                model.likeMessage = model.likeMessage + "likes this";
             } else {
-                $scope.likeMessage = $scope.likeMessage + "like this";
+                model.likeMessage = model.likeMessage + "like this";
             }
         }
 
@@ -228,22 +234,22 @@
         function expandThatLiker(like, idx) {
             if (idx >= like.length) {
                 if (like.length == 1) {
-                    $scope.likeMessage = $scope.likeMessage + " likes this";
+                    model.likeMessage = model.likeMessage + " likes this";
                 } else {
-                    $scope.likeMessage = $scope.likeMessage + " like this";
+                    model.likeMessage = model.likeMessage + " like this";
                 }
-                $scope.showAll = true;
+                model.showAll = true;
                 return;
             }
             UserService.findUserById(like[idx])
                 .then(function (response) {
                     var user = response.data;
                     if (idx === 0) {
-                        $scope.likeMessage = user.firstName + " " + user.lastName;
+                        model.likeMessage = user.firstName + " " + user.lastName;
                     } else if (idx == (like.length - 1)) {
-                        $scope.likeMessage = $scope.likeMessage + " and " + user.firstName + " " + user.lastName;
+                        model.likeMessage = model.likeMessage + " and " + user.firstName + " " + user.lastName;
                     } else {
-                        $scope.likeMessage = $scope.likeMessage + ", " + user.firstName + " " + user.lastName;
+                        model.likeMessage = model.likeMessage + ", " + user.firstName + " " + user.lastName;
                     }
                     expandThatLiker(like, idx + 1);
                 });
@@ -253,7 +259,7 @@
             DocumentService.rateDocument($rootScope.document._id, $rootScope.user._id, liked, function (like) {
                 $rootScope.document.like = like;
                 if (!liked) {
-                    $scope.youLike = false;
+                    model.youLike = false;
                 }
             });
             getLikeInformation();
@@ -261,7 +267,7 @@
 
         function getComments() {
             var docComments = $rootScope.document.comment;
-            $scope.comments = [];
+            model.comments = [];
             for (var idx = 0; idx < docComments.length; idx++) {
                 CommentService.findCommentById(docComments[idx], function (comment) {
                     var userName;
@@ -274,7 +280,7 @@
                             } else {
                                 userName = user.firstName + " " + user.lastName;
                             }
-                            $scope.comments.push({
+                            model.comments.push({
                                 "_id": comment._id,
                                 "userId": comment.userId,
                                 "userName": userName,
@@ -287,23 +293,23 @@
         }
 
         function editComment($index) {
-            $scope.editCommentIndex = $index;
+            model.editCommentIndex = $index;
         }
 
         function saveComment() {
-            CommentService.updateComment($scope.comments[$scope.editCommentIndex]._id,
-                $scope.comments[$scope.editCommentIndex].content, function (comment) {
+            CommentService.updateComment(model.comments[model.editCommentIndex]._id,
+                model.comments[model.editCommentIndex].content, function (comment) {
                     var dd = comment.lastModified;
-                    $scope.comments[$scope.editCommentIndex].commentDate = (dd.getMonth() + 1)
+                    model.comments[model.editCommentIndex].commentDate = (dd.getMonth() + 1)
                         + "/" + dd.getDate() + "/" + dd.getFullYear();
                 });
-            $scope.editCommentIndex = -1;
+            model.editCommentIndex = -1;
         }
 
         function deleteComment($index) {
             DocumentService.deleteCommentIdxFromDocumentId($index, $rootScope.document._id, function (comment) {
-                CommentService.deleteCommentById($scope.comments[$index]._id, function (comments) {
-                    $scope.comments.splice($index, 1);
+                CommentService.deleteCommentById(model.comments[$index]._id, function (comments) {
+                    model.comments.splice($index, 1);
                     UserService.removeCommentedOnIdByUserId($rootScope.user._id, $rootScope.document._id)
                         .then(function (response) {
                             $rootScope.user.commentedOn = response.data;
@@ -317,14 +323,14 @@
         }
 
         function addNewComment() {
-            if (!$scope.newCcommentContent) {
+            if (!model.newCommentContent) {
                 return;
             }
-            var newComment = {"userId": $rootScope.user._id, "content": $scope.newCcommentContent};
+            var newComment = {"userId": $rootScope.user._id, "content": model.newCommentContent};
             CommentService.addComment(newComment, function (comment) {
                 DocumentService.addCommentIdToDocummentId(comment._id, $rootScope.document._id, function (comments) {
                     var dd = comment.lastModified;
-                    $scope.comments.push({
+                    model.comments.push({
                         "_id": comment._id,
                         "userId": comment.userId,
                         "userName": "You",
@@ -334,7 +340,7 @@
                     UserService.addCommentedOnByUserId($rootScope.user._id, $rootScope.document._id)
                         .then(function (response) {
                             $rootScope.user.commentedOn = response.data;
-                            $scope.newCcommentContent = "";
+                            model.newCommentContent = "";
                         });
                 });
             });

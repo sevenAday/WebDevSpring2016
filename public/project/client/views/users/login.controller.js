@@ -18,9 +18,6 @@
                         if (response.data) {
                             UserService.setCurrentUser(response.data);
                             if (!!$rootScope.user) {
-                                if ($rootScope.user.roles.indexOf("admin") != -1) {
-                                    $rootScope.isAdmin = true;
-                                }
                                 if ($rootScope.document) {
                                     $location.path("/document/" + $rootScope.document._id);
                                 } else if ($rootScope.isAdmin) {

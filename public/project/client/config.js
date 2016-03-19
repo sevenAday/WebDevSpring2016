@@ -10,6 +10,7 @@
             .when("/home", {
                 templateUrl: "views/home/home.view.html",
                 controller: "HomeController",
+                controllerAs: "model",
                 resolve: {
                     getLoggedIn: getLoggedIn
                 }
@@ -35,7 +36,10 @@
             .when("/admin", {
                 templateUrl: "views/admin/admin.view.html",
                 controller: "AdminController",
-                controllerAs: "model"
+                controllerAs: "model",
+                resolve: {
+                    checkLoggedIn: checkLoggedIn
+                }
             })
             .when("/username", {
                 templateUrl: "views/users/profile.view.html",
@@ -47,19 +51,29 @@
             })
             .when("/document", {
                 templateUrl: "views/document/document.view.html",
-                controller: "DocumentController"
+                controller: "DocumentController",
+                controllerAs: "model",
+                resolve: {
+                    checkLoggedIn: checkLoggedIn
+                }
             })
             .when("/document/:documentId", {
                 templateUrl: "views/document/document.view.html",
-                controller: "DocumentController"
+                controller: "DocumentController",
+                controllerAs: "model",
+                resolve: {
+                    checkLoggedIn: checkLoggedIn
+                }
             })
             .when("/results", {
                 templateUrl: "views/search/results.view.html",
-                controller: "ResultsController"
+                controller: "ResultsController",
+                controllerAs: "model"
             })
             .when("/results/:keyWord", {
                 templateUrl: "views/search/results.view.html",
-                controller: "ResultsController"
+                controller: "ResultsController",
+                controllerAs: "model"
             })
             .otherwise({
                 redirectTo: "/home"
