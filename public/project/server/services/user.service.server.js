@@ -2,6 +2,7 @@ module.exports = function (app, userModel) {
     app.post("/api/project/user", createUser);
     app.get("/api/project/user", findUser);
     app.get("/api/project/loggedin", loggedIn);
+    app.post("/api/project/loggedin", setLoggedIn);
     app.post("/api/project/logout", logOut);
     app.get("/api/project/user/:id", findUserById);
     app.put("/api/project/user/:id", updateUserById);
@@ -12,7 +13,6 @@ module.exports = function (app, userModel) {
     function createUser(req, res) {
         var user = req.body;
         user = userModel.createUser(user);
-        req.session.user = user;
         res.json(user);
     }
 
@@ -22,7 +22,6 @@ module.exports = function (app, userModel) {
         if (username && password) {
             var credentials = {"username": username, "password": password};
             var user = userModel.findUserByCredentials(credentials);
-            req.session.user = user;
             res.json(user);
         } else if (username) {
             var user = userModel.findUserByUsername(username);
@@ -43,6 +42,9 @@ module.exports = function (app, userModel) {
         var userId = req.params.id;
         var user = req.body;
         user = userModel.updateUserById(userId, user);
+        if (req.session.user._id == userId) {
+            req.session.user = user;
+        }
         res.json(user);
     }
 
@@ -65,6 +67,9 @@ module.exports = function (app, userModel) {
         var userId = req.params.id;
         var documentId = req.params.documentId;
         var commentedOn = userModel.addCommentedOnByUserId(userId, documentId);
+        if (req.session.user._id == userId) {
+            req.session.user.commentedOn = commentedOn;
+        }
         res.json(commentedOn);
     }
 
@@ -72,6 +77,15 @@ module.exports = function (app, userModel) {
         var userId = req.params.id;
         var documentId = req.params.documentId;
         var commentedOn = userModel.removeCommentedOnIdByUserId(userId, documentId);
+        if (req.session.user._id == userId) {
+            req.session.user.commentedOn = commentedOn;
+        }
         res.json(commentedOn);
+    }
+
+    function setLoggedIn(req, res) {
+        var user = req.body;
+        req.session.user = user;
+        res.send(200);
     }
 };

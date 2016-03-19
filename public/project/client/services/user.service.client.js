@@ -8,6 +8,7 @@
     function UserService($http, $rootScope) {
 
         var service = {
+            findUserByUsername: findUserByUsername,
             findUserByCredentials: findUserByCredentials,
             findAllUsers: findAllUsers,
             createUser: createUser,
@@ -21,6 +22,10 @@
             logout: logout
         };
         return service;
+
+        function findUserByUsername(username) {
+            return $http.get("/api/project/user?username=" + username);
+        }
 
         function findUserByCredentials(username, password) {
             return $http.get("/api/project/user?username=" + username + "&password=" + password);
@@ -60,9 +65,10 @@
                     return role.toLowerCase();
                 });
                 $rootScope.user = user;
-                if (userRoles.indexOf("admin") >= 0) {
+                if (userRoles.indexOf("admin") >= 0 || userRoles.indexOf("administrator") >= 0) {
                     $rootScope.isAdmin = true;
                 }
+                return $http.post("/api/project/loggedin", user);
             }
         }
 

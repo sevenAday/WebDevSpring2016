@@ -16,7 +16,6 @@
         model.editDocument = editDocument;
         model.saveDocument = saveDocument;
         model.clearError = clearError;
-        model.getSelectedText = getSelectedText;
         model.expandAllLikers = expandAllLikers;
         model.rateDocument = rateDocument;
         model.editComment = editComment;
@@ -25,6 +24,7 @@
         model.addNewComment = addNewComment;
 
         $scope.createComment = createComment;
+        $scope.getSelectedText = getSelectedText;
 
         function init() {
             $rootScope.newDocument = true;
@@ -78,6 +78,8 @@
         function discardDocument() {
             clearError();
             if ($rootScope.editable) {
+                model.title = $rootScope.document.title;
+                model.content = $rootScope.document.content;
                 $rootScope.editable = false;
             } else if ($rootScope.newDocument) {
                 $location.path("/home");

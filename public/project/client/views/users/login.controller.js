@@ -5,14 +5,14 @@
         .module("DocumentCallaborationApp")
         .controller("LoginController", LoginController);
 
-    function LoginController($rootScope, $location, UserService) {
+    function LoginController($scope, $rootScope, $location, UserService) {
         var model = this;
         model.login = login;
 
         function login() {
             model.showError = true;
-            delete model.signin.password.$error.invalidLogin;
-            if (!isNotEmpty(model.signin.username.$error) && !isNotEmpty(model.signin.password.$error)) {
+            delete $scope.signin.password.$error.invalidLogin;
+            if (!isNotEmpty($scope.signin.username.$error) && !isNotEmpty($scope.signin.password.$error)) {
                 UserService.findUserByCredentials(model.username, model.password)
                     .then(function (response) {
                         if (response.data) {
@@ -26,7 +26,7 @@
                                     $location.path("/profile");
                                 }
                             } else {
-                                model.signin.password.$error = {"invalidLogin": true};
+                                $scope.signin.password.$error = {"invalidLogin": true};
                             }
                         }
                     });

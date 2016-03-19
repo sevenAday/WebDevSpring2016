@@ -5,7 +5,7 @@
         .module("DocumentCallaborationApp")
         .controller("ProfileController", ProfileController);
 
-    function ProfileController($rootScope, $location, UserService, DocumentService) {
+    function ProfileController($scope, $rootScope, $location, UserService, DocumentService) {
         var model = this;
 
         model.update = update;
@@ -24,7 +24,7 @@
                 model.documentsCommentedOn = [];
                 DocumentService.getDocumentsModifiedByUserId($rootScope.user._id, function (documents) {
                     documents.forEach(function (document) {
-                        var asbtractStr = "";
+                        var asbtractStr;
                         if (document.content) {
                             asbtractStr = document.content.substring(0, 160);
                         }
@@ -138,13 +138,13 @@
 
         function update() {
             model.successful = false;
-            var currentUser = null;
+            var currentUser;
             model.showError = true;
-            if (isNotEmpty(model.profile.username.$error)
-                || isNotEmpty(model.profile.password.$error)
-                || isNotEmpty(model.profile.lastName.$error)
-                || isNotEmpty(model.profile.firstName.$error)
-                || isNotEmpty(model.profile.inputEmail.$error)) {
+            if (isNotEmpty($scope.profile.username.$error)
+                || isNotEmpty($scope.profile.password.$error)
+                || isNotEmpty($scope.profile.lastName.$error)
+                || isNotEmpty($scope.profile.firstName.$error)
+                || isNotEmpty($scope.profile.inputEmail.$error)) {
                 return;
             }
             currentUser = {

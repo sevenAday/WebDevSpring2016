@@ -7,13 +7,13 @@
                    definition="model.definition"
                    data="document"></p-dialog>
             <div ng-if="model.errorred" class="text-danger" ng-cloak>{{model.errorMessage}}</div>
-            <input ng-show="editable" ng-focus="model.clearError()" ng-model="title" type="text"
+            <input ng-show="editable" ng-focus="model.clearError()" ng-model="model.title" type="text"
                    class="form-control" placeholder="Enter a title" ng-cloak>
             <textarea ng-show="editable" ng-model="model.content" type="text" class="form-control"
                       placeholder="Enter the content" rows="15" ng-cloak></textarea>
-            <input ng-show="newDocument" ng-focus="model.clearError()" ng-model="newDocumentTitle"
+            <input ng-show="newDocument" ng-focus="model.clearError()" ng-model="model.newDocumentTitle"
                    type="text" class="form-control" placeholder="Enter a title" ng-cloak>
-            <textarea ng-show="newDocument" ng-model="newDocumentContent" type="text"
+            <textarea ng-show="newDocument" ng-model="model.newDocumentContent" type="text"
                       class="form-control" placeholder="Enter the content" rows="15" ng-cloak></textarea>
             <a ng-hide="editable || newDocument || model.youLike" ng-click="model.rateDocument(true)"
                ng-cloak>Like </a>

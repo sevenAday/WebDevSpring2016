@@ -68,8 +68,8 @@ module.exports = function (uuid) {
             if (user.roles) {
                 foundUser.roles = user.roles;
             }
-            if (user.comentedOn) {
-                foundUser.comentedOn = user.comentedOn;
+            if (user.commentedOn) {
+                foundUser.commentedOn = user.commentedOn;
             }
         }
         return foundUser;

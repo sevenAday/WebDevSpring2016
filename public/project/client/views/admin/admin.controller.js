@@ -36,16 +36,18 @@
                         var users = response.data;
                         model.users = [];
                         for (var u in users) {
-                            var roles = "";
-                            if (users[u].roles) {
-                                roles = users[u].roles.join(" | ");
+                            if (users[u]._id != $rootScope.user._id) {
+                                var roles = "";
+                                if (users[u].roles) {
+                                    roles = users[u].roles.join(" | ");
+                                }
+                                model.users.push({
+                                    "_id": users[u]._id,
+                                    "username": users[u].username,
+                                    "password": users[u].password,
+                                    "roles": roles
+                                });
                             }
-                            model.users.push({
-                                "_id": users[u]._id,
-                                "username": users[u].username,
-                                "password": users[u].password,
-                                "roles": roles
-                            });
                         }
                     });
             } else {
@@ -57,27 +59,36 @@
 
         function addUser() {
             if (model.username && model.password && model.role) {
-                var newUser = {
-                    "username": model.username,
-                    "password": model.password,
-                    "roles": model.role.replace(/\s/g, "").split("|"),
-                    "commentedOn": []
-                };
-                if (model.username && model.password && model.role && $rootScope.user && $rootScope.isAdmin) {
-                    UserService.createUser(newUser)
-                        .then(function (response) {
-                            var user = response.data;
-                            model.users.push({
-                                "_id": user._id,
-                                "username": user.username,
-                                "password": user.password,
-                                "roles": model.role
-                            });
-                            model.username = "";
+                UserService.findUserByUsername(model.username)
+                    .then(function (response) {
+                        if (response.data) {
+                            model.username = "Invalid username!!!";
                             model.password = "";
                             model.role = "";
-                        });
-                }
+                        } else {
+                            var newUser = {
+                                "username": model.username,
+                                "password": model.password,
+                                "roles": model.role.replace(/\s/g, "").split("|"),
+                                "commentedOn": []
+                            };
+                            if (model.username && model.password && model.role && $rootScope.user && $rootScope.isAdmin) {
+                                UserService.createUser(newUser)
+                                    .then(function (response) {
+                                        var user = response.data;
+                                        model.users.push({
+                                            "_id": user._id,
+                                            "username": user.username,
+                                            "password": user.password,
+                                            "roles": model.role
+                                        });
+                                        model.username = "";
+                                        model.password = "";
+                                        model.role = "";
+                                    });
+                            }
+                        }
+                    });
             }
         }
 

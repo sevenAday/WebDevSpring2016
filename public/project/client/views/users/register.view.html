@@ -3,16 +3,17 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1>Register</h1>
             <br/>
-            <form name="model.registration" class="form-horizontal">
+            <form name="registration" class="form-horizontal">
                 <div class="form-group">
                     <label for="inputUsername" class="col-sm-2">Username:</label>
                     <div class="col-sm-10">
                         <input name="username" ng-minlength="2" required ng-model="model.username" type="text"
                                class="form-control" id="inputUsername" placeholder="Username">
-                        <div ng-messages="model.registration.username.$error" role="error">
+                        <div ng-messages="registration.username.$error" role="error">
                             <div ng-if="model.showError" class="text-danger">
                                 <div ng-message="required">Please enter a username.</div>
                                 <div ng-message="minlength">Username is too short.</div>
+                                <div ng-message="duplicateUsername">Please enter valid username.</div>
                             </div>
                         </div>
                     </div>
@@ -22,7 +23,7 @@
                     <div class="col-sm-10">
                         <input name="password" ng-minlength="2" required ng-model="model.password" type="password"
                                class="form-control" id="inputPassword" placeholder="Password">
-                        <div ng-messages="model.registration.password.$error" role="alert">
+                        <div ng-messages="registration.password.$error" role="alert">
                             <div ng-if="model.showError" class="text-danger">
                                 <div ng-message="required">Please enter a password.</div>
                                 <div ng-message="minlength">Password is too short.</div>
@@ -36,7 +37,7 @@
                         <input name="verifyPassword" ng-minlength="2" required compare-to="registration.password"
                                ng-model="model.verifyPassword" type="password" class="form-control"
                                id="inputVerifyPassword" placeholder="Verify Password">
-                        <div ng-messages="model.registration.verifyPassword.$error" role="alert">
+                        <div ng-messages="registration.verifyPassword.$error" role="alert">
                             <div ng-if="model.showError" class="text-danger">
                                 <div ng-message="required">Please verify password.</div>
                                 <div ng-message="minlength">Verify password is too short.</div>
@@ -50,7 +51,7 @@
                     <div class="col-sm-10">
                         <input name="inputEmail" ng-model="model.email" type="email" class="col-sm-10 form-control"
                                id="inputEmail" placeholder="Email">
-                        <div ng-messages="model.registration.inputEmail.$error" role="alert">
+                        <div ng-messages="registration.inputEmail.$error" role="alert">
                             <div ng-if="model.showError" class="text-danger">
                                 <div ng-message="email">Please enter a valid email.</div>
                             </div>

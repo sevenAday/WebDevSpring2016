@@ -5,34 +5,42 @@
         .module("DocumentCallaborationApp")
         .controller("RegisterController", RegisterController);
 
-    function RegisterController($location, UserService) {
+    function RegisterController($scope, $location, UserService) {
         var model = this;
         model.register = register;
 
         function register() {
             var newUser = null;
             model.showError = true;
-            delete model.registration.verifyPassword.$error.notMatching;
+            delete $scope.registration.verifyPassword.$error.notMatching;
+            delete $scope.registration.username.$error.duplicateUsername;
             if (model.password !== model.verifyPassword) {
-                model.registration.verifyPassword.$error = {"notMatching": true};
+                $scope.registration.verifyPassword.$error = {"notMatching": true};
             }
-            if (isNotEmpty(model.registration.username.$error)
-                || isNotEmpty(model.registration.password.$error)
-                || isNotEmpty(model.registration.verifyPassword.$error)
-                || isNotEmpty(model.registration.inputEmail.$error)) {
+            if (isNotEmpty($scope.registration.username.$error)
+                || isNotEmpty($scope.registration.password.$error)
+                || isNotEmpty($scope.registration.verifyPassword.$error)
+                || isNotEmpty($scope.registration.inputEmail.$error)) {
                 return;
             }
-            newUser = {
-                "username": model.username,
-                "password": model.password,
-                "email": model.email,
-                "roles": ["Not specified"],
-                "commentedOn": []
-            };
-            UserService.createUser(newUser)
+            UserService.findUserByUsername(model.username)
                 .then(function (response) {
-                    UserService.setCurrentUser(response.data);
-                    $location.path("/profile");
+                    if (response.data) {
+                        $scope.registration.username.$error = {"duplicateUsername": true};
+                    } else {
+                        newUser = {
+                            "username": model.username,
+                            "password": model.password,
+                            "email": model.email,
+                            "roles": ["Not specified"],
+                            "commentedOn": []
+                        };
+                        UserService.createUser(newUser)
+                            .then(function (response) {
+                                UserService.setCurrentUser(response.data);
+                                $location.path("/profile");
+                            });
+                    }
                 });
         }
 

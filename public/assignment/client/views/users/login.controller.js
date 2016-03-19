@@ -17,7 +17,10 @@
                     .then(function (response) {
                         UserService.setCurrentUser(response.data);
                         if (!!$rootScope.user) {
-                            if ($rootScope.user.roles.indexOf("admin") != -1) {
+                            var userRoles = $rootScope.user.roles.map(function (role) {
+                                return role.toLowerCase();
+                            });
+                            if (userRoles.indexOf("admin") >= 0 || userRoles.indexOf("administrator") >= 0) {
                                 $rootScope.isAdmin = true;
                             }
                             $location.path("/profile");
