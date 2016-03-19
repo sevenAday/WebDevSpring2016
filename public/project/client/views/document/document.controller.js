@@ -199,6 +199,8 @@
                 $scope.likeMessage = $scope.likeMessage + "and " + (like.length - 1) + " others ";
                 $scope.showAll = false;
                 addToLike(like.length, youIdx);
+            } else {
+                addToLike(like.length, youIdx);
             }
         }
 
@@ -212,25 +214,31 @@
 
         function expandAllLikers() {
             var like = $rootScope.document.like;
-            for (var idx = 0; idx < like.length; idx++) {
-                UserService.findUserById(like[idx])
-                    .then(function (response) {
-                        var user = response.data;
-                        if (idx === 0) {
-                            $scope.likeMessage = user.firstName + " " + user.lastName;
-                        } else if (idx == (like.length - 1)) {
-                            $scope.likeMessage = $scope.likeMessage + " and " + user.firstName + " " + user.lastName;
-                        } else {
-                            $scope.likeMessage = $scope.likeMessage + ", " + user.firstName + " " + user.lastName;
-                        }
-                        if (like.length == 1) {
-                            $scope.likeMessage = $scope.likeMessage + " likes this";
-                        } else {
-                            $scope.likeMessage = $scope.likeMessage + " like this";
-                        }
-                        $scope.showAll = true;
-                    });
+            expandThatLiker(like, 0);
+        }
+
+        function expandThatLiker(like, idx) {
+            if (idx >= like.length) {
+                if (like.length == 1) {
+                    $scope.likeMessage = $scope.likeMessage + " likes this";
+                } else {
+                    $scope.likeMessage = $scope.likeMessage + " like this";
+                }
+                $scope.showAll = true;
+                return;
             }
+            UserService.findUserById(like[idx])
+                .then(function (response) {
+                    var user = response.data;
+                    if (idx === 0) {
+                        $scope.likeMessage = user.firstName + " " + user.lastName;
+                    } else if (idx == (like.length - 1)) {
+                        $scope.likeMessage = $scope.likeMessage + " and " + user.firstName + " " + user.lastName;
+                    } else {
+                        $scope.likeMessage = $scope.likeMessage + ", " + user.firstName + " " + user.lastName;
+                    }
+                    expandThatLiker(like, idx + 1);
+                });
         }
 
         function rateDocument(liked) {

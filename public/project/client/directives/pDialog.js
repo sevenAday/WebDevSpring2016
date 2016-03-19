@@ -10,7 +10,6 @@
             controller: "DocumentController",
             link: function ($scope) {
                 $scope.$on("toggleDialog", function (event, args) {
-                    $scope.definition = args;
                     $(function () {
                         if (args.text) {
                             $("#definitionDialog").html(args.text);
