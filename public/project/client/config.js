@@ -12,25 +12,33 @@
                 controller: "HomeController",
                 controllerAs: "model",
                 resolve: {
-                    getLoggedIn: getLoggedIn
+                    getLoggedIn: getLoggedIn,
+                    getAdminSettings: getAdminSettings
                 }
             })
             .when("/register", {
                 templateUrl: "views/users/register.view.html",
                 controller: "RegisterController",
-                controllerAs: "model"
+                controllerAs: "model",
+                resolve: {
+                    getAdminSettings: getAdminSettings
+                }
             })
             .when("/login", {
                 templateUrl: "views/users/login.view.html",
                 controller: "LoginController",
-                controllerAs: "model"
+                controllerAs: "model",
+                resolve: {
+                    getAdminSettings: getAdminSettings
+                }
             })
             .when("/profile", {
                 templateUrl: "views/users/profile.view.html",
                 controller: "ProfileController",
                 controllerAs: "model",
                 resolve: {
-                    checkLoggedIn: checkLoggedIn
+                    checkLoggedIn: checkLoggedIn,
+                    getAdminSettings: getAdminSettings
                 }
             })
             .when("/admin", {
@@ -38,7 +46,8 @@
                 controller: "AdminController",
                 controllerAs: "model",
                 resolve: {
-                    checkLoggedIn: checkLoggedIn
+                    checkLoggedIn: checkLoggedIn,
+                    getAdminSettings: getAdminSettings
                 }
             })
             .when("/username", {
@@ -46,7 +55,8 @@
                 controller: "ProfileController",
                 controllerAs: "model",
                 resolve: {
-                    checkLoggedIn: checkLoggedIn
+                    checkLoggedIn: checkLoggedIn,
+                    getAdminSettings: getAdminSettings
                 }
             })
             .when("/document", {
@@ -54,7 +64,8 @@
                 controller: "DocumentController",
                 controllerAs: "model",
                 resolve: {
-                    checkLoggedIn: checkLoggedIn
+                    checkLoggedIn: checkLoggedIn,
+                    getAdminSettings: getAdminSettings
                 }
             })
             .when("/document/:documentId", {
@@ -62,18 +73,25 @@
                 controller: "DocumentController",
                 controllerAs: "model",
                 resolve: {
-                    checkLoggedIn: checkLoggedIn
+                    checkLoggedIn: checkLoggedIn,
+                    getAdminSettings: getAdminSettings
                 }
             })
             .when("/results", {
                 templateUrl: "views/search/results.view.html",
                 controller: "ResultsController",
-                controllerAs: "model"
+                controllerAs: "model",
+                resolve: {
+                    getAdminSettings: getAdminSettings
+                }
             })
             .when("/results/:keyWord", {
                 templateUrl: "views/search/results.view.html",
                 controller: "ResultsController",
-                controllerAs: "model"
+                controllerAs: "model",
+                resolve: {
+                    getAdminSettings: getAdminSettings
+                }
             })
             .otherwise({
                 redirectTo: "/home"
@@ -96,7 +114,6 @@
     }
 
     function checkLoggedIn(UserService, $q, $location) {
-
         var deferred = $q.defer();
 
         UserService
@@ -110,6 +127,23 @@
                     deferred.reject();
                     $location.url("/home");
                 }
+            });
+
+        return deferred.promise;
+    }
+
+    function getAdminSettings(AdminService, $rootScope, $q) {
+        var deferred = $q.defer();
+
+        AdminService.getAllAdminSettings()
+            .then(function (response) {
+                $rootScope.alertMessageToAll = response.data.alertMessage;
+                if ($rootScope.alertMessageToAll.length > 0) {
+                    $rootScope.showAlertMessage = true;
+                }
+                $rootScope.numberOfPages = response.data.numberOfPages;
+                $rootScope.numberOfActivities = response.data.numberOfActivities;
+                deferred.resolve();
             });
 
         return deferred.promise;

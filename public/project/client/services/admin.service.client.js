@@ -5,28 +5,18 @@
         .module("DocumentCallaborationApp")
         .factory("AdminService", AdminService);
 
-    function AdminService($http, $rootScope) {
+    function AdminService($http) {
 
         var service = {
-            getAdminAlertMessage: getAdminAlertMessage,
-            getNumberOfPages: getNumberOfPages,
-            getNumberOfActivities: getNumberOfActivities,
+            getAllAdminSettings: getAllAdminSettings,
             saveAdminAlertMessage: saveAdminAlertMessage,
             saveNumberOfPages: saveNumberOfPages,
             saveNumberOfActivities: saveNumberOfActivities
         };
         return service;
 
-        function getAdminAlertMessage() {
-            return $http.get("/api/project/admin/alertmessage");
-        }
-
-        function getNumberOfPages() {
-            return $http.get("/api/project/admin/numberofpages");
-        }
-
-        function getNumberOfActivities() {
-            return $http.get("/api/project/admin/numberofactivities");
+        function getAllAdminSettings() {
+            return $http.get("/api/project/admin");
         }
 
         function saveAdminAlertMessage(alertMessage) {

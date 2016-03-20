@@ -1,24 +1,14 @@
 module.exports = function (app, adminModel) {
-    app.get("/api/project/admin/alertmessage", getAdminAlertMessage);
-    app.get("/api/project/admin/numberofpages", getNumberOfPages);
-    app.get("/api/project/admin/numberofactivities", getNumberOfActivities);
+    app.get("/api/project/admin", getAllAdminSettings);
     app.post("/api/project/admin/alertmessage", saveAdminAlertMessage);
     app.post("/api/project/admin/numberofpages", saveNumberOfPages);
     app.post("/api/project/admin/numberofactivities", saveNumberOfActivities);
 
-    function getAdminAlertMessage(req, res) {
-        var adminAlertMessage = adminModel.getAdminAlertMessage();
-        res.json({"value": adminAlertMessage});
-    }
-
-    function getNumberOfPages(req, res) {
-        var numberOfPages = adminModel.getNumberOfPages();
-        res.json({"value": numberOfPages});
-    }
-
-    function getNumberOfActivities(req, res) {
-        var numberOfActivities = adminModel.getNumberOfActivities();
-        res.json({"value": numberOfActivities});
+    function getAllAdminSettings(req, res) {
+        res.json({"alertMessage": adminModel.getAdminAlertMessage(),
+            "numberOfPages": adminModel.getNumberOfPages(),
+            "numberOfActivities": adminModel.getNumberOfActivities()
+        });
     }
 
     function saveAdminAlertMessage(req, res) {
