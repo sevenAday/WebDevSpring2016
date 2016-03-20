@@ -8,17 +8,17 @@ module.exports = function (app, adminModel) {
 
     function getAdminAlertMessage(req, res) {
         var adminAlertMessage = adminModel.getAdminAlertMessage();
-        res.json(adminAlertMessage);
+        res.send(adminAlertMessage);
     }
 
     function getNumberOfPages(req, res) {
         var numberOfPages = adminModel.getNumberOfPages();
-        res.json(numberOfPages);
+        res.send(numberOfPages);
     }
 
     function getNumberOfActivities(req, res) {
         var numberOfActivities = adminModel.getNumberOfActivities();
-        res.json(numberOfActivities);
+        res.send(numberOfActivities);
     }
 
     function saveAdminAlertMessage(req, res) {

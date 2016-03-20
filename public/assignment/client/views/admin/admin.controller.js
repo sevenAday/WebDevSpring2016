@@ -44,20 +44,29 @@
 
         function addUser() {
             if ($scope.username && $scope.password && $scope.role) {
-                var newUser = {
-                    "username": $scope.username,
-                    "password": $scope.password,
-                    "roles": $scope.role.replace(/\s/g, "").split("|")
-                };
-                if ($scope.username && $scope.password && $scope.role && $rootScope.user && $rootScope.isAdmin) {
-                    UserService.createUser(newUser)
-                        .then(function (response) {
-                            populateUsers(response.data);
-                            $scope.username = "";
+                UserService.findUserByUsername($scope.username)
+                    .then(function (response) {
+                        if (response.data) {
+                            $scope.username = "Invalid username!!!";
                             $scope.password = "";
                             $scope.role = "";
-                        });
-                }
+                        } else {
+                            var newUser = {
+                                "username": $scope.username,
+                                "password": $scope.password,
+                                "roles": $scope.role.replace(/\s/g, "").split("|")
+                            };
+                            if ($scope.username && $scope.password && $scope.role && $rootScope.user && $rootScope.isAdmin) {
+                                UserService.createUser(newUser)
+                                    .then(function (response) {
+                                        populateUsers(response.data);
+                                        $scope.username = "";
+                                        $scope.password = "";
+                                        $scope.role = "";
+                                    });
+                            }
+                        }
+                    });
             }
         }
 
