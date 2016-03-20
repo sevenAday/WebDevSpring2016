@@ -156,8 +156,24 @@
             model.definition = "No definitions found";
             if (response) {
                 if (response.tuc) {
-                    if (response.tuc.length > 0) {
-                        model.definition = response.tuc[0].meanings[0];
+                    var tl = response.tuc.length;
+                    if (tl > 0) {
+                        model.definition = "";
+                        var fl = response.tuc[0].meanings.length;
+                        for (var idx = 0; idx < fl; idx++) {
+                            if (idx >= 3) {
+                                break;
+                            }
+                            model.definition += ("(" + (idx + 1) + ") " + response.tuc[0].meanings[idx].text + " ");
+                        }
+                        if (fl < 3) {
+                            if (tl > (3 - fl)) {
+                                tl = 3 - fl;
+                            }
+                            for (var idx = 0; idx < tl; idx++) {
+                                model.definition += "(" + (fl + idx + 1) + ") " + response.tuc[idx].meanings[0].text  + " ";
+                            }
+                        }
                     }
                 }
             }

@@ -5,7 +5,7 @@
         .module("DocumentCallaborationApp")
         .controller("AdminController", AdminController);
 
-    function AdminController($rootScope, $location, UserService, DocumentService, CommentService) {
+    function AdminController($rootScope, $location, UserService, DocumentService, CommentService, AdminService) {
         var model = this;
         var selectedUserIndex = -1;
 
@@ -136,20 +136,24 @@
         }
 
         function postAlertMessage() {
+            AdminService.saveAdminAlertMessage({"value": model.alertMessage});
             $rootScope.showAlertMessage = true;
             $rootScope.alertMessageToAll = model.alertMessage;
         }
 
         function removeAlertMessage() {
+            AdminService.saveAdminAlertMessage({"value": ""});
             $rootScope.showAlertMessage = false;
             model.alertMessage = "";
         }
 
         function updateNumberOfPages() {
+            AdminService.saveNumberOfPages({"value": model.numberOfRecentPages});
             $rootScope.numberOfPages = model.numberOfRecentPages;
         }
 
         function updateNumberOfActivities() {
+            AdminService.saveNumberOfActivities({"value": model.numberOfRecentActivities});
             $rootScope.numberOfActivities = model.numberOfRecentActivities;
         }
     }
