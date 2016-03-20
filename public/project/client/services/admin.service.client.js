@@ -27,7 +27,7 @@
             return $http.post("/api/project/admin/numberofpages", numberOfPages);
         }
 
-        function saveNumberOfActivities() {
+        function saveNumberOfActivities(numberOfActivities) {
             return $http.post("/api/project/admin/numberofactivities", numberOfActivities);
         }
     }
