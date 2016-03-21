@@ -88,7 +88,10 @@ module.exports = function (uuid) {
     function addCommentedOnByUserId(userId, documentId) {
         for (var u in mock) {
             if (mock[u]._id == userId) {
-                mock[u].commentedOn.push(documentId);
+                var commentIdx = mock[u].commentedOn.indexOf(documentId);
+                if (commentIdx == -1) {
+                    mock[u].commentedOn.push(documentId);
+                }
                 return mock[u].commentedOn;
             }
         }

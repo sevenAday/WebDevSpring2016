@@ -11,35 +11,38 @@
 
         function init() {
             model.documents = [];
-            DocumentService.getAllDocuments(function (documents) {
-                documents.forEach(function (document) {
-                    var asbtractStr = "";
-                    if (document.content) {
-                        asbtractStr = document.content.substring(0, 160);
+            DocumentService.getAllDocuments()
+                .then(function (response) {
+                    var allDocuments = response.data;
+                    allDocuments.forEach(function (document) {
+                        var asbtractStr = "";
+                        if (document.content) {
+                            asbtractStr = document.content.substring(0, 160);
+                        }
+                        var newDocument = {
+                            "_id": document._id,
+                            "userId": document.userId,
+                            "title": document.title,
+                            "content": document.content,
+                            "abstract": asbtractStr,
+                            "lastModified": document.lastModified,
+                            "like": document.like,
+                            "comment": document.comment
+                        };
+                        model.documents.push(newDocument);
+                    });
+
+                    model.documents.sort(function (x, y) {
+                        var xDate = x.lastModified;
+                        var yDate = y.lastModified;
+                        return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
+                    });
+
+                    if ($rootScope.numberOfPages < model.documents.length) {
+                        model.documents.splice($rootScope.numberOfPages,
+                            model.documents.length - $rootScope.numberOfPages);
                     }
-                    var newDocument = {
-                        "_id": document._id,
-                        "userId": document.userId,
-                        "title": document.title,
-                        "content": document.content,
-                        "abstract": asbtractStr,
-                        "lastModified": document.lastModified,
-                        "like": document.like,
-                        "comment": document.comment
-                    };
-                    model.documents.push(newDocument);
                 });
-            });
-
-            model.documents.sort(function (x, y) {
-                var xDate = x.lastModified;
-                var yDate = y.lastModified;
-                return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
-            });
-
-            if ($rootScope.numberOfPages < model.documents.length) {
-                model.documents.splice($rootScope.numberOfPages, model.documents.length - $rootScope.numberOfPages);
-            }
         }
 
         init();

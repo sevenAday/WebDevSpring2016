@@ -22,36 +22,38 @@
                 model.documents = [];
                 model.likedDocuments = [];
                 model.documentsCommentedOn = [];
-                DocumentService.getDocumentsModifiedByUserId($rootScope.user._id, function (documents) {
-                    documents.forEach(function (document) {
-                        var asbtractStr;
-                        if (document.content) {
-                            asbtractStr = document.content.substring(0, 160);
-                        }
-                        var newDocument = {
-                            "_id": document._id,
-                            "userId": document.userId,
-                            "title": document.title,
-                            "content": document.content,
-                            "abstract": asbtractStr,
-                            "lastModified": document.lastModified,
-                            "like": document.like,
-                            "comment": document.comment
-                        };
-                        model.documents.push(newDocument);
-                    });
+                DocumentService.getDocumentsModifiedByUserId($rootScope.user._id)
+                    .then(function (response) {
+                        var foundDocuments = response.data;
+                        foundDocuments.forEach(function (document) {
+                            var asbtractStr;
+                            if (document.content) {
+                                asbtractStr = document.content.substring(0, 160);
+                            }
+                            var newDocument = {
+                                "_id": document._id,
+                                "userId": document.userId,
+                                "title": document.title,
+                                "content": document.content,
+                                "abstract": asbtractStr,
+                                "lastModified": document.lastModified,
+                                "like": document.like,
+                                "comment": document.comment
+                            };
+                            model.documents.push(newDocument);
 
-                    model.documents.sort(function (x, y) {
-                        var xDate = x.lastModified;
-                        var yDate = y.lastModified;
-                        return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
-                    });
+                            model.documents.sort(function (x, y) {
+                                var xDate = x.lastModified;
+                                var yDate = y.lastModified;
+                                return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
+                            });
 
-                    if ($rootScope.numberOfActivities < model.documents.length) {
-                        model.documents.splice($rootScope.numberOfActivities,
-                            model.documents.length - $rootScope.numberOfActivities);
-                    }
-                });
+                            if ($rootScope.numberOfActivities < model.documents.length) {
+                                model.documents.splice($rootScope.numberOfActivities,
+                                    model.documents.length - $rootScope.numberOfActivities);
+                            }
+                        });
+                    });
 
                 DocumentService.getDocumentsLikedByUserId($rootScope.user._id, function (documents) {
                     documents.forEach(function (document) {
