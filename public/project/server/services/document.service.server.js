@@ -10,6 +10,8 @@ module.exports = function (app, documentModel) {
     app.post("/api/project/document/:id/comment/:commentId", addCommentIdToDocummentId);
     app.get("/api/project/document/:id", getDocumentById);
     app.get("/api/project/document/like/user/:userId", getDocumentsLikedByUserId);
+    app.delete("/api/project/document/like/user/:userId", removeAllLikeUserIds);
+    app.delete("/api/project/document/commentIds", removeAllCommentIds);
 
     function getAllDocuments(req, res) {
         var documents = documentModel.getAllDocuments();
@@ -79,5 +81,17 @@ module.exports = function (app, documentModel) {
         var userId = req.params.userId;
         var documents = documentModel.getDocumentsLikedByUserId(userId);
         res.json(documents);
+    }
+
+    function removeAllLikeUserIds(req, res) {
+        var userId = req.params.userId;
+        var documents = documentModel.removeAllLikeUserIds(userId);
+        res.json(documents);
+    }
+
+    function removeAllCommentIds(req, res) {
+        var commentIds = req.body;
+        var documents = documentModel.removeAllCommentIds(commentIds);
+        res.send(200);
     }
 };

@@ -11,7 +11,9 @@ module.exports = function (uuid) {
         deleteCommentIdxFromDocumentId: deleteCommentIdxFromDocumentId,
         addCommentIdToDocummentId: addCommentIdToDocummentId,
         getDocumentById: getDocumentById,
-        getDocumentsLikedByUserId: getDocumentsLikedByUserId
+        getDocumentsLikedByUserId: getDocumentsLikedByUserId,
+        removeAllLikeUserIds: removeAllLikeUserIds,
+        removeAllCommentIds: removeAllCommentIds
     };
     return api;
 
@@ -125,5 +127,26 @@ module.exports = function (uuid) {
             }
         }
         return likedDocuments;
+    }
+
+    function removeAllLikeUserIds(userId) {
+        for (var d in mock) {
+            var likedIdx = mock[d].like.indexOf(userId);
+            if (likedIdx >= 0) {
+                mock[d].like.splice(likedIdx, 1);
+            }
+        }
+        return mock;
+    }
+
+    function removeAllCommentIds(commentIds) {
+        for (var d in mock) {
+            for (var c in mock[d].comment) {
+                var commentIdx = commentIds.indexOf(mock[d].comment[c]);
+                if (commentIdx >= 0) {
+                    mock[d].comment.splice(c, 1);
+                }
+            }
+        }
     }
 };

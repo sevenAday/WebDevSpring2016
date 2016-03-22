@@ -93,17 +93,18 @@
         }
 
         function deleteUser($index) {
-            DocumentService.removeAllLikeUserIds(model.users[$index]._id, function (documents) {
-                CommentService.removeAllUserComments(model.users[$index]._id)
-                    .then(function (response) {
-                        var commentIds = response.data;
-                        DocumentService.removeAllCommentIds(commentIds);
-                        UserService.deleteUserById(model.users[$index]._id)
-                            .then(function (response) {
-                                model.users.splice($index, 1);
-                            });
-                    });
-            });
+            DocumentService.removeAllLikeUserIds(model.users[$index]._id)
+                .then(function (response) {
+                    CommentService.removeAllUserComments(model.users[$index]._id)
+                        .then(function (response) {
+                            var commentIds = response.data;
+                            DocumentService.removeAllCommentIds(commentIds);
+                            UserService.deleteUserById(model.users[$index]._id)
+                                .then(function (response) {
+                                    model.users.splice($index, 1);
+                                });
+                        });
+                });
         }
 
         function selectUser($index) {

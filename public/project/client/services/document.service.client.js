@@ -64,35 +64,16 @@
             return $http.get("/api/project/document/" + documentId);
         }
 
-        function getDocumentsLikedByUserId(userId, callback) {
-            var likedDocuments = [];
-            for (var idx = 0; idx < documents.length; idx++) {
-                if (documents[idx].like.indexOf(userId) >= 0) {
-                    likedDocuments.push(documents[idx]);
-                }
-            }
-            return callback(likedDocuments);
+        function getDocumentsLikedByUserId(userId) {
+            return $http.get("/api/project/document/like/user/" + userId);
         }
 
-        function removeAllLikeUserIds(userId, callback) {
-            for (var idx = 0; idx < documents.length; idx++) {
-                var likedIdx = documents[idx].like.indexOf(userId);
-                if (likedIdx >= 0) {
-                    documents[idx].like.splice(likedIdx, 1);
-                }
-            }
-            return callback(documents);
+        function removeAllLikeUserIds(userId) {
+            return $http.delete("/api/project/document/like/user/" + userId);
         }
 
         function removeAllCommentIds(commentIds) {
-            for (var idx = 0; idx < documents.length; idx++) {
-                for (var idy = 0; idy < documents[idx].comment.length; idy++) {
-                    var commentIdx = commentIds.indexOf(documents[idx].comment[idy]);
-                    if (commentIdx >= 0) {
-                        documents[idx].comment.splice(idy, 1);
-                    }
-                }
-            }
+            return $http.delete("/api/project/document/commentIds", commentIds);
         }
     }
 }());
