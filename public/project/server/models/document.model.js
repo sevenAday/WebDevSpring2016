@@ -4,7 +4,10 @@ module.exports = function (uuid) {
         getAllDocuments: getAllDocuments,
         updateDocumentById: updateDocumentById,
         addNewDocument: addNewDocument,
-        getDocumentsModifiedByUserId: getDocumentsModifiedByUserId
+        getDocumentsModifiedByUserId: getDocumentsModifiedByUserId,
+        deleteDocumentById: deleteDocumentById,
+        likeDocument: likeDocument,
+        unlikeDocument: unlikeDocument
     };
     return api;
 
@@ -41,5 +44,43 @@ module.exports = function (uuid) {
         }
         return foundDocuments;
 
+    }
+
+    function deleteDocumentById(documentId) {
+        var idx = -1;
+        var comments = null;
+        for (var d in mock) {
+            if (mock[d]._id == documentId) {
+                comments = mock[d].comment;
+                mock.splice(d, 1);
+                break;
+            }
+        }
+        return comments;
+    }
+
+    function likeDocument(documentId, userId) {
+        for (var d in mock) {
+            if (mock[d]._id == documentId) {
+                mock[d].like.push(userId);
+                return mock[d].like;
+            }
+        }
+        return [];
+    }
+
+    function unlikeDocument(documentId, userId) {
+        for (var d in mock) {
+            if (mock[d]._id == documentId) {
+                for (var l in mock[d].like) {
+                    if (mock[d].like[l] == userId) {
+                        mock[d].like.splice(l, 1);
+                        break;
+                    }
+                }
+                return mock[d].like;
+            }
+        }
+        return [];
     }
 };

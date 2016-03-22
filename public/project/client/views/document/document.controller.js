@@ -188,15 +188,17 @@
         }
 
         function deleteDocument() {
-            DocumentService.deleteDocumentById($rootScope.document._id, function (commentIds) {
-                commentIds.forEach(function (commentId) {
-                    CommentService.deleteCommentById(commentId)
-                        .then(function (response) {
-                            $rootScope.document = null;
-                            $location.url("/home");
-                        });
+            DocumentService.deleteDocumentById($rootScope.document._id)
+                .then(function (response) {
+                    var commentIds = response.data;
+                    commentIds.forEach(function (commentId) {
+                        CommentService.deleteCommentById(commentId)
+                            .then(function (response) {
+                                $rootScope.document = null;
+                                $location.url("/home");
+                            });
+                    });
                 });
-            });
         }
 
         function getLikeInformation() {
@@ -282,13 +284,14 @@
         }
 
         function rateDocument(liked) {
-            DocumentService.rateDocument($rootScope.document._id, $rootScope.user._id, liked, function (like) {
-                $rootScope.document.like = like;
-                if (!liked) {
-                    model.youLike = false;
-                }
-            });
-            getLikeInformation();
+            DocumentService.rateDocument($rootScope.document._id, $rootScope.user._id, liked)
+                .then(function (response) {
+                    $rootScope.document.like = response.data;
+                    if (!liked) {
+                        model.youLike = false;
+                    }
+                    getLikeInformation();
+                });
         }
 
         function getComments() {

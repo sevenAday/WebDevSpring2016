@@ -40,36 +40,15 @@
             return $http.post("/api/project/document", newDocument);
         }
 
-        function deleteDocumentById(documentId, callback) {
-            var idx = -1;
-            var comments;
-            for (idx = 0; idx < documents.length; idx++) {
-                if (documents[idx]._id == documentId) {
-                    comments = documents[idx].comment;
-                    break;
-                }
-            }
-            if (idx >= 0) {
-                documents.splice(idx, 1);
-                callback(comments);
-            }
+        function deleteDocumentById(documentId) {
+            return $http.delete("/api/project/document/" + documentId);
         }
 
-        function rateDocument(documentId, userId, liked, callback) {
-            for (var idx = 0; idx < documents.length; idx++) {
-                if (documents[idx]._id == documentId) {
-                    if (liked) {
-                        documents[idx].like.push(userId);
-                    } else {
-                        for (var idy = 0; idy < documents[idx].like.length; idy++) {
-                            if (documents[idx].like[idy] == userId) {
-                                documents[idx].like.splice(idy, 1);
-                                break;
-                            }
-                        }
-                    }
-                    return callback(documents[idx].like);
-                }
+        function rateDocument(documentId, userId, liked) {
+            if (liked) {
+                return $http.post("/api/project/document/" + documentId + "/user/" + userId + "/like");
+            } else {
+                return $http.post("/api/project/document/" + documentId + "/user/" + userId + "/unlike");
             }
         }
 

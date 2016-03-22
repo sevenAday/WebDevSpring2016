@@ -52,11 +52,56 @@
                                 model.documents.splice($rootScope.numberOfActivities,
                                     model.documents.length - $rootScope.numberOfActivities);
                             }
+
+                            getDocumentsLikedByUserIdNext();
                         });
                     });
+            } else {
+                $location.path("/login");
+            }
+        }
 
-                DocumentService.getDocumentsLikedByUserId($rootScope.user._id, function (documents) {
-                    documents.forEach(function (document) {
+        init();
+
+        function getDocumentsLikedByUserIdNext() {
+            DocumentService.getDocumentsLikedByUserId($rootScope.user._id, function (documents) {
+                documents.forEach(function (document) {
+                    var asbtractStr = "";
+                    if (document.content) {
+                        asbtractStr = document.content.substring(0, 160);
+                    }
+                    var newDocument = {
+                        "_id": document._id,
+                        "userId": document.userId,
+                        "title": document.title,
+                        "content": document.content,
+                        "abstract": asbtractStr,
+                        "lastModified": document.lastModified,
+                        "like": document.like,
+                        "comment": document.comment
+                    };
+                    model.likedDocuments.push(newDocument);
+                });
+
+                model.likedDocuments.sort(function (x, y) {
+                    var xDate = x.lastModified;
+                    var yDate = y.lastModified;
+                    return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
+                });
+
+                if ($rootScope.numberOfActivities < model.likedDocuments.length) {
+                    model.likedDocuments.splice($rootScope.numberOfActivities,
+                        model.likedDocuments.length - $rootScope.numberOfActivities);
+                }
+
+                getCommentedOnNext();
+            });
+        }
+
+        function getCommentedOnNext() {
+            if ($rootScope.user.commentedOn) {
+                $rootScope.user.commentedOn.forEach(function (documentId) {
+                    DocumentService.getDocumentById(documentId, function (document) {
                         var asbtractStr = "";
                         if (document.content) {
                             asbtractStr = document.content.substring(0, 160);
@@ -71,59 +116,22 @@
                             "like": document.like,
                             "comment": document.comment
                         };
-                        model.likedDocuments.push(newDocument);
+                        model.documentsCommentedOn.push(newDocument);
                     });
-
-                    model.likedDocuments.sort(function (x, y) {
-                        var xDate = x.lastModified;
-                        var yDate = y.lastModified;
-                        return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
-                    });
-
-                    if ($rootScope.numberOfActivities < model.likedDocuments.length) {
-                        model.likedDocuments.splice($rootScope.numberOfActivities,
-                            model.likedDocuments.length - $rootScope.numberOfActivities);
-                    }
                 });
 
-                if ($rootScope.user.commentedOn) {
-                    $rootScope.user.commentedOn.forEach(function (documentId) {
-                        DocumentService.getDocumentById(documentId, function (document) {
-                            var asbtractStr = "";
-                            if (document.content) {
-                                asbtractStr = document.content.substring(0, 160);
-                            }
-                            var newDocument = {
-                                "_id": document._id,
-                                "userId": document.userId,
-                                "title": document.title,
-                                "content": document.content,
-                                "abstract": asbtractStr,
-                                "lastModified": document.lastModified,
-                                "like": document.like,
-                                "comment": document.comment
-                            };
-                            model.documentsCommentedOn.push(newDocument);
-                        });
-                    });
+                model.documentsCommentedOn.sort(function (x, y) {
+                    var xDate = x.lastModified;
+                    var yDate = y.lastModified;
+                    return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
+                });
 
-                    model.documentsCommentedOn.sort(function (x, y) {
-                        var xDate = x.lastModified;
-                        var yDate = y.lastModified;
-                        return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
-                    });
-
-                    if ($rootScope.numberOfActivities < model.documentsCommentedOn.length) {
-                        model.documentsCommentedOn.splice($rootScope.numberOfActivities,
-                            model.documentsCommentedOn.length - $rootScope.numberOfActivities);
-                    }
+                if ($rootScope.numberOfActivities < model.documentsCommentedOn.length) {
+                    model.documentsCommentedOn.splice($rootScope.numberOfActivities,
+                        model.documentsCommentedOn.length - $rootScope.numberOfActivities);
                 }
-            } else {
-                $location.path("/login");
             }
         }
-
-        init();
 
         function openDocument(documentType, $index) {
             if (documentType == 1) {

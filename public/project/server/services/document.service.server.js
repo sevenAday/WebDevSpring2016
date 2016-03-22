@@ -3,6 +3,9 @@ module.exports = function (app, documentModel) {
     app.put("/api/project/document/:id", updateDocumentById);
     app.post("/api/project/document", addNewDocument);
     app.get("/api/project/document/user/:userId", getDocumentsModifiedByUserId);
+    app.delete("/api/project/document/:id", deleteDocumentById);
+    app.post("/api/project/document/:id/user/:userId/like", likeDocument);
+    app.post("/api/project/document/:id/user/:userId/unlike", unlikeDocument)
 
     function getAllDocuments(req, res) {
         var documents = documentModel.getAllDocuments();
@@ -26,5 +29,25 @@ module.exports = function (app, documentModel) {
         var userId = req.params.userId;
         var documents = documentModel.getDocumentsModifiedByUserId(userId);
         res.json(documents);
+    }
+
+    function deleteDocumentById(req, res) {
+        var documentId = req.params.id;
+        var comments = documentModel.deleteDocumentById(documentId);
+        res.json(comments);
+    }
+
+    function likeDocument(req, res) {
+        var documentId = req.params.id;
+        var userId = req.params.userId;
+        var likes = documentModel.likeDocument(documentId, userId);
+        res.json(likes);
+    }
+
+    function unlikeDocument(req, res) {
+        var documentId = req.params.id;
+        var userId = req.params.userId;
+        var likes = documentModel.unlikeDocument(documentId, userId);
+        res.json(likes);
     }
 };
