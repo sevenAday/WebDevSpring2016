@@ -7,7 +7,10 @@ module.exports = function (uuid) {
         getDocumentsModifiedByUserId: getDocumentsModifiedByUserId,
         deleteDocumentById: deleteDocumentById,
         likeDocument: likeDocument,
-        unlikeDocument: unlikeDocument
+        unlikeDocument: unlikeDocument,
+        deleteCommentIdxFromDocumentId: deleteCommentIdxFromDocumentId,
+        addCommentIdToDocummentId: addCommentIdToDocummentId,
+        getDocumentById: getDocumentById
     };
     return api;
 
@@ -82,5 +85,34 @@ module.exports = function (uuid) {
             }
         }
         return [];
+    }
+
+    function deleteCommentIdxFromDocumentId(commentIdx, documentId) {
+        for (var d in mock) {
+            if (mock[d]._id == documentId) {
+                mock[d].comment.splice(commentIdx, 1);
+                return mock[d].comment;
+            }
+        }
+        return [];
+    }
+
+    function addCommentIdToDocummentId(commentId, documentId) {
+        for (var d in mock) {
+            if (mock[d]._id == documentId) {
+                mock[d].comment.push(commentId);
+                return mock[d].comment;
+            }
+        }
+        return [];
+    }
+
+    function getDocumentById(documentId) {
+        for (var d in mock) {
+            if (mock[d]._id == documentId) {
+                return mock[d];
+            }
+        }
+        return null;
     }
 };

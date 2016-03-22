@@ -5,7 +5,10 @@ module.exports = function (app, documentModel) {
     app.get("/api/project/document/user/:userId", getDocumentsModifiedByUserId);
     app.delete("/api/project/document/:id", deleteDocumentById);
     app.post("/api/project/document/:id/user/:userId/like", likeDocument);
-    app.post("/api/project/document/:id/user/:userId/unlike", unlikeDocument)
+    app.post("/api/project/document/:id/user/:userId/unlike", unlikeDocument);
+    app.delete("/api/project/document/:id/comment/:commentIndex", deleteCommentIdxFromDocumentId);
+    app.post("/api/project/document/:id/comment/:commentId", addCommentIdToDocummentId);
+    app.get("/api/project/document/:id", getDocumentById);
 
     function getAllDocuments(req, res) {
         var documents = documentModel.getAllDocuments();
@@ -49,5 +52,25 @@ module.exports = function (app, documentModel) {
         var userId = req.params.userId;
         var likes = documentModel.unlikeDocument(documentId, userId);
         res.json(likes);
+    }
+
+    function deleteCommentIdxFromDocumentId(req, res) {
+        var documentId = req.params.id;
+        var commentIdx = req.params.commentIndex;
+        var comments = documentModel.deleteCommentIdxFromDocumentId(commentIdx, documentId);
+        res.json(comments);
+    }
+
+    function addCommentIdToDocummentId(req, res) {
+        var documentId = req.params.id;
+        var commentId = req.params.commentId;
+        var comments = documentModel.addCommentIdToDocummentId(commentId, documentId);
+        res.json(comments);
+    }
+
+    function getDocumentById(req, res) {
+        var documentId = req.params.id;
+        var document = documentModel.getDocumentById(documentId);
+        res.json(document);
     }
 };

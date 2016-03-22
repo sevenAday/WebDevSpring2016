@@ -101,23 +101,25 @@
         function getCommentedOnNext() {
             if ($rootScope.user.commentedOn) {
                 $rootScope.user.commentedOn.forEach(function (documentId) {
-                    DocumentService.getDocumentById(documentId, function (document) {
-                        var asbtractStr = "";
-                        if (document.content) {
-                            asbtractStr = document.content.substring(0, 160);
-                        }
-                        var newDocument = {
-                            "_id": document._id,
-                            "userId": document.userId,
-                            "title": document.title,
-                            "content": document.content,
-                            "abstract": asbtractStr,
-                            "lastModified": document.lastModified,
-                            "like": document.like,
-                            "comment": document.comment
-                        };
-                        model.documentsCommentedOn.push(newDocument);
-                    });
+                    DocumentService.getDocumentById(documentId)
+                        .then(function (response) {
+                            var document = response.data;
+                            var asbtractStr = "";
+                            if (document.content) {
+                                asbtractStr = document.content.substring(0, 160);
+                            }
+                            var newDocument = {
+                                "_id": document._id,
+                                "userId": document.userId,
+                                "title": document.title,
+                                "content": document.content,
+                                "abstract": asbtractStr,
+                                "lastModified": document.lastModified,
+                                "like": document.like,
+                                "comment": document.comment
+                            };
+                            model.documentsCommentedOn.push(newDocument);
+                        });
                 });
 
                 model.documentsCommentedOn.sort(function (x, y) {

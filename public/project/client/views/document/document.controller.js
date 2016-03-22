@@ -30,14 +30,21 @@
             $rootScope.newDocument = true;
             if ($routeParams.documentId) {
                 $rootScope.document = null;
-                DocumentService.getDocumentById($routeParams.documentId, function (document) {
-                    $rootScope.document = document;
-                });
-                if ($rootScope.document) {
-                    $rootScope.editable = false;
-                    $rootScope.newDocument = false;
-                }
+                DocumentService.getDocumentById($routeParams.documentId)
+                    .then(function (response) {
+                        $rootScope.document = response.data;
+                        if ($rootScope.document) {
+                            $rootScope.editable = false;
+                            $rootScope.newDocument = false;
+                        }
+                        initializeDocument();
+                    });
             }
+        }
+
+        init();
+
+        function initializeDocument() {
             if ($rootScope.user && $rootScope.document) {
                 if (!$rootScope.user.firstName || !$rootScope.user.lastName) {
                     $location.url("/profile");
@@ -68,8 +75,6 @@
                 $location.path("/home");
             }
         }
-
-        init();
 
         function editDocument() {
             $rootScope.editable = true;
@@ -340,16 +345,17 @@
         }
 
         function deleteComment($index) {
-            DocumentService.deleteCommentIdxFromDocumentId($index, $rootScope.document._id, function (comment) {
-                CommentService.deleteCommentById(model.comments[$index]._id)
-                    .then(function (response) {
-                        model.comments.splice($index, 1);
-                        UserService.removeCommentedOnIdByUserId($rootScope.user._id, $rootScope.document._id)
-                            .then(function (response) {
-                                $rootScope.user.commentedOn = response.data;
-                            });
-                    });
-            });
+            DocumentService.deleteCommentIdxFromDocumentId($index, $rootScope.document._id)
+                .then(function (response) {
+                    CommentService.deleteCommentById(model.comments[$index]._id)
+                        .then(function (response) {
+                            model.comments.splice($index, 1);
+                            UserService.removeCommentedOnIdByUserId($rootScope.user._id, $rootScope.document._id)
+                                .then(function (response) {
+                                    $rootScope.user.commentedOn = response.data;
+                                });
+                        });
+                });
         }
 
         function createComment() {
@@ -364,21 +370,22 @@
             CommentService.addComment(newComment)
                 .then(function (response) {
                     var comment = response.data;
-                    DocumentService.addCommentIdToDocummentId(comment._id, $rootScope.document._id, function (comments) {
-                        var dd = comment.lastModified;
-                        model.comments.push({
-                            "_id": comment._id,
-                            "userId": comment.userId,
-                            "userName": "You",
-                            "content": comment.content,
-                            "commentDate": (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear()
-                        });
-                        UserService.addCommentedOnByUserId($rootScope.user._id, $rootScope.document._id)
-                            .then(function (response) {
-                                $rootScope.user.commentedOn = response.data;
-                                model.newCommentContent = "";
+                    DocumentService.addCommentIdToDocummentId(comment._id, $rootScope.document._id)
+                        .then(function (response) {
+                            var dd = comment.lastModified;
+                            model.comments.push({
+                                "_id": comment._id,
+                                "userId": comment.userId,
+                                "userName": "You",
+                                "content": comment.content,
+                                "commentDate": (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear()
                             });
-                    });
+                            UserService.addCommentedOnByUserId($rootScope.user._id, $rootScope.document._id)
+                                .then(function (response) {
+                                    $rootScope.user.commentedOn = response.data;
+                                    model.newCommentContent = "";
+                                });
+                        });
                 });
         }
     }

@@ -52,30 +52,16 @@
             }
         }
 
-        function deleteCommentIdxFromDocumentId(commentIdx, documentId, callback) {
-            for (var idx = 0; idx < documents.length; idx++) {
-                if (documents[idx]._id == documentId) {
-                    documents[idx].comment.splice(commentIdx, 1);
-                    return callback(documents[idx].comment);
-                }
-            }
+        function deleteCommentIdxFromDocumentId(commentIdx, documentId) {
+            return $http.delete("/api/project/document/" + documentId + "/comment/" + commentIdx);
         }
 
-        function addCommentIdToDocummentId(commentId, documentId, callback) {
-            for (var idx = 0; idx < documents.length; idx++) {
-                if (documents[idx]._id == documentId) {
-                    documents[idx].comment.push(commentId);
-                    return callback(documents[idx].comment);
-                }
-            }
+        function addCommentIdToDocummentId(commentId, documentId) {
+            return $http.post("/api/project/document/" + documentId + "/comment/" + commentId);
         }
 
-        function getDocumentById(documentId, callback) {
-            for (var idx = 0; idx < documents.length; idx++) {
-                if (documents[idx]._id == documentId) {
-                    return callback(documents[idx]);
-                }
-            }
+        function getDocumentById(documentId) {
+            return $http.get("/api/project/document/" + documentId);
         }
 
         function getDocumentsLikedByUserId(userId, callback) {
