@@ -10,7 +10,8 @@ module.exports = function (uuid) {
         unlikeDocument: unlikeDocument,
         deleteCommentIdxFromDocumentId: deleteCommentIdxFromDocumentId,
         addCommentIdToDocummentId: addCommentIdToDocummentId,
-        getDocumentById: getDocumentById
+        getDocumentById: getDocumentById,
+        getDocumentsLikedByUserId: getDocumentsLikedByUserId
     };
     return api;
 
@@ -114,5 +115,15 @@ module.exports = function (uuid) {
             }
         }
         return null;
+    }
+
+    function getDocumentsLikedByUserId(userId) {
+        var likedDocuments = [];
+        for (var d in mock) {
+            if (mock[d].like.indexOf(userId) >= 0) {
+                likedDocuments.push(mock[d]);
+            }
+        }
+        return likedDocuments;
     }
 };
