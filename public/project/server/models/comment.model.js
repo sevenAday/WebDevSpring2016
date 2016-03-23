@@ -21,7 +21,7 @@ module.exports = function (uuid) {
     function deleteCommentById(commentId) {
         for (var c in mock) {
             if (mock[c]._id == commentId) {
-                mock.splice(u, 1);
+                mock.splice(c, 1);
                 break;
             }
         }
@@ -32,7 +32,7 @@ module.exports = function (uuid) {
         for (var c in mock) {
             if (mock[c]._id == commentId) {
                 mock[c].content = commentContent;
-                mock[c].lastModified = new Date();
+                mock[c].lastModified = (new Date()).toJSON();
                 return mock[c];
             }
         }
@@ -43,7 +43,7 @@ module.exports = function (uuid) {
         var newComment = {
             "_id": uuid.v1(),
             "userId": comment.userId,
-            "lastModified": new Date(),
+            "lastModified": (new Date()).toJSON(),
             "content": comment.content
         };
         mock.push(newComment);
@@ -55,7 +55,7 @@ module.exports = function (uuid) {
         for (var c in mock) {
             if (mock[c].userId == userId) {
                 removedCommentIds.push(mock[c]._id);
-                mock.splice(u, 1);
+                mock.splice(c, 1);
             }
         }
         return removedCommentIds;

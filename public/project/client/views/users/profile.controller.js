@@ -41,20 +41,20 @@
                                 "comment": document.comment
                             };
                             model.documents.push(newDocument);
-
-                            model.documents.sort(function (x, y) {
-                                var xDate = x.lastModified;
-                                var yDate = y.lastModified;
-                                return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
-                            });
-
-                            if ($rootScope.numberOfActivities < model.documents.length) {
-                                model.documents.splice($rootScope.numberOfActivities,
-                                    model.documents.length - $rootScope.numberOfActivities);
-                            }
-
-                            getDocumentsLikedByUserIdNext();
                         });
+
+                        model.documents.sort(function (x, y) {
+                            var xDate = x.lastModified;
+                            var yDate = y.lastModified;
+                            return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
+                        });
+
+                        if ($rootScope.numberOfActivities < model.documents.length) {
+                            model.documents.splice($rootScope.numberOfActivities,
+                                model.documents.length - $rootScope.numberOfActivities);
+                        }
+
+                        getDocumentsLikedByUserIdNext();
                     });
             } else {
                 $location.path("/login");

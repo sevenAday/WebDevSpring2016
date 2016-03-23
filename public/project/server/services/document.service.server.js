@@ -19,7 +19,7 @@ module.exports = function (app, documentModel) {
     }
 
     function updateDocumentById(req, res) {
-        var documentId = res.params.id;
+        var documentId = req.params.id;
         var document = req.body;
         document = documentModel.updateDocumentById(documentId, document);
         res.json(document);

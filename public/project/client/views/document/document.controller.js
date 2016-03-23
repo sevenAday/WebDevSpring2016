@@ -51,7 +51,7 @@
                 } else if ($rootScope.newDocument) {
                     //console.log("There is nothing to do");
                 } else {
-                    var dd = $rootScope.document.lastModified;
+                    var dd = new Date($rootScope.document.lastModified);
                     var dispDate = (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear();
                     $rootScope.editable = false;
                     UserService.findUserById($rootScope.document.userId)
@@ -98,8 +98,8 @@
                 return;
             }
             clearError();
-            var newDocument = {"userId": $rootScope.user._id, "lastModified": new Date()};
-            var dd = newDocument.lastModified;
+            var dd = new Date();
+            var newDocument = {"userId": $rootScope.user._id, "lastModified": dd.toJSON()};
             if ($rootScope.editable) {
                 newDocument.title = model.title;
                 newDocument.content = model.content;
@@ -307,7 +307,7 @@
                     .then(function (response) {
                         var comment = response.data;
                         var userName;
-                        var dd = comment.lastModified;
+                        var dd = new Date(comment.lastModified);
                         UserService.findUserById(comment.userId)
                             .then(function (response) {
                                 var user = response.data;
@@ -337,7 +337,7 @@
                 model.comments[model.editCommentIndex].content)
                 .then(function (response) {
                     var comment = response.data;
-                    var dd = comment.lastModified;
+                    var dd = new Date(comment.lastModified);
                     model.comments[model.editCommentIndex].commentDate = (dd.getMonth() + 1)
                         + "/" + dd.getDate() + "/" + dd.getFullYear();
                     model.editCommentIndex = -1;
@@ -372,7 +372,7 @@
                     var comment = response.data;
                     DocumentService.addCommentIdToDocummentId(comment._id, $rootScope.document._id)
                         .then(function (response) {
-                            var dd = comment.lastModified;
+                            var dd = new Date(comment.lastModified);
                             model.comments.push({
                                 "_id": comment._id,
                                 "userId": comment.userId,
