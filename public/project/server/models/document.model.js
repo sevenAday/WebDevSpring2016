@@ -11,6 +11,7 @@ module.exports = function (uuid) {
         deleteCommentIdxFromDocumentId: deleteCommentIdxFromDocumentId,
         addCommentIdToDocummentId: addCommentIdToDocummentId,
         getDocumentById: getDocumentById,
+        getDocumentsByIds: getDocumentsByIds,
         getDocumentsLikedByUserId: getDocumentsLikedByUserId,
         removeAllLikeUserIds: removeAllLikeUserIds,
         removeAllCommentIds: removeAllCommentIds
@@ -117,6 +118,17 @@ module.exports = function (uuid) {
             }
         }
         return null;
+    }
+
+    function getDocumentsByIds(documentIds) {
+        var documents = [];
+        for (var d in documentIds) {
+            var document = getDocumentById(documentIds[d]);
+            if (document) {
+                documents.push(document);
+            }
+        }
+        return documents;
     }
 
     function getDocumentsLikedByUserId(userId) {

@@ -19,7 +19,8 @@
             removeCommentedOnIdByUserId: removeCommentedOnIdByUserId,
             setCurrentUser: setCurrentUser,
             getCurrentUser: getCurrentUser,
-            logout: logout
+            logout: logout,
+            getCommentedOnByUserId: getCommentedOnByUserId
         };
         return service;
 
@@ -78,6 +79,10 @@
 
         function getCurrentUser() {
             return $http.get("/api/project/loggedin");
+        }
+
+        function getCommentedOnByUserId(userId) {
+            return $http.get("/api/project/user/" + userId + "/commentedon");
         }
     }
 }());

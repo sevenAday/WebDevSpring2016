@@ -101,44 +101,37 @@
 
         function getCommentedOnNext() {
             if ($rootScope.user.commentedOn) {
-                var documentLength = $rootScope.user.commentedOn.length;
-                $rootScope.user.commentedOn.forEach(function (documentId) {
-                    DocumentService.getDocumentById(documentId)
-                        .then(function (response) {
-                            var document = response.data;
-                            var asbtractStr = "";
+                UserService.getCommentedOnByUserId($rootScope.user._id)
+                    .then(function (response) {
+                        response.data.forEach(function (document) {
+                            var abstractStr = "";
                             if (document.content) {
-                                asbtractStr = document.content.substring(0, 160);
+                                abstractStr = document.content.substring(0, 160);
                             }
                             var newDocument = {
                                 "_id": document._id,
                                 "userId": document.userId,
                                 "title": document.title,
                                 "content": document.content,
-                                "abstract": asbtractStr,
+                                "abstract": abstractStr,
                                 "lastModified": document.lastModified,
                                 "like": document.like,
                                 "comment": document.comment
                             };
                             model.documentsCommentedOn.push(newDocument);
-                            if (model.documentsCommentedOn.length == $rootScope.user.commentedOn.length) {
-                                sortDocumentsCommentedOn();
-                            }
                         });
-                });
-            }
-        }
 
-        function sortDocumentsCommentedOn() {
-            model.documentsCommentedOn.sort(function (x, y) {
-                var xDate = x.lastModified;
-                var yDate = y.lastModified;
-                return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
-            });
+                        model.documentsCommentedOn.sort(function (x, y) {
+                            var xDate = x.lastModified;
+                            var yDate = y.lastModified;
+                            return (xDate < yDate) ? 1 : ((xDate > yDate) ? -1 : 0);
+                        });
 
-            if ($rootScope.numberOfActivities < model.documentsCommentedOn.length) {
-                model.documentsCommentedOn.splice($rootScope.numberOfActivities,
-                    model.documentsCommentedOn.length - $rootScope.numberOfActivities);
+                        if ($rootScope.numberOfActivities < model.documentsCommentedOn.length) {
+                            model.documentsCommentedOn.splice($rootScope.numberOfActivities,
+                                model.documentsCommentedOn.length - $rootScope.numberOfActivities);
+                        }
+                    });
             }
         }
 

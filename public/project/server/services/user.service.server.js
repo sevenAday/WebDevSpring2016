@@ -1,4 +1,4 @@
-module.exports = function (app, userModel) {
+module.exports = function (app, userModel, documentModel) {
     app.post("/api/project/user", createUser);
     app.get("/api/project/user", findUser);
     app.get("/api/project/loggedin", loggedIn);
@@ -9,6 +9,7 @@ module.exports = function (app, userModel) {
     app.delete("/api/project/user/:id", deleteUserById);
     app.post("/api/project/user/:id/commentedon/:documentId", addCommentedOnByUserId);
     app.delete("/api/project/user/:id/commentedon/:documentId", removeCommentedOnIdByUserId);
+    app.get("/api/project/user/:id/commentedon", getCommentedOnByUserId);
 
     function createUser(req, res) {
         var user = req.body;
@@ -87,5 +88,12 @@ module.exports = function (app, userModel) {
         var user = req.body;
         req.session.user = user;
         res.send(200);
+    }
+
+    function getCommentedOnByUserId(req, res) {
+        var userId = req.params.id;
+        var user = userModel.findUserById(userId);
+        var documents = documentModel.getDocumentsByIds(user.commentedOn);
+        res.json(documents);
     }
 };
