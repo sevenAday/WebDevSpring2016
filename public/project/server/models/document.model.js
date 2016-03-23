@@ -69,7 +69,7 @@ module.exports = function (uuid) {
     function likeDocument(documentId, userId) {
         for (var d in mock) {
             if (mock[d]._id == documentId) {
-                mock[d].like.push(Number(userId));
+                mock[d].like.push(userId);
                 return mock[d].like;
             }
         }
@@ -104,7 +104,7 @@ module.exports = function (uuid) {
     function addCommentIdToDocummentId(commentId, documentId) {
         for (var d in mock) {
             if (mock[d]._id == documentId) {
-                mock[d].comment.push(Number(commentId));
+                mock[d].comment.push(commentId);
                 return mock[d].comment;
             }
         }
@@ -134,7 +134,7 @@ module.exports = function (uuid) {
     function getDocumentsLikedByUserId(userId) {
         var likedDocuments = [];
         for (var d in mock) {
-            if (mock[d].like.indexOf(Number(userId)) >= 0) {
+            if (mock[d].like.indexOf(userId) >= 0) {
                 likedDocuments.push(mock[d]);
             }
         }
@@ -143,7 +143,7 @@ module.exports = function (uuid) {
 
     function removeAllLikeUserIds(userId) {
         for (var d in mock) {
-            var likedIdx = mock[d].like.indexOf(Number(userId));
+            var likedIdx = mock[d].like.indexOf(userId);
             if (likedIdx >= 0) {
                 mock[d].like.splice(likedIdx, 1);
             }

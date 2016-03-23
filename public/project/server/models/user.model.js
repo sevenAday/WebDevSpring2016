@@ -88,9 +88,9 @@ module.exports = function (uuid) {
     function addCommentedOnByUserId(userId, documentId) {
         for (var u in mock) {
             if (mock[u]._id == userId) {
-                var commentIdx = mock[u].commentedOn.indexOf(Number(documentId));
+                var commentIdx = mock[u].commentedOn.indexOf(documentId);
                 if (commentIdx == -1) {
-                    mock[u].commentedOn.push(Number(documentId));
+                    mock[u].commentedOn.push(documentId);
                 }
                 return mock[u].commentedOn;
             }
@@ -101,7 +101,7 @@ module.exports = function (uuid) {
     function removeCommentedOnIdByUserId(userId, documentId) {
         for (var u in mock) {
             if (mock[u]._id == userId) {
-                var documentIdx = mock[u].commentedOn.indexOf(Number(documentId));
+                var documentIdx = mock[u].commentedOn.indexOf(documentId);
                 if (documentIdx >= 0) {
                     mock[u].commentedOn.splice(documentIdx, 1);
                     return mock[u].commentedOn;
