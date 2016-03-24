@@ -7,10 +7,10 @@
                 <div class="form-group">
                     <label for="inputUsername" class="col-sm-2">Username:</label>
                     <div class="col-sm-10">
-                        <input name="username" ng-minlength="2" required ng-model="username" type="text"
+                        <input name="username" ng-minlength="2" required ng-model="model.username" type="text"
                                class="form-control" id="inputUsername" placeholder="Username">
                         <div ng-messages="registration.username.$error" role="error">
-                            <div ng-if="showError" class="text-danger">
+                            <div ng-if="model.showError" class="text-danger">
                                 <div ng-message="required">Please enter a username.</div>
                                 <div ng-message="minlength">Username is too short.</div>
                                 <div ng-message="duplicateUsername">Please enter valid username.</div>
@@ -21,10 +21,10 @@
                 <div class="form-group">
                     <label for="inputPassword" class="col-sm-2">Password:</label>
                     <div class="col-sm-10">
-                        <input name="password" ng-minlength="2" required ng-model="password" type="password"
+                        <input name="password" ng-minlength="2" required ng-model="model.password" type="password"
                                class="form-control" id="inputPassword" placeholder="Password">
                         <div ng-messages="registration.password.$error" role="alert">
-                            <div ng-if="showError" class="text-danger">
+                            <div ng-if="model.showError" class="text-danger">
                                 <div ng-message="required">Please enter a password.</div>
                                 <div ng-message="minlength">Password is too short.</div>
                             </div>
@@ -35,10 +35,11 @@
                     <label for="inputVerifyPassword" class="col-sm-2">Verify Password:</label>
                     <div class="col-sm-10">
                         <input name="verifyPassword" ng-minlength="2" required compare-to="registration.password"
-                               ng-model="verifyPassword" type="password" class="form-control" id="inputVerifyPassword"
+                               ng-model="model.verifyPassword" type="password" class="form-control"
+                               id="inputVerifyPassword"
                                placeholder="Verify Password">
                         <div ng-messages="registration.verifyPassword.$error" role="alert">
-                            <div ng-if="showError" class="text-danger">
+                            <div ng-if="model.showError" class="text-danger">
                                 <div ng-message="required">Please verify password.</div>
                                 <div ng-message="minlength">Verify password is too short.</div>
                                 <div ng-message="notMatching">Passwords entered do not match.</div>
@@ -49,10 +50,10 @@
                 <div class="form-group">
                     <label for="inputEmail" class="col-sm-2">Email:</label>
                     <div class="col-sm-10">
-                        <input name="inputEmail" ng-model="email" type="email" class="col-sm-10 form-control"
+                        <input name="inputEmail" ng-model="model.email" type="email" class="col-sm-10 form-control"
                                id="inputEmail" placeholder="Email">
                         <div ng-messages="registration.inputEmail.$error" role="alert">
-                            <div ng-if="showError" class="text-danger">
+                            <div ng-if="model.showError" class="text-danger">
                                 <div ng-message="email">Please enter a valid email.</div>
                             </div>
                         </div>
@@ -62,7 +63,8 @@
             <form class="form-horizontal">
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button ng-click="register()" type="submit" class="btn btn-block"><b>Register</b></button>
+                        <button ng-click="model.register()" type="submit" class="btn btn-block">
+                            <b>Register</b></button>
                     </div>
                 </div>
             </form>

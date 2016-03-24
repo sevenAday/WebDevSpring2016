@@ -6,14 +6,14 @@
         .controller("RegisterController", RegisterController);
 
     function RegisterController($scope, $rootScope, $location, UserService) {
-        $scope.$location = $location;
-        $scope.register = register;
+        var model = this;
+        model.register = register;
 
         function register() {
-            $scope.showError = true;
+            model.showError = true;
             delete $scope.registration.verifyPassword.$error.notMatching;
             delete $scope.registration.username.$error.duplicateUsername;
-            if ($scope.password !== $scope.verifyPassword) {
+            if (model.password !== model.verifyPassword) {
                 $scope.registration.verifyPassword.$error = {"notMatching": true};
             }
             if (isNotEmpty($scope.registration.username.$error)
@@ -22,15 +22,15 @@
                 || isNotEmpty($scope.registration.inputEmail.$error)) {
                 return;
             }
-            UserService.findUserByUsername($scope.username)
+            UserService.findUserByUsername(model.username)
                 .then(function (response) {
                     if (response.data) {
                         $scope.registration.username.$error = {"duplicateUsername": true};
                     } else {
                         var newUser = {
-                            "username": $scope.username,
-                            "password": $scope.password,
-                            "email": $scope.email
+                            "username": model.username,
+                            "password": model.password,
+                            "email": model.email
                         };
                         UserService.createUser(newUser)
                             .then(function (response) {

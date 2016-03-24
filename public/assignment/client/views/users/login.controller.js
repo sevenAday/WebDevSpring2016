@@ -6,14 +6,14 @@
         .controller("LoginController", LoginController);
 
     function LoginController($scope, $rootScope, $location, UserService) {
-        $scope.$location = $location;
-        $scope.login = login;
+        var model = this;
+        model.login = login;
 
         function login() {
-            $scope.showError = true;
+            model.showError = true;
             delete $scope.signin.password.$error.invalidLogin;
             if (!isNotEmpty($scope.signin.username.$error) && !isNotEmpty($scope.signin.password.$error)) {
-                UserService.findUserByCredentials($scope.username, $scope.password)
+                UserService.findUserByCredentials(model.username, model.password)
                     .then(function (response) {
                         UserService.setCurrentUser(response.data);
                         if (!!$rootScope.user) {
