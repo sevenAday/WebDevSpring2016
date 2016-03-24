@@ -15,19 +15,17 @@
             if (!isNotEmpty($scope.signin.username.$error) && !isNotEmpty($scope.signin.password.$error)) {
                 UserService.findUserByCredentials(model.username, model.password)
                     .then(function (response) {
-                        if (response.data) {
-                            UserService.setCurrentUser(response.data);
-                            if (!!$rootScope.user) {
-                                if ($rootScope.document) {
-                                    $location.path("/document/" + $rootScope.document._id);
-                                } else if ($rootScope.isAdmin) {
-                                    $location.path("/admin");
-                                } else {
-                                    $location.path("/profile");
-                                }
+                        UserService.setCurrentUser(response.data);
+                        if (!!$rootScope.user) {
+                            if ($rootScope.document) {
+                                $location.path("/document/" + $rootScope.document._id);
+                            } else if ($rootScope.isAdmin) {
+                                $location.path("/admin");
                             } else {
-                                $scope.signin.password.$error = {"invalidLogin": true};
+                                $location.path("/profile");
                             }
+                        } else {
+                            $scope.signin.password.$error = {"invalidLogin": true};
                         }
                     });
             }

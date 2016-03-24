@@ -117,7 +117,7 @@
         function updateUser() {
             if (model.username && model.password && model.role) {
                 var newUser = {
-                    "username": model.username,
+                    "username": model.users[selectedUserIndex].username,
                     "password": model.password,
                     "roles": model.role.replace(/\s/g, "").split("|")
                 };

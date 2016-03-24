@@ -87,7 +87,7 @@
         function updateUser() {
             if ($scope.username && $scope.password && $scope.role) {
                 var newUser = {
-                    "username": $scope.username,
+                    "username": $scope.users[selectedUserIndex].username,
                     "password": $scope.password,
                     "roles": $scope.role.replace(/\s/g, "").split("|")
                 };
