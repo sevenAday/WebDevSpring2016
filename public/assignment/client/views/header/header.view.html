@@ -26,8 +26,8 @@
                     ng-class="{'active': $location.url().indexOf('admin') != -1}">
                     <a href="#/admin">Admin</a>
                 </li>
-                <li ng-show="user" ng-class="{'active': $location.url().indexOf('profile') != -1 || $location.url().indexOf('username') != -1}">
-                    <a href="#/username">{{user.username}}</a>
+                <li ng-show="user" ng-class="{'active': $location.url().indexOf('profile') != -1}">
+                    <a href="#/profile">{{user.username}}</a>
                 </li>
                 <li ng-show="user"><a ng-click="logout()">Logout</a></li>
             </ul>
