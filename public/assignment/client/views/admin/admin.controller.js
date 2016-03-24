@@ -5,8 +5,8 @@
         .module("FormBuilderApp")
         .controller("AdminController", AdminController);
 
-    function AdminController($scope, $rootScope, $location, UserService) {
-        $scope.$location = $location;
+    function AdminController($rootScope, $location, UserService) {
+        var model = this;
         var selectedUserIndex = -1;
 
         function init() {
@@ -21,19 +21,19 @@
         }
         init();
 
-        $scope.addUser = addUser;
-        $scope.deleteUser = deleteUser;
-        $scope.selectUser = selectUser;
-        $scope.updateUser = updateUser;
+        model.addUser = addUser;
+        model.deleteUser = deleteUser;
+        model.selectUser = selectUser;
+        model.updateUser = updateUser;
 
         function populateUsers(users) {
-            $scope.users = [];
+            model.users = [];
             for (var idx = 0; idx < users.length; idx++) {
                 var roles = "";
                 if (users[idx].roles) {
                     roles = users[idx].roles.join(" | ");
                 }
-                $scope.users[idx] = {
+                model.users[idx] = {
                     "_id": users[idx]._id,
                     "username": users[idx].username,
                     "password": users[idx].password,
@@ -43,26 +43,26 @@
         }
 
         function addUser() {
-            if ($scope.username && $scope.password && $scope.role) {
-                UserService.findUserByUsername($scope.username)
+            if (model.username && model.password && model.role) {
+                UserService.findUserByUsername(model.username)
                     .then(function (response) {
                         if (response.data) {
-                            $scope.username = "Invalid username!!!";
-                            $scope.password = "";
-                            $scope.role = "";
+                            model.username = "Invalid username!!!";
+                            model.password = "";
+                            model.role = "";
                         } else {
                             var newUser = {
-                                "username": $scope.username,
-                                "password": $scope.password,
-                                "roles": $scope.role.replace(/\s/g, "").split("|")
+                                "username": model.username,
+                                "password": model.password,
+                                "roles": model.role.replace(/\s/g, "").split("|")
                             };
-                            if ($scope.username && $scope.password && $scope.role && $rootScope.user && $rootScope.isAdmin) {
+                            if (model.username && model.password && model.role && $rootScope.user && $rootScope.isAdmin) {
                                 UserService.createUser(newUser)
                                     .then(function (response) {
                                         populateUsers(response.data);
-                                        $scope.username = "";
-                                        $scope.password = "";
-                                        $scope.role = "";
+                                        model.username = "";
+                                        model.password = "";
+                                        model.role = "";
                                     });
                             }
                         }
@@ -71,7 +71,7 @@
         }
 
         function deleteUser($index) {
-            UserService.deleteUserById($scope.users[$index]._id)
+            UserService.deleteUserById(model.users[$index]._id)
                 .then(function (response) {
                     populateUsers(response.data);
                 });
@@ -79,25 +79,25 @@
 
         function selectUser($index) {
             selectedUserIndex = $index;
-            $scope.username = $scope.users[selectedUserIndex].username;
-            $scope.password = $scope.users[selectedUserIndex].password;
-            $scope.role = $scope.users[selectedUserIndex].roles;
+            model.username = model.users[selectedUserIndex].username;
+            model.password = model.users[selectedUserIndex].password;
+            model.role = model.users[selectedUserIndex].roles;
         }
 
         function updateUser() {
-            if ($scope.username && $scope.password && $scope.role) {
+            if (model.username && model.password && model.role) {
                 var newUser = {
-                    "username": $scope.users[selectedUserIndex].username,
-                    "password": $scope.password,
-                    "roles": $scope.role.replace(/\s/g, "").split("|")
+                    "username": model.users[selectedUserIndex].username,
+                    "password": model.password,
+                    "roles": model.role.replace(/\s/g, "").split("|")
                 };
                 if (selectedUserIndex >= 0) {
-                    UserService.updateUser($scope.users[selectedUserIndex]._id, newUser)
+                    UserService.updateUser(model.users[selectedUserIndex]._id, newUser)
                         .then(function (response) {
                             populateUsers(response.data);
-                            $scope.username = "";
-                            $scope.password = "";
-                            $scope.role = "";
+                            model.username = "";
+                            model.password = "";
+                            model.role = "";
                             selectedUserIndex = -1;
                         });
                 }
