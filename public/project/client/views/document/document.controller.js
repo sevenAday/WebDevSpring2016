@@ -22,9 +22,10 @@
         model.saveComment = saveComment;
         model.deleteComment = deleteComment;
         model.addNewComment = addNewComment;
+        model.getSelectedText = getSelectedText;
 
+        $scope.showDefinition = false;
         $scope.createComment = createComment;
-        $scope.getSelectedText = getSelectedText;
 
         function init() {
             $rootScope.newDocument = true;
@@ -151,45 +152,50 @@
         }
 
         function getSelectedText() {
-            var selectedText = "";
+            model.selectedText = "";
             if (window.getSelection) {
-                selectedText = window.getSelection().toString();
+                model.selectedText = window.getSelection().toString().trim();
             } else if (document.selection && document.selection.type != "Control") {
-                selectedText = document.selection.createRange().text;
+                model.selectedText = document.selection.createRange().text.trim();
             }
-            if (selectedText) {
-                var defineUrl = DEFINE_URL + selectedText.toLowerCase();
+            if (model.selectedText) {
+                var defineUrl = DEFINE_URL + model.selectedText.toLowerCase();
                 $http.jsonp(defineUrl)
                     .success(renderDefinition);
             }
         }
 
         function renderDefinition(response) {
-            model.definition = "No definitions found";
+            model.definition = {
+                "modelTitle": "Definitions for \"" + model.selectedText + "\"",
+                "definitions": "No definitions found"
+            };
             if (response) {
                 if (response.tuc) {
                     var tl = response.tuc.length;
                     if (tl > 0) {
-                        model.definition = "";
+                        model.definition.definitions = "";
                         var fl = response.tuc[0].meanings.length;
                         for (var idx = 0; idx < fl; idx++) {
                             if (idx >= 3) {
                                 break;
                             }
-                            model.definition += ("(" + (idx + 1) + ") " + response.tuc[0].meanings[idx].text + " ");
+                            model.definition.definitions +=
+                                ("(" + (idx + 1) + ") " + response.tuc[0].meanings[idx].text + " ");
                         }
                         if (fl < 3) {
                             if (tl > (3 - fl)) {
                                 tl = 3 - fl;
                             }
                             for (var idx = 0; idx < tl; idx++) {
-                                model.definition += "(" + (fl + idx + 1) + ") " + response.tuc[idx].meanings[0].text + " ";
+                                model.definition.definitions +=
+                                    "(" + (fl + idx + 1) + ") " + response.tuc[idx].meanings[0].text + " ";
                             }
                         }
                     }
                 }
             }
-            $scope.$broadcast("toggleDialog", model.definition);
+            $scope.showDefinition = true;
         }
 
         function deleteDocument() {

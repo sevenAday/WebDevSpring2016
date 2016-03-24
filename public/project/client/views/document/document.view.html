@@ -1,11 +1,11 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <p-dialog editable="editable"
-                   newDocument="newDocument"
-                   showDefinition="model.showDefinition"
-                   definition="model.definition"
-                   data="document"></p-dialog>
+            <h1 ng-hide="editable || newDocument" ng-mouseup="model.getSelectedText()" ng-cloak>{{document.title}}</h1>
+            <h6 ng-hide="editable || newDocument" ng-cloak>
+                Last modified by {{document.user}} on {{document.lastModifiedDate}}
+            </h6>
+            <p ng-hide="editable || newDocument" ng-mouseup="model.getSelectedText()" ng-cloak>{{document.content}}</p>
             <div ng-if="model.errorred" class="text-danger" ng-cloak>{{model.errorMessage}}</div>
             <input ng-show="editable" ng-focus="model.clearError()" ng-model="model.title" type="text"
                    class="form-control" placeholder="Enter a title" ng-cloak>
@@ -51,6 +51,10 @@
                       placeholder="Write a comment"
                       focus-on="createNewComment"></textarea>
             <a ng-hide="editable || newDocument" ng-click="model.addNewComment()" ng-cloak>Add Comment</a>
+            <p-dialog title="{{model.definition.modelTitle}}"
+                      content="{{model.definition.definitions}}"
+                      visible="showDefinition">
+            </p-dialog>
         </div>
     </div>
 </div>

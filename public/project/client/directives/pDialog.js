@@ -7,29 +7,35 @@
 
     function pDialog() {
         return {
-            controller: "DocumentController",
-            link: function ($scope) {
-                $scope.$on("toggleDialog", function (event, args) {
-                    $(function () {
-                        if (args.text) {
-                            $("#definitionDialog").html(args.text);
-                        } else {
-                            $("#definitionDialog").html(args);
-                        }
-                        $("#definitionDialog").dialog();
+            link: function (scope, element, attrs) {
+
+                scope.$watch(attrs.visible, function (toShow) {
+                    if (toShow) {
+                        scope.title = attrs.title;
+                        $("#definitions").html(attrs.content);
+                        $(element).modal("show");
+                        $(element).draggable();
+                    } else {
+                        $(element).modal("hide");
+                    }
+                });
+
+                $(element).on("shown.bs.modal", function () {
+                    scope.$apply(function () {
+                        scope.$parent[attrs.visible] = true;
                     });
-                    $(window).resize(function () {
-                        $("#definitionDialog").dialog("option", "position", {my: "center", at: "center", of: window});
+                });
+
+                $(element).on("hidden.bs.modal", function () {
+                    scope.$apply(function () {
+                        scope.$parent[attrs.visible] = false;
                     });
                 });
             },
-            restrict: "AE",
-            scope: {
-                "editable": "=",
-                "showDefinition": "=",
-                "definition": "=",
-                "data": "="
-            },
+            restrict: "E",
+            transclude: true,
+            replace: true,
+            scope: true,
             templateUrl: "directives/pdialog.html"
         };
     }

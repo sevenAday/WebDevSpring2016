@@ -1,10 +1,11 @@
-<h1 ng-hide="editable || $root.newDocument" ng-mouseup="getSelectedText()" ng-cloak>{{data.title}}</h1>
-<h6 ng-hide="editable ||  $root.newDocument" ng-cloak>
-    Last modified by {{data.user}} on {{data.lastModifiedDate}}
-</h6>
-<p ng-hide="editable ||  $root.newDocument" ng-mouseup="getSelectedText()" ng-cloak>{{data.content}}</p>
-<div class="container">
-    <div id="definitionDialog" title="Definition">
-        <p>{{definition}}</p>
+<div class="modal fade">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-hidden="true">x</button>
+                <h4 class="modal-title">{{title}}</h4>
+            </div>
+            <div id="definitions" class="modal-body" ng-transclude></div>
+        </div>
     </div>
 </div>
