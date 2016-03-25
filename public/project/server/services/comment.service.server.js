@@ -19,8 +19,8 @@ module.exports = function (app, commentModel) {
 
     function updateComment(req, res) {
         var commentId = req.params.id;
-        var commentContent = req.body;
-        var comment = commentModel.updateComment(commentId, commentContent);
+        var comment = req.body;
+        comment = commentModel.updateComment(commentId, comment.content);
         res.json(comment);
     }
 

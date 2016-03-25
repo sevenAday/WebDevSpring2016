@@ -6,6 +6,6 @@ module.exports = function (app, uuid) {
 
     var adminService = require("./services/admin.service.server.js")(app, adminModel);
     var commentService = require("./services/comment.service.server.js")(app, commentModel);
-    var documentService = require("./services/document.service.server.js")(app, documentModel);
+    var documentService = require("./services/document.service.server.js")(app, documentModel, commentModel, userModel);
     var userService = require("./services/user.service.server.js")(app, userModel, documentModel);
 };

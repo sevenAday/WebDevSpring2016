@@ -1,4 +1,4 @@
-module.exports = function (app, documentModel) {
+module.exports = function (app, documentModel, commentModel, userModel) {
     app.get("/api/project/document", getAllDocuments);
     app.put("/api/project/document/:id", updateDocumentById);
     app.post("/api/project/document", addNewDocument);
@@ -12,6 +12,7 @@ module.exports = function (app, documentModel) {
     app.get("/api/project/document/like/user/:userId", getDocumentsLikedByUserId);
     app.delete("/api/project/document/like/user/:userId", removeAllLikeUserIds);
     app.delete("/api/project/document/commentIds", removeAllCommentIds);
+    app.get("/api/project/document/:id/comment", getCommentsOnDocument);
 
     function getAllDocuments(req, res) {
         var documents = documentModel.getAllDocuments();
@@ -93,5 +94,34 @@ module.exports = function (app, documentModel) {
         var commentIds = req.body;
         var documents = documentModel.removeAllCommentIds(commentIds);
         res.send(200);
+    }
+
+    function getCommentsOnDocument(req, res) {
+        var documentId = req.params.id;
+        var document = documentModel.getDocumentById(documentId);
+        var docCommentIds = document.comment;
+        var comments = [];
+        for (var c in docCommentIds) {
+            var docComment = commentModel.findCommentById(docCommentIds[c]);
+            var dd = new Date(docComment.lastModified);
+            var userName = "You";
+            if (docComment.userId != req.session.user._id) {
+                var commentUser = userModel.findUserById(docComment.userId);
+                userName =  commentUser.firstName + " " + commentUser.lastName;
+            }
+            comments.push({
+                "_id": docComment._id,
+                "userId": docComment.userId,
+                "userName": userName,
+                "content": docComment.content,
+                "commentDate": (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear()
+            });
+        }
+        comments.sort(function (x, y) {
+            var xDate = x.commentDate;
+            var yDate = y.commentDate;
+            return (xDate < yDate) ? -1 : ((xDate > yDate) ? 1 : 0);
+        });
+        res.json(comments);
     }
 };

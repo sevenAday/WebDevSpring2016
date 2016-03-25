@@ -306,32 +306,11 @@
         }
 
         function getComments() {
-            var docComments = $rootScope.document.comment;
             model.comments = [];
-            for (var idx = 0; idx < docComments.length; idx++) {
-                CommentService.findCommentById(docComments[idx])
-                    .then(function (response) {
-                        var comment = response.data;
-                        var userName;
-                        var dd = new Date(comment.lastModified);
-                        UserService.findUserById(comment.userId)
-                            .then(function (response) {
-                                var user = response.data;
-                                if (user._id == $rootScope.user._id) {
-                                    userName = "You";
-                                } else {
-                                    userName = user.firstName + " " + user.lastName;
-                                }
-                                model.comments.push({
-                                    "_id": comment._id,
-                                    "userId": comment.userId,
-                                    "userName": userName,
-                                    "content": comment.content,
-                                    "commentDate": (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear()
-                                });
-                            });
-                    });
-            }
+            DocumentService.getCommentsOnDocument($rootScope.document._id)
+                .then(function (response) {
+                    model.comments = response.data;
+                });
         }
 
         function editComment($index) {
@@ -340,12 +319,14 @@
 
         function saveComment() {
             CommentService.updateComment(model.comments[model.editCommentIndex]._id,
-                model.comments[model.editCommentIndex].content)
+                model.comments[model.editCommentIndex])
                 .then(function (response) {
                     var comment = response.data;
                     var dd = new Date(comment.lastModified);
                     model.comments[model.editCommentIndex].commentDate = (dd.getMonth() + 1)
                         + "/" + dd.getDate() + "/" + dd.getFullYear();
+                    var removedComment = model.comments.splice(model.editCommentIndex, 1);
+                    model.comments.push(removedComment[0]);
                     model.editCommentIndex = -1;
                 });
         }
