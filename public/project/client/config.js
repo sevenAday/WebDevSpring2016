@@ -50,15 +50,6 @@
                     getAdminSettings: getAdminSettings
                 }
             })
-            .when("/username", {
-                templateUrl: "views/users/profile.view.html",
-                controller: "ProfileController",
-                controllerAs: "model",
-                resolve: {
-                    checkLoggedIn: checkLoggedIn,
-                    getAdminSettings: getAdminSettings
-                }
-            })
             .when("/document", {
                 templateUrl: "views/document/document.view.html",
                 controller: "DocumentController",

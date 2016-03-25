@@ -6,50 +6,51 @@
         .controller("ProfileController", ProfileController);
 
     function ProfileController($scope, $rootScope, $location, UserService) {
-        $scope.$location = $location;
+        var model = this;
+
+        model.update = update;
+        model.clearMessage = clearMessage;
 
         function init() {
             if ($rootScope.user) {
-                $scope.username = $rootScope.user.username;
-                $scope.password = $rootScope.user.password;
-                $scope.firstName = $rootScope.user.firstName;
-                $scope.lastName = $rootScope.user.lastName;
-                $scope.email = $rootScope.user.email;
+                model.username = $rootScope.user.username;
+                model.password = $rootScope.user.password;
+                model.firstName = $rootScope.user.firstName;
+                model.lastName = $rootScope.user.lastName;
+                model.email = $rootScope.user.email;
             } else {
                 $location.path("/login");
             }
         }
+
         init();
 
-        $scope.update = update;
-        $scope.clearMessage = clearMessage;
-
         function update() {
-            $scope.successful = false;
+            model.successful = false;
             var currentUser = null;
-            $scope.showError = true;
+            model.showError = true;
             if (isNotEmpty($scope.profile.username.$error)
-                    || isNotEmpty($scope.profile.password.$error)
-                    || isNotEmpty($scope.profile.lastName.$error)
-                    || isNotEmpty($scope.profile.firstName.$error)
-                    || isNotEmpty($scope.profile.inputEmail.$error)) {
+                || isNotEmpty($scope.profile.password.$error)
+                || isNotEmpty($scope.profile.lastName.$error)
+                || isNotEmpty($scope.profile.firstName.$error)
+                || isNotEmpty($scope.profile.inputEmail.$error)) {
                 return;
             }
             currentUser = {
-                "username": $scope.username,
-                "password": $scope.password,
-                "firstName": $scope.firstName,
-                "lastName": $scope.lastName,
-                "email": $scope.email
+                "username": model.username,
+                "password": model.password,
+                "firstName": model.firstName,
+                "lastName": model.lastName,
+                "email": model.email
             };
             UserService.updateUser($rootScope.user._id, currentUser)
                 .then(function (response) {
-                    $rootScope.user.username = $scope.username;
-                    $rootScope.user.password = $scope.password;
-                    $rootScope.user.firstName = $scope.firstName;
-                    $rootScope.user.lastName = $scope.lastName;
-                    $rootScope.user.email = $scope.email;
-                    $scope.successful = true;
+                    $rootScope.user.username = model.username;
+                    $rootScope.user.password = model.password;
+                    $rootScope.user.firstName = model.firstName;
+                    $rootScope.user.lastName = model.lastName;
+                    $rootScope.user.email = model.email;
+                    model.successful = true;
                     $location.path("/profile");
                 });
         }
@@ -59,7 +60,7 @@
         }
 
         function clearMessage() {
-            $scope.successful = false;
+            model.successful = false;
         }
     }
 }());

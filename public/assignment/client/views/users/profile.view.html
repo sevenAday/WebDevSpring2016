@@ -2,16 +2,16 @@
     <div class="row">
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1>Profile</h1>
-            <div ng-if="successful" class="text-success">Successfully updated!</div>
-            <br ng-hide="successful"/>
+            <div ng-if="model.successful" class="text-success">Successfully updated!</div>
+            <br ng-hide="model.successful"/>
             <form name="profile" class="form-horizontal">
                 <div class="form-group">
                     <label for="inputUsername" class="col-sm-2">Username:</label>
                     <div class="col-sm-10">
-                        <input name="username" ng-minlength="2" required ng-model="username" type="text"
+                        <input name="username" ng-minlength="2" required ng-model="model.username" type="text"
                                class="form-control" id="inputUsername" placeholder="Username" ng-readonly="true">
                         <div ng-messages="profile.username.$error" role="error">
-                            <div ng-if="showError" class="text-danger">
+                            <div ng-if="model.showError" class="text-danger">
                                 <div ng-message="required">Please enter a username.</div>
                                 <div ng-message="minlength">Username is too short.</div>
                             </div>
@@ -21,10 +21,11 @@
                 <div class="form-group">
                     <label for="inputPassword" class="col-sm-2">Password:</label>
                     <div class="col-sm-10">
-                        <input name="password" ng-minlength="2" required ng-model="password" type="password"
-                               class="form-control" id="inputPassword" placeholder="Password" ng-focus="clearMessage()">
+                        <input name="password" ng-minlength="2" required ng-model="model.password" type="password"
+                               class="form-control" id="inputPassword" placeholder="Password"
+                               ng-focus="model.clearMessage()">
                         <div ng-messages="profile.password.$error" role="alert">
-                            <div ng-if="showError" class="text-danger">
+                            <div ng-if="model.showError" class="text-danger">
                                 <div ng-message="required">Please enter a password.</div>
                                 <div ng-message="minlength">Password is too short.</div>
                             </div>
@@ -34,10 +35,10 @@
                 <div class="form-group">
                     <label for="inputFirstName" class="col-sm-2">First Name:</label>
                     <div class="col-sm-10">
-                        <input name="firstName" required ng-model="firstName" type="text" class="form-control"
-                               id="inputFirstName" placeholder="First Name" ng-focus="clearMessage()">
+                        <input name="firstName" required ng-model="model.firstName" type="text" class="form-control"
+                               id="inputFirstName" placeholder="First Name" ng-focus="model.clearMessage()">
                         <div ng-messages="profile.firstName.$error" role="alert">
-                            <div ng-if="showError" class="text-danger">
+                            <div ng-if="model.showError" class="text-danger">
                                 <div ng-message="required">Please enter a first name.</div>
                             </div>
                         </div>
@@ -46,10 +47,10 @@
                 <div class="form-group">
                     <label for="inputLastName" class="col-sm-2">Last Name:</label>
                     <div class="col-sm-10">
-                        <input name="lastName" required ng-model="lastName" type="text" class="form-control"
-                               id="inputLastName" placeholder="Last Name" ng-focus="clearMessage()">
+                        <input name="lastName" required ng-model="model.lastName" type="text" class="form-control"
+                               id="inputLastName" placeholder="Last Name" ng-focus="model.clearMessage()">
                         <div ng-messages="profile.lastName.$error" role="alert">
-                            <div ng-if="showError" class="text-danger">
+                            <div ng-if="model.showError" class="text-danger">
                                 <div ng-message="required">Please enter a last name.</div>
                             </div>
                         </div>
@@ -58,10 +59,10 @@
                 <div class="form-group">
                     <label for="inputEmail" class="col-sm-2">Email:</label>
                     <div class="col-sm-10">
-                        <input name="inputEmail" ng-model="email" type="email" class="col-sm-10 form-control"
-                               id="inputEmail" placeholder="Email" ng-focus="clearMessage()">
+                        <input name="inputEmail" ng-model="model.email" type="email" class="col-sm-10 form-control"
+                               id="inputEmail" placeholder="Email" ng-focus="model.clearMessage()">
                         <div ng-messages="profile.inputEmail.$error" role="alert">
-                            <div ng-if="showError" class="text-danger">
+                            <div ng-if="model.showError" class="text-danger">
                                 <div ng-message="email">Please enter a valid email.</div>
                             </div>
                         </div>
@@ -71,7 +72,7 @@
             <form class="form-horizontal">
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button ng-click="update()" type="submit" class="btn btn-block"><b>Update</b></button>
+                        <button ng-click="model.update()" type="submit" class="btn btn-block"><b>Update</b></button>
                     </div>
                 </div>
             </form>
