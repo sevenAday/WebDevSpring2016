@@ -201,14 +201,20 @@
         function deleteDocument() {
             DocumentService.deleteDocumentById($rootScope.document._id)
                 .then(function (response) {
-                    var commentIds = response.data;
-                    commentIds.forEach(function (commentId) {
-                        CommentService.deleteCommentById(commentId)
-                            .then(function (response) {
-                                $rootScope.document = null;
-                                $location.url("/home");
-                            });
-                    });
+                    if (response.data && response.data.length > 0) {
+                        var commentIds = response.data;
+                        commentIds.forEach(function (commentId) {
+                            CommentService.deleteCommentById(commentId)
+                                .then(function (response) {
+                                    $rootScope.document = null;
+                                    $location.url("/home");
+                                });
+                        });
+                    } else {
+                        $rootScope.document = null;
+                        $location.url("/home");
+                    }
+
                 });
         }
 
