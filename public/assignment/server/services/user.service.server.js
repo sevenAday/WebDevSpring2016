@@ -4,6 +4,9 @@ module.exports = function (app, userModel) {
     app.get("/api/assignment/user/:id", findUserById);
     app.put("/api/assignment/user/:id", updateUserById);
     app.delete("/api/assignment/user/:id", deleteUserById);
+    app.get("/api/assignment/loggedin", loggedIn);
+    app.post("/api/assignment/loggedin", setLoggedIn);
+    app.post("/api/assignment/logout", logOut);
 
     function createUser(req, res) {
         var user = req.body;
@@ -44,5 +47,20 @@ module.exports = function (app, userModel) {
         var userId = req.params.id;
         var users = userModel.deleteUserById(userId);
         res.json(users);
+    }
+
+    function setLoggedIn(req, res) {
+        var user = req.body;
+        req.session.user = user;
+        res.send(200);
+    }
+
+    function loggedIn(req, res) {
+        res.json(req.session.user);
+    }
+
+    function logOut(req, res) {
+        req.session.destroy();
+        res.send(200);
     }
 };

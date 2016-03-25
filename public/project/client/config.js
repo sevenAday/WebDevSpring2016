@@ -89,7 +89,6 @@
             });
     }
 
-
     function getLoggedIn(UserService, $q) {
         var deferred = $q.defer();
 

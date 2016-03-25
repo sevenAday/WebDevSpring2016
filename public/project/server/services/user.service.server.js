@@ -55,15 +55,6 @@ module.exports = function (app, userModel, documentModel) {
         res.json(users);
     }
 
-    function loggedIn(req, res) {
-        res.json(req.session.user);
-    }
-
-    function logOut(req, res) {
-        req.session.destroy();
-        res.send(200);
-    }
-
     function addCommentedOnByUserId(req, res) {
         var userId = req.params.id;
         var documentId = req.params.documentId;
@@ -84,16 +75,25 @@ module.exports = function (app, userModel, documentModel) {
         res.json(commentedOn);
     }
 
+    function getCommentedOnByUserId(req, res) {
+        var userId = req.params.id;
+        var user = userModel.findUserById(userId);
+        var documents = documentModel.getDocumentsByIds(user.commentedOn);
+        res.json(documents);
+    }
+
     function setLoggedIn(req, res) {
         var user = req.body;
         req.session.user = user;
         res.send(200);
     }
 
-    function getCommentedOnByUserId(req, res) {
-        var userId = req.params.id;
-        var user = userModel.findUserById(userId);
-        var documents = documentModel.getDocumentsByIds(user.commentedOn);
-        res.json(documents);
+    function loggedIn(req, res) {
+        res.json(req.session.user);
+    }
+
+    function logOut(req, res) {
+        req.session.destroy();
+        res.send(200);
     }
 };

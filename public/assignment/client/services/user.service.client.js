@@ -14,7 +14,9 @@
             createUser: createUser,
             deleteUserById: deleteUserById,
             updateUser: updateUser,
-            setCurrentUser: setCurrentUser
+            setCurrentUser: setCurrentUser,
+            getCurrentUser: getCurrentUser,
+            logout: logout
 
         };
         return service;
@@ -44,7 +46,24 @@
         }
 
         function setCurrentUser(user) {
-            $rootScope.user = user;
+            if (user) {
+                var userRoles = user.roles.map(function (role) {
+                    return role.toLowerCase();
+                });
+                $rootScope.user = user;
+                if (userRoles.indexOf("admin") >= 0 || userRoles.indexOf("administrator") >= 0) {
+                    $rootScope.isAdmin = true;
+                }
+                return $http.post("/api/assignment/loggedin", user);
+            }
+        }
+
+        function getCurrentUser() {
+            return $http.get("/api/assignment/loggedin");
+        }
+
+        function logout() {
+            return $http.post("/api/assignment/logout");
         }
     }
 }());
