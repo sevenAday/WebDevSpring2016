@@ -5,12 +5,12 @@
         .module("DocumentCallaborationApp")
         .controller("HeaderController", HeaderController);
 
-    function HeaderController($scope, $rootScope, $location, UserService) {
-        $scope.$location = $location;
+    function HeaderController($rootScope, $location, UserService) {
+        var model = this;
 
-        $scope.createDocument = createDocument;
-        $scope.logout = logout;
-        $scope.searchForDocuments = searchForDocuments;
+        model.createDocument = createDocument;
+        model.logout = logout;
+        model.searchForDocuments = searchForDocuments;
 
         function createDocument() {
             $rootScope.document = {"newDocument": true};
@@ -33,11 +33,11 @@
         }
 
         function searchForDocuments() {
-            if ($scope.keyWord) {
-                $rootScope.rootKeyWord = $scope.keyWord;
+            if (model.keyWord) {
+                $rootScope.rootKeyWord = model.keyWord;
                 $rootScope.searching = true;
-                $location.url("/results/" + $scope.keyWord);
-                $scope.keyWord = "";
+                $location.url("/results/" + model.keyWord);
+                model.keyWord = "";
             }
         }
     }

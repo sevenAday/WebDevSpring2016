@@ -1,4 +1,4 @@
-<nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="HeaderController">
+<nav class="navbar navbar-inverse navbar-fixed-top" ng-controller="HeaderController as model">
     <div class="container-fluid">
         <div class="navbar-header">
             <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar"
@@ -14,15 +14,15 @@
         <div id="navbar" class="navbar-collapse collapse">
             <ul class="nav navbar-nav navbar-right">
                 <li>
-                    <a ng-click="searchForDocuments()">
+                    <a ng-click="model.searchForDocuments()">
                         <span class="glyphicon glyphicon-search" aria-hidden="true"></span>
                         <input class="input-small text-normal"
-                               name="keyWord" ng-model="keyWord"
+                               name="keyWord" ng-model="model.keyWord"
                                type="text" placeholder="Search for...">
                     </a>
                 </li>
                 <li ng-show="user">
-                    <a ng-click="createDocument()">
+                    <a ng-click="model.createDocument()">
                         <span class="glyphicon glyphicon-file" aria-hidden="true">New</span>
                     </a>
                 </li>
@@ -47,7 +47,7 @@
                 <li ng-show="user" ng-class="{'active': $location.url().indexOf('profile') != -1}">
                     <a href="#/profile">{{user.username}}</a>
                 </li>
-                <li ng-show="user"><a ng-click="logout()">Logout</a></li>
+                <li ng-show="user"><a ng-click="model.logout()">Logout</a></li>
             </ul>
         </div>
     </div>
