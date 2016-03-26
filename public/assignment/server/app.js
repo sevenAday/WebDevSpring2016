@@ -1,4 +1,4 @@
-module.exports = function (app, uuid) {
+module.exports = function (app, uuid, db) {
     var formModel = require("./models/form.model.js")(uuid);
     var userModel = require("./models/user.model.js")(uuid);
 

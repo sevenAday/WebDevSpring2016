@@ -1,4 +1,4 @@
-module.exports = function (app, uuid) {
+module.exports = function (app, uuid, db) {
     var adminModel = require("./models/admin.model.js")();
     var commentModel = require("./models/comment.model.js")(uuid);
     var documentModel = require("./models/document.model.js")(uuid);
