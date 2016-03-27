@@ -1,3 +1,4 @@
+"use strict";
 module.exports = function (app, userModel, documentModel) {
     app.post("/api/project/user", createUser);
     app.get("/api/project/user", findUser);

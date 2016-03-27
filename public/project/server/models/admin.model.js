@@ -1,3 +1,4 @@
+"use strict";
 var mock = require("./admin.mock.json");
 module.exports = function () {
     var api = {

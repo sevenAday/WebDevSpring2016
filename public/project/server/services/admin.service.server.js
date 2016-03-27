@@ -1,3 +1,4 @@
+"use strict";
 module.exports = function (app, adminModel) {
     app.get("/api/project/admin", getAllAdminSettings);
     app.post("/api/project/admin/alertmessage", saveAdminAlertMessage);

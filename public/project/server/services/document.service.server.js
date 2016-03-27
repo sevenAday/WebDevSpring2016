@@ -1,3 +1,4 @@
+"use strict";
 module.exports = function (app, documentModel, commentModel, userModel) {
     app.get("/api/project/document", getAllDocuments);
     app.put("/api/project/document/:id", updateDocumentById);

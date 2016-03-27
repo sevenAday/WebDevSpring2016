@@ -1,3 +1,4 @@
+"use strict";
 module.exports = function (app, commentModel) {
     app.get("/api/project/comment/:id", findCommentById);
     app.delete("/api/project/comment/:id", deleteCommentById);

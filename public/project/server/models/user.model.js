@@ -1,3 +1,4 @@
+"use strict";
 var mock = require("./user.mock.json");
 module.exports = function (uuid) {
     var api = {
