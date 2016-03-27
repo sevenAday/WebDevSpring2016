@@ -23,6 +23,7 @@
         model.deleteComment = deleteComment;
         model.addNewComment = addNewComment;
         model.getSelectedText = getSelectedText;
+        model.discardComment = discardComment;
 
         $scope.showDefinition = false;
         $scope.createComment = createComment;
@@ -320,10 +321,12 @@
         }
 
         function editComment($index) {
+            model.commentEditingContent = model.comments[$index].content;
             model.editCommentIndex = $index;
         }
 
         function saveComment() {
+            model.comments[model.editCommentIndex].content = model.commentEditingContent;
             CommentService.updateComment(model.comments[model.editCommentIndex]._id,
                 model.comments[model.editCommentIndex])
                 .then(function (response) {
@@ -335,6 +338,11 @@
                     model.comments.push(removedComment[0]);
                     model.editCommentIndex = -1;
                 });
+        }
+
+        function discardComment() {
+            model.commentEditingContent = "";
+            model.editCommentIndex = -1;
         }
 
         function deleteComment($index) {

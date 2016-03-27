@@ -35,7 +35,7 @@
                 <hr/>
                 <h6>{{comment.userName}} wrote on {{comment.commentDate}}:</h6>
                 <p ng-hide="$index === model.editCommentIndex">{{comment.content}}</p>
-                <textarea ng-show="$index === model.editCommentIndex" ng-model="comment.content"
+                <textarea ng-show="$index === model.editCommentIndex" ng-model="model.commentEditingContent"
                           class="form-control"></textarea>
                 <a ng-show="comment.userId === user._id && $index != model.editCommentIndex"
                    ng-click="model.editComment($index)" ng-cloak>Edit</a>
@@ -43,6 +43,8 @@
                    ng-click="model.deleteComment($index)" ng-cloak> Delete</a>
                 <a ng-show="comment.userId === user._id && $index === model.editCommentIndex"
                    ng-click="model.saveComment()" ng-cloak>Save</a>
+                <a ng-show="comment.userId === user._id && $index === model.editCommentIndex"
+                   ng-click="model.discardComment()" ng-cloak> Discard</a>
             </div>
             <hr ng-hide="editable || newDocument"/>
             <textarea ng-hide="editable || newDocument"
