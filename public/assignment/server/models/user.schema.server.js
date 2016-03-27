@@ -5,10 +5,10 @@ module.exports = function (mongoose) {
         "lastName": String,
         "username": String,
         "password": String,
-        "email": String,
-        "roles": [String],
-        "commentedOn": [String]
-    }, {"collection": "project.user"});
+        "emails": [String],
+        "phones": [String],
+        "roles": [String]
+    }, {"collection": "user"});
 
     return UserSchema;
 };
