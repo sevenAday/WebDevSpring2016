@@ -19,6 +19,7 @@
                 $location.path("/login");
             }
         }
+
         init();
 
         model.addUser = addUser;
@@ -85,22 +86,20 @@
         }
 
         function updateUser() {
-            if (model.username && model.password && model.role) {
+            if (selectedUserIndex >= 0 && model.username && model.password && model.role) {
                 var newUser = {
                     "username": model.users[selectedUserIndex].username,
                     "password": model.password,
                     "roles": model.role.replace(/\s/g, "").split("|")
                 };
-                if (selectedUserIndex >= 0) {
-                    UserService.updateUser(model.users[selectedUserIndex]._id, newUser)
-                        .then(function (response) {
-                            populateUsers(response.data);
-                            model.username = "";
-                            model.password = "";
-                            model.role = "";
-                            selectedUserIndex = -1;
-                        });
-                }
+                UserService.updateUser(model.users[selectedUserIndex]._id, newUser)
+                    .then(function (response) {
+                        populateUsers(response.data);
+                        model.username = "";
+                        model.password = "";
+                        model.role = "";
+                        selectedUserIndex = -1;
+                    });
             }
         }
     }
