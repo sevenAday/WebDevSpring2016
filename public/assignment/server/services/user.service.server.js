@@ -20,21 +20,48 @@ module.exports = function (app, userModel) {
         var password = req.query.password;
         if (username && password) {
             var credentials = {"username": username, "password": password};
-            var user = userModel.findUserByCredentials(credentials);
-            res.json(user);
+            userModel.findUserByCredentials(credentials)
+                .then(
+                    function (user) {
+                        res.json(user);
+                    },
+                    function (err) {
+                        res.status(400).send(err);
+                    }
+                );
         } else if (username) {
-            var user = userModel.findUserByUsername(username);
-            res.json(user);
+            userModel.findUserByUsername(username)
+                .then(
+                    function (user) {
+                        res.json(user);
+                    },
+                    function (err) {
+                        res.status(400).send(err);
+                    }
+                );
         } else {
-            var users = userModel.findAllUsers();
-            res.json(users);
+            userModel.findAllUsers()
+                .then(
+                    function (users) {
+                        res.json(users);
+                    },
+                    function (err) {
+                        res.status(400).send(err);
+                    }
+                );
         }
     }
 
     function findUserById(req, res) {
         var userId = req.params.id;
-        var user = userModel.findUserById(userId);
-        res.json(user);
+        userModel.findUserById(userId).then(
+            function (user) {
+                res.json(user);
+            },
+            function (err) {
+                res.status(400).send(err);
+            }
+        );
     }
 
     function updateUserById(req, res) {
