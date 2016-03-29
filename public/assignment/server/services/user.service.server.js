@@ -11,8 +11,23 @@ module.exports = function (app, userModel) {
 
     function createUser(req, res) {
         var user = req.body;
-        var users = userModel.createUser(user);
-        res.json(users);
+        userModel.createUser(user)
+            .then(
+                function (user) {
+                    return userModel.findAllUsers();
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (users) {
+                    res.json(users);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function findUser(req, res) {
@@ -67,8 +82,23 @@ module.exports = function (app, userModel) {
     function updateUserById(req, res) {
         var userId = req.params.id;
         var user = req.body;
-        var users = userModel.updateUserById(userId, user);
-        res.json(users);
+        userModel.updateUserById(userId, user)
+            .then(
+                function (user) {
+                    return userModel.findAllUsers();
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (users) {
+                    res.json(users);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function deleteUserById(req, res) {

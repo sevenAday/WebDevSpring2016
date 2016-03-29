@@ -21,10 +21,10 @@ module.exports = function (db, mongoose) {
         UserModel
             .findOne({username: username},
                 function (err, user) {
-                    if (!err) {
-                        deferred.resolve(user);
-                    } else {
+                    if (err) {
                         deferred.reject(err);
+                    } else {
+                        deferred.resolve(user);
                     }
                 }
             );
@@ -36,10 +36,10 @@ module.exports = function (db, mongoose) {
         UserModel
             .findById(userId,
                 function (err, user) {
-                    if (!err) {
-                        deferred.resolve(user);
-                    } else {
+                    if (err) {
                         deferred.reject(err);
+                    } else {
+                        deferred.resolve(user);
                     }
                 }
             );
@@ -48,13 +48,15 @@ module.exports = function (db, mongoose) {
 
     function createUser(user) {
         var deferred = q.defer();
-        UserModel.create(user, function (err, user) {
-            if (err) {
-                deferred.reject(err);
-            } else {
-                deferred.resolve(user);
-            }
-        });
+        UserModel
+            .create(user,
+                function (err, user) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(user);
+                    }
+                });
         return deferred.promise;
     }
 
@@ -63,10 +65,10 @@ module.exports = function (db, mongoose) {
         UserModel
             .findOne({"username": credentials.username, "password": credentials.password},
                 function (err, user) {
-                    if (!err) {
-                        deferred.resolve(user);
-                    } else {
+                    if (err) {
                         deferred.reject(err);
+                    } else {
+                        deferred.resolve(user);
                     }
                 }
             );
@@ -77,33 +79,47 @@ module.exports = function (db, mongoose) {
         var deferred = q.defer();
         UserModel.find(
             function (err, users) {
-                if (!err) {
-                    deferred.resolve(users);
-                } else {
+                if (err) {
                     deferred.reject(err);
+                } else {
+                    deferred.resolve(users);
                 }
             }
         );
         return deferred.promise;
     }
 
-    function updateUserById(userId, user) {
-        var foundUser = findUserById(userId);
-        if (foundUser) {
-            if (user.firstName) {
-                foundUser.firstName = user.firstName;
-            }
-            if (user.lastName) {
-                foundUser.lastName = user.lastName;
-            }
-            foundUser.username = user.username;
-            foundUser.password = user.password;
-            foundUser.email = user.email;
-            if (user.roles) {
-                foundUser.roles = user.roles;
-            }
-        }
-        return mock;
+    function updateUserById(userId, newUser) {
+        var deferred = q.defer();
+        UserModel
+            .findById(userId,
+                function (err, user) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        if (newUser.firstName) {
+                            user.firstName = newUser.firstName;
+                        }
+                        if (newUser.lastName) {
+                            user.lastName = newUser.lastName;
+                        }
+                        user.username = newUser.username;
+                        user.password = newUser.password;
+                        user.email = newUser.email;
+                        if (newUser.roles) {
+                            user.roles = newUser.roles;
+                        }
+                        user.save(function (err, doc) {
+                            if (err) {
+                                deferred.reject(err);
+                            } else {
+                                deferred.resolve(doc);
+                            }
+                        });
+                    }
+                }
+            );
+        return deferred.promise;
     }
 
     function deleteUserById(userId) {
