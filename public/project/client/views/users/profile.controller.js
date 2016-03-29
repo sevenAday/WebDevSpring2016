@@ -168,13 +168,7 @@
             };
             UserService.updateUser($rootScope.user._id, currentUser)
                 .then(function (response) {
-                    var user = response.data;
-                    $rootScope.user.username = user.username;
-                    $rootScope.user.password = user.password;
-                    $rootScope.user.firstName = user.firstName;
-                    $rootScope.user.lastName = user.lastName;
-                    $rootScope.user.email = user.email;
-                    $rootScope.user.roles = user.roles;
+                    UserService.setCurrentUser(response.data);
                     model.successful = true;
                     $location.path("/profile");
                 });

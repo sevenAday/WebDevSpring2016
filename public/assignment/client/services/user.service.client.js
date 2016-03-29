@@ -47,13 +47,15 @@
 
         function setCurrentUser(user) {
             if (user) {
-                var userRoles = user.roles.map(function (role) {
-                    return role.toLowerCase();
-                });
-                $rootScope.user = user;
-                if (userRoles.indexOf("admin") >= 0 || userRoles.indexOf("administrator") >= 0) {
-                    $rootScope.isAdmin = true;
+                if (user.roles) {
+                    var userRoles = user.roles.map(function (role) {
+                        return role.toLowerCase();
+                    });
+                    if (userRoles.indexOf("admin") >= 0 || userRoles.indexOf("administrator") >= 0) {
+                        $rootScope.isAdmin = true;
+                    }
                 }
+                $rootScope.user = user;
                 return $http.post("/api/assignment/loggedin", user);
             }
         }

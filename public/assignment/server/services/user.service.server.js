@@ -85,15 +85,7 @@ module.exports = function (app, userModel) {
         userModel.updateUserById(userId, user)
             .then(
                 function (doc) {
-                    return userModel.findAllUsers();
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            )
-            .then(
-                function (users) {
-                    res.json(users);
+                    res.json(doc);
                 },
                 function (err) {
                     res.status(400).send(err);

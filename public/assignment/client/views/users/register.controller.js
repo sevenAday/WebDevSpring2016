@@ -35,7 +35,7 @@
                         UserService.createUser(newUser)
                             .then(function (response) {
                                 var users = response.data;
-                                $rootScope.user = users[users.length - 1];
+                                UserService.setCurrentUser(users[users.length - 1]);
                                 $location.path("/profile");
                             });
                     }
