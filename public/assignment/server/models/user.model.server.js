@@ -19,7 +19,7 @@ module.exports = function (db, mongoose) {
     function findUserByUsername(username) {
         var deferred = q.defer();
         UserModel
-            .findOne({username: username},
+            .findOne({"username": username},
                 function (err, user) {
                     if (err) {
                         deferred.reject(err);
@@ -123,12 +123,18 @@ module.exports = function (db, mongoose) {
     }
 
     function deleteUserById(userId) {
-        for (var u in mock) {
-            if (mock[u]._id == userId) {
-                mock.splice(u, 1);
-                break;
-            }
-        }
-        return mock;
+        var deferred = q.defer();
+        UserModel
+            .remove(
+                {"_id": userId},
+                function (err, stats) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(stats);
+                    }
+                }
+            );
+        return deferred.promise;
     }
 };

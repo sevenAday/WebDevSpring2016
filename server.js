@@ -26,7 +26,7 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 
-require('./public/assignment/server/app.js')(app, uuid, db);
+require('./public/assignment/server/app.js')(app, uuid, db, mongoose);
 require('./public/project/server/app.js')(app, uuid, db);
 
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';

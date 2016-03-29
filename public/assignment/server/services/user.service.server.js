@@ -13,7 +13,7 @@ module.exports = function (app, userModel) {
         var user = req.body;
         userModel.createUser(user)
             .then(
-                function (user) {
+                function (doc) {
                     return userModel.findAllUsers();
                 },
                 function (err) {
@@ -84,7 +84,7 @@ module.exports = function (app, userModel) {
         var user = req.body;
         userModel.updateUserById(userId, user)
             .then(
-                function (user) {
+                function (doc) {
                     return userModel.findAllUsers();
                 },
                 function (err) {
@@ -103,8 +103,23 @@ module.exports = function (app, userModel) {
 
     function deleteUserById(req, res) {
         var userId = req.params.id;
-        var users = userModel.deleteUserById(userId);
-        res.json(users);
+        userModel.deleteUserById(userId)
+            .then(
+                function (stats) {
+                    return userModel.findAllUsers();
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (users) {
+                    res.json(users);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function setLoggedIn(req, res) {
