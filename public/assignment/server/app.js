@@ -1,6 +1,6 @@
 "use strict";
 module.exports = function (app, uuid, db, mongoose) {
-    var formModel = require("./models/form.model.js")(uuid);
+    var formModel = require("./models/form.model.server.js")(uuid);
     var userModel = require("./models/user.model.server.js")(db, mongoose);
 
     var fieldService = require("./services/field.service.server.js")(app, formModel);

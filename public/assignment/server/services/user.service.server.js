@@ -69,14 +69,15 @@ module.exports = function (app, userModel) {
 
     function findUserById(req, res) {
         var userId = req.params.id;
-        userModel.findUserById(userId).then(
-            function (user) {
-                res.json(user);
-            },
-            function (err) {
-                res.status(400).send(err);
-            }
-        );
+        userModel.findUserById(userId)
+            .then(
+                function (user) {
+                    res.json(user);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function updateUserById(req, res) {
