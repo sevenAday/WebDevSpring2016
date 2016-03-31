@@ -1,7 +1,7 @@
 "use strict";
 module.exports = function (app, db, mongoose) {
     var formModel = require("./models/form.model.server.js")(db, mongoose);
-    var fieldModel = require("./models/field.model.server.js")(formModel);
+    var fieldModel = require("./models/field.model.server.js")(formModel, mongoose);
     var userModel = require("./models/user.model.server.js")(db, mongoose);
 
     var fieldService = require("./services/field.service.server.js")(app, fieldModel);

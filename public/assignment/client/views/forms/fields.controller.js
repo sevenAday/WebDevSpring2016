@@ -28,7 +28,7 @@
                 } else {
                     FieldService.getFieldsForForm(model.formId)
                         .then(function (response) {
-                            model.fields = response.data;
+                            model.fields = response.data.fields;
                         });
                 }
             } else {
@@ -140,14 +140,14 @@
             $scope.showProperties = false;
             FieldService.updateField(model.formId, model.field._id, model.field)
                 .then(function (response) {
-                    model.fields = response.data;
+                    model.fields = response.data.fields;
                 });
         }
 
         function deleteField(field) {
             FieldService.deleteFieldFromForm(model.formId, field._id)
                 .then(function (response) {
-                    model.fields = response.data;
+                    model.fields = response.data.fields;
                 });
         }
     }

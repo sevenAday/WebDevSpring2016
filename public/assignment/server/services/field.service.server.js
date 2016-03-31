@@ -13,7 +13,9 @@ module.exports = function (app, fieldModel) {
         fieldModel.findFieldsByFormId(formId)
             .then(
                 function (fields) {
-                    res.json(fields);
+                    delete fields.__v;
+                    delete fields._id;
+                    res.json(fields.toJSON());
                 },
                 function (err) {
                     res.status(400).send(err);
@@ -27,7 +29,9 @@ module.exports = function (app, fieldModel) {
         fieldModel.findFieldsByUserIdAndFormId(userId, formId)
             .then(
                 function (fields) {
-                    res.json(fields);
+                    delete fields.__v;
+                    delete fields._id;
+                    res.json(fields.toJSON());
                 },
                 function (err) {
                     res.status(400).send(err);
@@ -41,6 +45,8 @@ module.exports = function (app, fieldModel) {
         fieldModel.findFieldByFormIdAndFieldId(formId, fieldId)
             .then(
                 function (field) {
+                    delete field.__v;
+                    delete field._id;
                     res.json(field);
                 },
                 function (err) {
@@ -63,6 +69,8 @@ module.exports = function (app, fieldModel) {
             )
             .then(
                 function (fields) {
+                    delete fields.__v;
+                    delete fields._id;
                     res.json(fields);
                 },
                 function (err) {
@@ -73,11 +81,20 @@ module.exports = function (app, fieldModel) {
 
     function addFieldByFormId(req, res) {
         var formId = req.params.formId;
-        var field = req.body;
-        fieldModel.addFieldByFormId(formId, field)
+        var newField = req.body;
+        fieldModel.createField(newField)
             .then(
                 function (field) {
-                    res.json(field);
+                    return fieldModel.addFieldByFormId(formId, field);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                })
+            .then(
+                function (field) {
+                    delete field.__v;
+                    delete field._id;
+                    res.json(field.toJSON());
                 },
                 function (err) {
                     res.status(400).send(err);
@@ -92,7 +109,9 @@ module.exports = function (app, fieldModel) {
         fieldModel.updateFieldByFormIdAndFieldId(formId, fieldId, field)
             .then(
                 function (fields) {
-                    res.json(fields);
+                    delete fields.__v;
+                    delete fields._id;
+                    res.json(fields.toJSON());
                 },
                 function (err) {
                     res.status(400).send(err);
