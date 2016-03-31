@@ -109,6 +109,14 @@ module.exports = function (app, fieldModel) {
         var field = req.body;
         fieldModel.updateFieldByFormIdAndFieldId(formId, fieldId, field)
             .then(
+                function (form) {
+                    return fieldModel.findFieldsByFormId(formId);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
                 function (fields) {
                     delete fields.__v;
                     delete fields._id;
@@ -125,11 +133,21 @@ module.exports = function (app, fieldModel) {
         var fields = req.body;
         fieldModel.updateFieldsForForm(formId, fields)
             .then(
-                function (fields) {
-                    res.json(true);
+                function (form) {
+                    return fieldModel.findFieldsByFormId(formId);
                 },
                 function (err) {
-                    res.status(400).send(false);
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (fields) {
+                    delete fields.__v;
+                    delete fields._id;
+                    res.json(fields.toJSON());
+                },
+                function (err) {
+                    res.status(400).send(err);
                 }
             );
     }
