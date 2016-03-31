@@ -5,7 +5,7 @@
             <ul class="nav nav-tabs nav-justified">
                 <li role="presentation"><a href="#/form/{{model.formId}}">Forms</a></li>
                 <li role="presentation" class="active">
-                    <a href="#/{{model.userId}}/form/{{model.formId}}/field">Fields</a></li>
+                    <a href="#/form/{{model.formId}}/field">Fields</a></li>
             </ul>
             <br/>
             <div sortable-fields id="fields">
@@ -23,6 +23,10 @@
                             </div>
                             <div class="row-xs-10" ng-switch-when="EMAIL">
                                 <input type="email" class="form-control" id="inputEmailField"
+                                       placeholder="{{field.placeholder}}">
+                            </div>
+                            <div class="row-xs-10" ng-switch-when="PASSWORD">
+                                <input type="password" class="form-control" id="inputPassword"
                                        placeholder="{{field.placeholder}}">
                             </div>
                             <div class="row-xs-10" ng-switch-when="DATE">
@@ -84,6 +88,9 @@
                                 <option value="checkboxes">Checkboxes</option>
                                 <option value="radioButtons">Radio Buttons</option>
                                 <option value="multiLineText">Multi Line Text</option>
+                                <option value="email">Email Address</option>
+                                <option value="password">Password</option>
+                                <option value="options">Options</option>
                             </select>
                         </div>
                     </div>
@@ -103,6 +110,10 @@
                 <label>Label</label>
                 <input type="text" class="form-control" ng-model="model.field.label">
                 <div ng-switch-when="EMAIL">
+                    <label>Placeholder</label>
+                    <input type="text" class="form-control" ng-model="model.field.placeholder">
+                </div>
+                <div ng-switch-when="PASSWORD">
                     <label>Placeholder</label>
                     <input type="text" class="form-control" ng-model="model.field.placeholder">
                 </div>

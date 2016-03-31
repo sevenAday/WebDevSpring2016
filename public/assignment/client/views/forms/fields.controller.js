@@ -48,6 +48,10 @@
             var fieldToAdd = null;
             if (fieldType == "singleLineText") {
                 fieldToAdd = {"_id": null, "label": "New Text Field", "type": "TEXT", "placeholder": "New Field"};
+            } else if (fieldType == "email") {
+                fieldToAdd = {"_id": null, "label": "New Email Field", "type": "EMAIL", "placeholder": "New Field"};
+            } else if (fieldType == "password") {
+                fieldToAdd = {"_id": null, "label": "New Password Field", "type": "PASSWORD", "placeholder": "New Field"};
             } else if (fieldType == "multiLineText") {
                 fieldToAdd = {
                     "_id": null, "label": "New Multi Line Text Field", "type": "TEXTAREA",
@@ -55,7 +59,7 @@
                 };
             } else if (fieldType == "date") {
                 fieldToAdd = {"_id": null, "label": "New Date Field", "type": "DATE"};
-            } else if (fieldType == "dropDowm") {
+            } else if (fieldType == "dropDowm" || fieldType == "options") {
                 fieldToAdd = {
                     "_id": null, "label": "New Dropdown", "type": "OPTIONS", "options": [
                         {"label": "Option 1", "value": "OPTION_1"},
@@ -100,7 +104,7 @@
 
         function editField(field) {
             model.field = JSON.parse(JSON.stringify(field));
-            if (model.field.type == "TEXT" || model.field.type == "EMAIL") {
+            if (model.field.type == "TEXT" || model.field.type == "EMAIL" || model.field.type == "PASSWORD") {
                 model.field.propertiesTitle = "Single Line Text Field";
             } else if (model.field.type == "TEXTAREA") {
                 model.field.propertiesTitle = "Multi Line Text Field";
