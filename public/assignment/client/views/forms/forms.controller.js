@@ -82,9 +82,7 @@
 
         function goToFields() {
             if (model.selectedFormIndex >= 0) {
-                $location.path("/"
-                    + $rootScope.user._id
-                    + "/form/"
+                $location.path("/form/"
                     + model.forms[model.selectedFormIndex]._id
                     + "/field");
             }
