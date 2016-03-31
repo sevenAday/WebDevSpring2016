@@ -83,7 +83,7 @@
             if (fieldToAdd) {
                 FieldService.createFieldForForm(model.formId, fieldToAdd)
                     .then(function (response) {
-                        model.fields.push(response.data);
+                        model.fields = response.data.fields;
                     });
             }
         }

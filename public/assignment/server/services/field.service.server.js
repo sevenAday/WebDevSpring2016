@@ -82,19 +82,20 @@ module.exports = function (app, fieldModel) {
     function addFieldByFormId(req, res) {
         var formId = req.params.formId;
         var newField = req.body;
-        fieldModel.createField(newField)
+        fieldModel.addFieldByFormId(formId, newField)
             .then(
-                function (field) {
-                    return fieldModel.addFieldByFormId(formId, field);
+                function (form) {
+                    return fieldModel.findFieldsByFormId(formId);
                 },
                 function (err) {
                     res.status(400).send(err);
-                })
+                }
+            )
             .then(
-                function (field) {
-                    delete field.__v;
-                    delete field._id;
-                    res.json(field.toJSON());
+                function (fields) {
+                    delete fields.__v;
+                    delete fields._id;
+                    res.json(fields.toJSON());
                 },
                 function (err) {
                     res.status(400).send(err);

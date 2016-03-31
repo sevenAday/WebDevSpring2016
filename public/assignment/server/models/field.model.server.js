@@ -8,7 +8,6 @@ module.exports = function (formModel, mongoose) {
     var FieldModel = mongoose.model("Field", FieldSchema);
 
     var api = {
-        createField: createField,
         findFieldsByFormId: findFieldsByFormId,
         findFieldsByUserIdAndFormId: findFieldsByUserIdAndFormId,
         findFieldByFormIdAndFieldId: findFieldByFormIdAndFieldId,
@@ -18,24 +17,6 @@ module.exports = function (formModel, mongoose) {
         updateFieldsForForm: updateFieldsForForm
     };
     return api;
-
-    function createField(newField) {
-        var deferred = q.defer();
-        var field = new FieldModel();
-        field.label = newField.label;
-        field.type = newField.type;
-        field.placeholder = newField.placeholder;
-        field.options = newField.options;
-        field.save(
-            function (err, field) {
-                if (err) {
-                    deferred.reject(err);
-                } else {
-                    deferred.resolve(field);
-                }
-            });
-        return deferred.promise;
-    }
 
     function findFieldsByFormId(formId) {
         return Form.findById(formId).select("fields");
@@ -63,9 +44,13 @@ module.exports = function (formModel, mongoose) {
     function addFieldByFormId(formId, newField) {
         return Form.findById(formId)
             .then(function (form) {
-                form.fields.push(newField);
-                form.save();
-                return newField;
+                var field = new FieldModel();
+                field.label = newField.label;
+                field.type = newField.type;
+                field.placeholder = newField.placeholder;
+                field.options = newField.options;
+                form.fields.push(field);
+                return form.save();
             });
     }
 
@@ -77,8 +62,7 @@ module.exports = function (formModel, mongoose) {
                 field.type = newField.type;
                 field.placeholder = newField.placeholder;
                 field.options = newField.options;
-                form.save();
-                return form.fields;
+                return form.save();
             });
     }
 
@@ -86,7 +70,7 @@ module.exports = function (formModel, mongoose) {
         return Form.findById(formId)
             .then(function (form) {
                 form.fields = newFields;
-                return form.fields;
+                return form.save();
             });
     }
 };
