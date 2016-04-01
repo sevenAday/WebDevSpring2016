@@ -8,9 +8,17 @@ module.exports = function (app, userModel) {
     app.get("/api/assignment/loggedin", loggedIn);
     app.post("/api/assignment/loggedin", setLoggedIn);
     app.post("/api/assignment/logout", logOut);
+    app.post("/api/assignment/appadmin", createAppAdmin);
 
     function createUser(req, res) {
         var user = req.body;
+        if (req.session.user) {
+            if (req.session.user.roles.indexOf("admin") == -1) {
+                user.roles = ["newcomer"];
+            }
+        } else {
+            user.roles = ["newcomer"];
+        }
         userModel.createUser(user)
             .then(
                 function (doc) {
@@ -86,7 +94,15 @@ module.exports = function (app, userModel) {
         userModel.updateUserById(userId, user)
             .then(
                 function (doc) {
-                    res.json(doc);
+                    return userModel.findAllUsers();
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (users) {
+                    res.json(users);
                 },
                 function (err) {
                     res.status(400).send(err);
@@ -128,5 +144,30 @@ module.exports = function (app, userModel) {
     function logOut(req, res) {
         req.session.destroy();
         res.send(200);
+    }
+
+    function createAppAdmin() {
+        userModel.findUserByUsername("bob")
+            .then(
+                function (user) {
+                    if (user) {
+                        res.json(user);
+                    }
+                    else {
+                        return userModel.createAppAdmin();
+                    }
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (user) {
+                    res.json(user);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 };

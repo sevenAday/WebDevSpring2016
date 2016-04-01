@@ -12,7 +12,8 @@ module.exports = function (db, mongoose) {
         findAllUsers: findAllUsers,
         createUser: createUser,
         updateUserById: updateUserById,
-        deleteUserById: deleteUserById
+        deleteUserById: deleteUserById,
+        createAppAdmin: createAppAdmin
     };
     return api;
 
@@ -138,6 +139,27 @@ module.exports = function (db, mongoose) {
                     }
                 }
             );
+        return deferred.promise;
+    }
+
+    function createAppAdmin() {
+        var user = {
+            "firstName": "Bob",
+            "lastName": "Hope",
+            "username": "bob",
+            "password": "bob",
+            "roles": ["admin"]
+        };
+        var deferred = q.defer();
+        UserModel
+            .create(user,
+                function (err, user) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(user);
+                    }
+                });
         return deferred.promise;
     }
 };

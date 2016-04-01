@@ -16,8 +16,8 @@
             updateUser: updateUser,
             setCurrentUser: setCurrentUser,
             getCurrentUser: getCurrentUser,
-            logout: logout
-
+            logout: logout,
+            createAppAdmin: createAppAdmin
         };
         return service;
 
@@ -66,6 +66,10 @@
 
         function logout() {
             return $http.post("/api/assignment/logout");
+        }
+
+        function createAppAdmin() {
+            return $http.post("/api/assignment/appadmin");
         }
     }
 }());
