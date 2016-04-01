@@ -67,7 +67,11 @@
             };
             UserService.updateUser($rootScope.user._id, currentUser)
                 .then(function (response) {
-                    UserService.setCurrentUser(response.data);
+                    for (var u in response.data) {
+                        if (response.data[u]._id == $rootScope.user._id) {
+                            UserService.setCurrentUser(response.data[u]);
+                        }
+                    }
                     model.successful = true;
                     $location.path("/profile");
                 });
