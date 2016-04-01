@@ -143,6 +143,7 @@ module.exports = function (db, mongoose) {
     }
 
     function createAppAdmin() {
+        /*
         var user = {
             "firstName": "Bob",
             "lastName": "Hope",
@@ -161,5 +162,6 @@ module.exports = function (db, mongoose) {
                     }
                 });
         return deferred.promise;
+        */
     }
 };

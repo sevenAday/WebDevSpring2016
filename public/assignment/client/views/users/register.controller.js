@@ -27,10 +27,14 @@
                     if (response.data) {
                         $scope.registration.username.$error = {"duplicateUsername": true};
                     } else {
+                        var emails = [];
+                        if (model.email) {
+                            emails.push(model.email);
+                        }
                         var newUser = {
                             "username": model.username,
                             "password": model.password,
-                            "email": model.email
+                            "emails": emails
                         };
                         UserService.createUser(newUser)
                             .then(function (response) {
