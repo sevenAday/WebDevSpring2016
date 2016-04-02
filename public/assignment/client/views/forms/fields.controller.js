@@ -49,26 +49,25 @@
         function addField(fieldType) {
             var fieldToAdd = null;
             if (fieldType == "singleLineText") {
-                fieldToAdd = {"_id": null, "label": "New Text Field", "type": "TEXT", "placeholder": "New Field"};
+                fieldToAdd = {"label": "New Text Field", "type": "TEXT", "placeholder": "New Field"};
             } else if (fieldType == "email") {
-                fieldToAdd = {"_id": null, "label": "New Email Field", "type": "EMAIL", "placeholder": "New Field"};
+                fieldToAdd = {"label": "New Email Field", "type": "EMAIL", "placeholder": "New Field"};
             } else if (fieldType == "password") {
                 fieldToAdd = {
-                    "_id": null,
                     "label": "New Password Field",
                     "type": "PASSWORD",
                     "placeholder": "New Field"
                 };
             } else if (fieldType == "multiLineText") {
                 fieldToAdd = {
-                    "_id": null, "label": "New Multi Line Text Field", "type": "TEXTAREA",
+                    "label": "New Multi Line Text Field", "type": "TEXTAREA",
                     "placeholder": "New Field"
                 };
             } else if (fieldType == "date") {
-                fieldToAdd = {"_id": null, "label": "New Date Field", "type": "DATE"};
+                fieldToAdd = {"label": "New Date Field", "type": "DATE"};
             } else if (fieldType == "dropDowm" || fieldType == "options") {
                 fieldToAdd = {
-                    "_id": null, "label": "New Dropdown", "type": "OPTIONS", "options": [
+                    "label": "New Dropdown", "type": "OPTIONS", "options": [
                         {"label": "Option 1", "value": "OPTION_1"},
                         {"label": "Option 2", "value": "OPTION_2"},
                         {"label": "Option 3", "value": "OPTION_3"}
@@ -76,7 +75,7 @@
                 };
             } else if (fieldType == "checkboxes") {
                 fieldToAdd = {
-                    "_id": null, "label": "New Checkboxes", "type": "CHECKBOXES", "options": [
+                    "label": "New Checkboxes", "type": "CHECKBOXES", "options": [
                         {"label": "Option A", "value": "OPTION_A"},
                         {"label": "Option B", "value": "OPTION_B"},
                         {"label": "Option C", "value": "OPTION_C"}
@@ -84,7 +83,7 @@
                 };
             } else if (fieldType == "radioButtons") {
                 fieldToAdd = {
-                    "_id": null, "label": "New Radio Buttons", "type": "RADIOS", "options": [
+                    "label": "New Radio Buttons", "type": "RADIOS", "options": [
                         {"label": "Option X", "value": "OPTION_X"},
                         {"label": "Option Y", "value": "OPTION_Y"},
                         {"label": "Option Z", "value": "OPTION_Z"}
