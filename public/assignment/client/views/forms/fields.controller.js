@@ -14,6 +14,8 @@
         model.editField = editField;
         model.saveField = saveField;
         model.cancelEditing = cancelEditing;
+        model.modifyField = modifyField;
+        model.duplicateField = duplicateField;
 
         function init() {
             if ($rootScope.user) {
@@ -51,7 +53,12 @@
             } else if (fieldType == "email") {
                 fieldToAdd = {"_id": null, "label": "New Email Field", "type": "EMAIL", "placeholder": "New Field"};
             } else if (fieldType == "password") {
-                fieldToAdd = {"_id": null, "label": "New Password Field", "type": "PASSWORD", "placeholder": "New Field"};
+                fieldToAdd = {
+                    "_id": null,
+                    "label": "New Password Field",
+                    "type": "PASSWORD",
+                    "placeholder": "New Field"
+                };
             } else if (fieldType == "multiLineText") {
                 fieldToAdd = {
                     "_id": null, "label": "New Multi Line Text Field", "type": "TEXTAREA",
@@ -92,6 +99,19 @@
             }
         }
 
+        function duplicateField(field) {
+            var fieldToAdd = {
+                "label": field.label,
+                "type": field.type,
+                "placeholder": field.placeholder,
+                "options": field.options
+            };
+            FieldService.createFieldForForm(model.formId, fieldToAdd)
+                .then(function (response) {
+                    model.fields = response.data.fields;
+                });
+        }
+
         function getOptionString(options) {
             var optionString = "";
             if (options) {
@@ -104,8 +124,12 @@
 
         function editField(field) {
             model.field = JSON.parse(JSON.stringify(field));
-            if (model.field.type == "TEXT" || model.field.type == "EMAIL" || model.field.type == "PASSWORD") {
+            if (model.field.type == "TEXT") {
                 model.field.propertiesTitle = "Single Line Text Field";
+            } else if (model.field.type == "EMAIL") {
+                model.field.propertiesTitle = "Email Field";
+            } else if (model.field.type == "PASSWORD") {
+                model.field.propertiesTitle = "Password Field";
             } else if (model.field.type == "TEXTAREA") {
                 model.field.propertiesTitle = "Multi Line Text Field";
             } else if (model.field.type == "OPTIONS") {
@@ -116,6 +140,29 @@
                 model.field.stringifiedOptions = getOptionString(model.field.options);
             } else if (model.field.type == "RADIOS") {
                 model.field.propertiesTitle = "Radio Buttons Field";
+                model.field.stringifiedOptions = getOptionString(model.field.options);
+            }
+            $scope.showProperties = true;
+        }
+
+        function modifyField(field) {
+            model.field = JSON.parse(JSON.stringify(field));
+            if (model.field.type == "TEXT") {
+                model.field.propertiesTitle = "Modify Single Line Text Field";
+            } else if (model.field.type == "EMAIL") {
+                model.field.propertiesTitle = "Modify Email Field";
+            } else if (model.field.type == "PASSWORD") {
+                model.field.propertiesTitle = "Modify Password Field";
+            } else if (model.field.type == "TEXTAREA") {
+                model.field.propertiesTitle = "Modify Multi Line Text Field";
+            } else if (model.field.type == "OPTIONS") {
+                model.field.propertiesTitle = "Modify Dropdown Field";
+                model.field.stringifiedOptions = getOptionString(model.field.options);
+            } else if (model.field.type == "CHECKBOXES") {
+                model.field.propertiesTitle = "Modify Checkboxes Field";
+                model.field.stringifiedOptions = getOptionString(model.field.options);
+            } else if (model.field.type == "RADIOS") {
+                model.field.propertiesTitle = "Modify Radio Buttons Field";
                 model.field.stringifiedOptions = getOptionString(model.field.options);
             }
             $scope.showProperties = true;
