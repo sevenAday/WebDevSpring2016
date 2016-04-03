@@ -1,6 +1,12 @@
 "use strict";
-var mock = require("./comment.mock.json");
-module.exports = function (uuid) {
+var q = require("q");
+
+module.exports = function (documentModel, mongoose) {
+    var Document = documentModel.getMongooseModel();
+
+    var CommentSchema = require("./comment.schema.server.js")(mongoose);
+    var CommentModel = mongoose.model("Comment", CommentSchema);
+
     var api = {
         findCommentById: findCommentById,
         deleteCommentById: deleteCommentById,

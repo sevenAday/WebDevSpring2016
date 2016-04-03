@@ -22,6 +22,10 @@ module.exports = function (db, mongoose) {
     };
     return api;
 
+    function getMongooseModel() {
+        return DocumentModel;
+    }
+
     function getAllDocuments() {
         var deferred = q.defer();
         DocumentModel
