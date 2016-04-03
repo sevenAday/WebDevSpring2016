@@ -8,7 +8,6 @@ module.exports = function (app, documentModel, commentModel, userModel) {
     app.post("/api/project/document/:id/user/:userId/like", likeDocument);
     app.post("/api/project/document/:id/user/:userId/unlike", unlikeDocument);
     app.delete("/api/project/document/:id/comment/:commentIndex", deleteCommentIdxFromDocumentId);
-    app.post("/api/project/document/:id/comment/:commentId", addCommentToDocummentId);
     app.get("/api/project/document/:id", getDocumentById);
     app.delete("/api/project/document/like/user/:userId", removeAllLikeUserIds);
     app.delete("/api/project/document/comment/user/:userId", removeAllCommentsByUserId);
@@ -119,19 +118,6 @@ module.exports = function (app, documentModel, commentModel, userModel) {
                     res.status(400).send(err);
                 }
             );
-    }
-
-    function addCommentToDocummentId(req, res) {
-        var documentId = req.params.id;
-        var commentId = req.params.commentId;
-        documentModel.addCommentToDocummentId(commentId, documentId).then(
-            function (comments) {
-                res.send(comments);
-            },
-            function (err) {
-                res.status(400).send(err);
-            }
-        );
     }
 
     function getDocumentById(req, res) {

@@ -174,7 +174,8 @@ module.exports = function (db, mongoose) {
                     user.likes.splice(likeIdx, 1);
                 }
                 user.likes.push(documentId);
-                return user.save();
+                user.save();
+                return user.likes;
             });
     }
 
@@ -185,7 +186,8 @@ module.exports = function (db, mongoose) {
                 if (likeIdx >= 0) {
                     user.likes.splice(likeIdx, 1);
                 }
-                return user.save();
+                user.save();
+                return user.likes;
             });
     }
 };

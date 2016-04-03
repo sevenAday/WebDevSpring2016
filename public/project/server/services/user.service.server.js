@@ -187,19 +187,11 @@ module.exports = function (app, userModel, documentModel) {
         var documentId = req.params.documentId;
         userModel.addLikeByUserId(userId, documentId)
             .then(
-                function (doc) {
-                    return userModel.findUserById(userId);
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            )
-            .then(
-                function (user) {
+                function (likes) {
                     if (req.session.user._id == userId) {
-                        req.session.user.likes = user.likes;
+                        req.session.user.likes = likes;
                     }
-                    res.json(user.likes);
+                    res.json(likes);
                 },
                 function (err) {
                     res.status(400).send(err);
@@ -212,19 +204,11 @@ module.exports = function (app, userModel, documentModel) {
         var documentId = req.params.documentId;
         userModel.removeLikeIdByUserId(userId, documentId)
             .then(
-                function (doc) {
-                    return userModel.findUserById(userId);
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            )
-            .then(
-                function (user) {
+                function (likes) {
                     if (req.session.user._id == userId) {
-                        req.session.user.likes = user.likes;
+                        req.session.user.likes = likes;
                     }
-                    res.json(user.likes);
+                    res.json(likes);
                 },
                 function (err) {
                     res.status(400).send(err);

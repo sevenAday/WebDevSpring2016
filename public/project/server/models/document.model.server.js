@@ -14,7 +14,6 @@ module.exports = function (db, mongoose) {
         likeDocument: likeDocument,
         unlikeDocument: unlikeDocument,
         deleteCommentIdxFromDocumentId: deleteCommentIdxFromDocumentId,
-        addCommentDocummentId: addCommentDocummentId,
         getDocumentById: getDocumentById,
         getDocumentsByIds: getDocumentsByIds,
         removeAllLikeUserIds: removeAllLikeUserIds,
@@ -77,7 +76,7 @@ module.exports = function (db, mongoose) {
                     if (err) {
                         deferred.reject(err);
                     } else {
-                        deferred.resolve(addNewDocument());
+                        deferred.resolve(document);
                     }
                 });
         return deferred.promise;
@@ -139,15 +138,6 @@ module.exports = function (db, mongoose) {
         return getDocumentById(documentId)
             .then(function (document) {
                 document.comment.splice(commentIdx, 1);
-                document.save();
-                return document.comment;
-            });
-    }
-
-    function addCommentDocummentId(comment, documentId) {
-        return getDocumentById(documentId)
-            .then(function (document) {
-                document.comment.push(comment);
                 document.save();
                 return document.comment;
             });

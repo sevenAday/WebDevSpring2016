@@ -21,7 +21,8 @@
             getCurrentUser: getCurrentUser,
             logout: logout,
             getCommentedOnByUserId: getCommentedOnByUserId,
-            getLikeByUserId: getLikeByUserId
+            getLikeByUserId: getLikeByUserId,
+            updateLikeByUserId: updateLikeByUserId
         };
         return service;
 
@@ -90,6 +91,14 @@
 
         function getLikeByUserId(userId) {
             return $http.get("/api/project/user/" + userId + "/like");
+        }
+
+        function updateLikeByUserId(userId, documentId, liked) {
+            if (liked) {
+                return $http.post("/api/project/user/" + userId + "/like/" + documentId);
+            } else {
+                return $http.delete("/api/project/user/" + userId + "/like/" + documentId);
+            }
         }
     }
 }());

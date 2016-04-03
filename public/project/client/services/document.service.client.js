@@ -16,7 +16,6 @@
             deleteDocumentById: deleteDocumentById,
             rateDocument: rateDocument,
             deleteCommentIdxFromDocumentId: deleteCommentIdxFromDocumentId,
-            addCommentIdToDocummentId: addCommentIdToDocummentId,
             getDocumentById: getDocumentById,
             removeAllLikeUserIds: removeAllLikeUserIds,
             removeAllCommentsByUserId: removeAllCommentsByUserId,
@@ -54,10 +53,6 @@
 
         function deleteCommentIdxFromDocumentId(commentIdx, documentId) {
             return $http.delete("/api/project/document/" + documentId + "/comment/" + commentIdx);
-        }
-
-        function addCommentIdToDocummentId(commentId, documentId) {
-            return $http.post("/api/project/document/" + documentId + "/comment/" + commentId);
         }
 
         function getDocumentById(documentId) {

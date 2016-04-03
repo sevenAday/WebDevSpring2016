@@ -298,7 +298,11 @@
                     if (!liked) {
                         model.youLike = false;
                     }
-                    getLikeInformation();
+                    UserService.updateLikeByUserId($rootScope.user._id, $rootScope.document._id, liked)
+                        .then(function (response) {
+                            $rootScope.user.likes = response.data;
+                            getLikeInformation();
+                        });
                 });
         }
 
@@ -375,21 +379,18 @@
             CommentService.addComment($rootScope.document._id, newComment)
                 .then(function (response) {
                     var comment = response.data;
-                    DocumentService.addCommentIdToDocummentId(comment._id, $rootScope.document._id)
+                    var dd = new Date(comment.lastModified);
+                    model.comments.push({
+                        "_id": comment._id,
+                        "userId": comment.userId,
+                        "userName": "You",
+                        "content": comment.content,
+                        "commentDate": (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear()
+                    });
+                    UserService.addCommentedOnByUserId($rootScope.user._id, $rootScope.document._id)
                         .then(function (response) {
-                            var dd = new Date(comment.lastModified);
-                            model.comments.push({
-                                "_id": comment._id,
-                                "userId": comment.userId,
-                                "userName": "You",
-                                "content": comment.content,
-                                "commentDate": (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear()
-                            });
-                            UserService.addCommentedOnByUserId($rootScope.user._id, $rootScope.document._id)
-                                .then(function (response) {
-                                    $rootScope.user.commentedOn = response.data;
-                                    model.newCommentContent = "";
-                                });
+                            $rootScope.user.commentedOn = response.data;
+                            model.newCommentContent = "";
                         });
                 });
         }
