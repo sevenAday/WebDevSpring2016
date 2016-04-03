@@ -199,30 +199,36 @@ module.exports = function (app, documentModel, commentModel, userModel) {
 
     function getCommentsOnDocument(req, res) {
         var documentId = req.params.id;
-        var document = documentModel.getDocumentById(documentId);
-        var docCommentIds = document.comment;
-        var comments = [];
-        for (var c in docCommentIds) {
-            var docComment = commentModel.findCommentById(docCommentIds[c]);
-            var dd = new Date(docComment.lastModified);
-            var userName = "You";
-            if (docComment.userId != req.session.user._id) {
-                var commentUser = userModel.findUserById(docComment.userId);
-                userName = commentUser.firstName + " " + commentUser.lastName;
-            }
-            comments.push({
-                "_id": docComment._id,
-                "userId": docComment.userId,
-                "userName": userName,
-                "content": docComment.content,
-                "commentDate": (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear()
-            });
-        }
-        comments.sort(function (x, y) {
-            var xDate = x.commentDate;
-            var yDate = y.commentDate;
-            return (xDate < yDate) ? -1 : ((xDate > yDate) ? 1 : 0);
-        });
-        res.json(comments);
+        documentModel.getDocumentById(documentId)
+            .then(
+                function (document) {
+                    var docComments = document.comment;
+                    var comments = [];
+                    for (var c in docComments) {
+                        var docComment = docComments[c];
+                        var dd = new Date(docComment.lastModified);
+                        var userName = "You";
+                        if (docComment.userId != req.session.user._id) {
+                            userName = docComment.userName;
+                        }
+                        comments.push({
+                            "_id": docComment._id,
+                            "userId": docComment.userId,
+                            "userName": userName,
+                            "content": docComment.content,
+                            "commentDate": (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear()
+                        });
+                    }
+                    comments.sort(function (x, y) {
+                        var xDate = x.commentDate;
+                        var yDate = y.commentDate;
+                        return (xDate < yDate) ? -1 : ((xDate > yDate) ? 1 : 0);
+                    });
+                    res.json(comments);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 };
