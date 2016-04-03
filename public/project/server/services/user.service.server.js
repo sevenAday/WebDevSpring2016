@@ -16,18 +16,18 @@ module.exports = function (app, userModel, documentModel) {
     app.get("/api/project/user/:id/like", getLikeByUserId);
 
     function createUser(req, res) {
-        var user = req.body;
-        if (req.session.user) {
-            if (req.session.user.roles.indexOf("admin") == -1) {
-                user.roles = ["newcomer"];
-            }
-        } else {
-            user.roles = ["newcomer"];
+        var newUser = req.body;
+        if (!req.session.isAdminUser) {
+            newUser.roles = ["newcomer"];
         }
-        userModel.createUser(user)
+        userModel.createUser(newUser)
             .then(
-                function (doc) {
-                    return userModel.findAllUsers();
+                function (user) {
+                    if (req.session.isAdminUser) {
+                        return userModel.findAllUsers();
+                    } else {
+                        return user;
+                    }
                 },
                 function (err) {
                     res.status(400).send(err);
@@ -95,11 +95,15 @@ module.exports = function (app, userModel, documentModel) {
 
     function updateUserById(req, res) {
         var userId = req.params.id;
-        var user = req.body;
-        userModel.updateUserById(userId, user)
+        var newUser = req.body;
+        userModel.updateUserById(userId, newUser)
             .then(
-                function (doc) {
-                    return userModel.findAllUsers();
+                function (user) {
+                    if (req.session.isAdminUser) {
+                        return userModel.findAllUsers();
+                    } else {
+                        return user;
+                    }
                 },
                 function (err) {
                     res.status(400).send(err);
@@ -273,6 +277,10 @@ module.exports = function (app, userModel, documentModel) {
     function setLoggedIn(req, res) {
         var user = req.body;
         req.session.user = user;
+        req.session.isAdminUser = false;
+        if (req.session.user.roles.indexOf("admin") >= 0) {
+            req.session.isAdminUser = true;
+        }
         res.send(200);
     }
 

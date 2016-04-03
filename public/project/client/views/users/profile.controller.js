@@ -152,6 +152,7 @@
             model.successful = false;
             var currentUser;
             model.showError = true;
+            delete $scope.profile.inputEmail.$error.address;
             if (isNotEmpty($scope.profile.username.$error)
                 || isNotEmpty($scope.profile.password.$error)
                 || isNotEmpty($scope.profile.lastName.$error)
@@ -168,10 +169,13 @@
             };
             UserService.updateUser($rootScope.user._id, currentUser)
                 .then(function (response) {
-                    UserService.setCurrentUser(response.data);
-                    model.successful = true;
-                    $location.path("/profile");
-                });
+                        UserService.setCurrentUser(response.data);
+                        model.successful = true;
+                        $location.path("/profile");
+                    },
+                    function (err) {
+                        $scope.profile.inputEmail.$error = {"address": true};
+                    });
         }
 
         function isNotEmpty(obj) {

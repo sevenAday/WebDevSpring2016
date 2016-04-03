@@ -3,7 +3,7 @@ var q = require("q");
 
 module.exports = function (db, mongoose) {
     var UserSchema = require("./user.schema.server.js")(mongoose);
-    var UserModel = mongoose.model("User", UserSchema);
+    var UserModel = mongoose.model("ProjectUser", UserSchema);
 
     var api = {
         findUserByCredentials: findUserByCredentials,
@@ -50,10 +50,10 @@ module.exports = function (db, mongoose) {
         return deferred.promise;
     }
 
-    function createUser(user) {
+    function createUser(newUser) {
         var deferred = q.defer();
         UserModel
-            .create(user,
+            .create(newUser,
                 function (err, user) {
                     if (err) {
                         deferred.reject(err);
@@ -109,10 +109,7 @@ module.exports = function (db, mongoose) {
                         }
                         user.username = newUser.username;
                         user.password = newUser.password;
-                        user.emails = newUser.emails;
-                        if (newUser.phones) {
-                            user.phones = newUser.phones;
-                        }
+                        user.email = newUser.email;
                         if (newUser.roles) {
                             user.roles = newUser.roles;
                         }

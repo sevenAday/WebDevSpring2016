@@ -20,7 +20,8 @@
             setCurrentUser: setCurrentUser,
             getCurrentUser: getCurrentUser,
             logout: logout,
-            getCommentedOnByUserId: getCommentedOnByUserId
+            getCommentedOnByUserId: getCommentedOnByUserId,
+            getLikeByUserId: getLikeByUserId
         };
         return service;
 
@@ -85,6 +86,10 @@
 
         function getCommentedOnByUserId(userId) {
             return $http.get("/api/project/user/" + userId + "/commentedon");
+        }
+
+        function getLikeByUserId(userId) {
+            return $http.get("/api/project/user/" + userId + "/like");
         }
     }
 }());

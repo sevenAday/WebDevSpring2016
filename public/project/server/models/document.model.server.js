@@ -18,7 +18,8 @@ module.exports = function (db, mongoose) {
         getDocumentById: getDocumentById,
         getDocumentsByIds: getDocumentsByIds,
         removeAllLikeUserIds: removeAllLikeUserIds,
-        removeAllCommentsByUserId: removeAllCommentsByUserId
+        removeAllCommentsByUserId: removeAllCommentsByUserId,
+        getMongooseModel: getMongooseModel
     };
     return api;
 
