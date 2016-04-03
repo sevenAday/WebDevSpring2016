@@ -64,7 +64,7 @@
         init();
 
         function getDocumentsLikedByUserIdNext() {
-            DocumentService.getDocumentsLikedByUserId($rootScope.user._id)
+            UserService.getLikeByUserId($rootScope.user._id)
                 .then(function (response) {
                     response.data.forEach(function (document) {
                         var asbtractStr = "";

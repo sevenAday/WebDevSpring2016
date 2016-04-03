@@ -10,12 +10,37 @@ module.exports = function (app, userModel, documentModel) {
     app.delete("/api/project/user/:id", deleteUserById);
     app.post("/api/project/user/:id/commentedon/:documentId", addCommentedOnByUserId);
     app.delete("/api/project/user/:id/commentedon/:documentId", removeCommentedOnIdByUserId);
+    app.post("/api/project/user/:id/like/:documentId", addLikeByUserId);
+    app.delete("/api/project/user/:id/like/:documentId", removeLikeIdByUserId);
     app.get("/api/project/user/:id/commentedon", getCommentedOnByUserId);
+    app.get("/api/project/user/:id/like", getLikeByUserId);
 
     function createUser(req, res) {
         var user = req.body;
-        user = userModel.createUser(user);
-        res.json(user);
+        if (req.session.user) {
+            if (req.session.user.roles.indexOf("admin") == -1) {
+                user.roles = ["newcomer"];
+            }
+        } else {
+            user.roles = ["newcomer"];
+        }
+        userModel.createUser(user)
+            .then(
+                function (doc) {
+                    return userModel.findAllUsers();
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (users) {
+                    res.json(users);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function findUser(req, res) {
@@ -23,57 +48,192 @@ module.exports = function (app, userModel, documentModel) {
         var password = req.query.password;
         if (username && password) {
             var credentials = {"username": username, "password": password};
-            var user = userModel.findUserByCredentials(credentials);
-            res.json(user);
+            userModel.findUserByCredentials(credentials)
+                .then(
+                    function (user) {
+                        res.json(user);
+                    },
+                    function (err) {
+                        res.status(400).send(err);
+                    }
+                );
         } else if (username) {
-            var user = userModel.findUserByUsername(username);
-            res.json(user);
+            userModel.findUserByUsername(username)
+                .then(
+                    function (user) {
+                        res.json(user);
+                    },
+                    function (err) {
+                        res.status(400).send(err);
+                    }
+                );
         } else {
-            var users = userModel.findAllUsers();
-            res.json(users);
+            userModel.findAllUsers()
+                .then(
+                    function (users) {
+                        res.json(users);
+                    },
+                    function (err) {
+                        res.status(400).send(err);
+                    }
+                );
         }
     }
 
     function findUserById(req, res) {
         var userId = req.params.id;
-        var user = userModel.findUserById(userId);
-        res.json(user);
+        userModel.findUserById(userId)
+            .then(
+                function (user) {
+                    res.json(user);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function updateUserById(req, res) {
         var userId = req.params.id;
         var user = req.body;
-        user = userModel.updateUserById(userId, user);
-        if (req.session.user._id == userId) {
-            req.session.user = user;
-        }
-        res.json(user);
+        userModel.updateUserById(userId, user)
+            .then(
+                function (doc) {
+                    return userModel.findAllUsers();
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (users) {
+                    res.json(users);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function deleteUserById(req, res) {
         var userId = req.params.id;
-        var users = userModel.deleteUserById(userId);
-        res.json(users);
+        userModel.deleteUserById(userId)
+            .then(
+                function (stats) {
+                    return userModel.findAllUsers();
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (users) {
+                    res.json(users);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function addCommentedOnByUserId(req, res) {
         var userId = req.params.id;
         var documentId = req.params.documentId;
-        var commentedOn = userModel.addCommentedOnByUserId(userId, documentId);
-        if (req.session.user._id == userId) {
-            req.session.user.commentedOn = commentedOn;
-        }
-        res.json(commentedOn);
+        userModel.addCommentedOnByUserId(userId, documentId)
+            .then(
+                function (doc) {
+                    return userModel.findUserById(userId);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (user) {
+                    if (req.session.user._id == userId) {
+                        req.session.user.commentedOn = user.commentedOn;
+                    }
+                    res.json(user.commentedOn);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function removeCommentedOnIdByUserId(req, res) {
         var userId = req.params.id;
         var documentId = req.params.documentId;
-        var commentedOn = userModel.removeCommentedOnIdByUserId(userId, documentId);
-        if (req.session.user._id == userId) {
-            req.session.user.commentedOn = commentedOn;
-        }
-        res.json(commentedOn);
+        userModel.removeCommentedOnIdByUserId(userId, documentId)
+            .then(
+                function (doc) {
+                    return userModel.findUserById(userId);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (user) {
+                    if (req.session.user._id == userId) {
+                        req.session.user.commentedOn = user.commentedOn;
+                    }
+                    res.json(user.commentedOn);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+    }
+
+    function addLikeByUserId(req, res) {
+        var userId = req.params.id;
+        var documentId = req.params.documentId;
+        userModel.addLikeByUserId(userId, documentId)
+            .then(
+                function (doc) {
+                    return userModel.findUserById(userId);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (user) {
+                    if (req.session.user._id == userId) {
+                        req.session.user.likes = user.likes;
+                    }
+                    res.json(user.likes);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+    }
+
+    function removeLikeIdByUserId(req, res) {
+        var userId = req.params.id;
+        var documentId = req.params.documentId;
+        userModel.removeLikeIdByUserId(userId, documentId)
+            .then(
+                function (doc) {
+                    return userModel.findUserById(userId);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (user) {
+                    if (req.session.user._id == userId) {
+                        req.session.user.likes = user.likes;
+                    }
+                    res.json(user.likes);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function getCommentedOnByUserId(req, res) {
@@ -81,6 +241,27 @@ module.exports = function (app, userModel, documentModel) {
         var user = userModel.findUserById(userId);
         var documents = documentModel.getDocumentsByIds(user.commentedOn);
         res.json(documents);
+    }
+
+    function getLikeByUserId(req, res) {
+        var userId = req.params.id;
+        userModel.findUserById(userId)
+            .then(
+                function (user) {
+                    return documentModel.getDocumentsByIds(user.likes);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (documents) {
+                    res.json(documents);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function setLoggedIn(req, res) {

@@ -10,79 +10,141 @@ module.exports = function (app, documentModel, commentModel, userModel) {
     app.delete("/api/project/document/:id/comment/:commentIndex", deleteCommentIdxFromDocumentId);
     app.post("/api/project/document/:id/comment/:commentId", addCommentIdToDocummentId);
     app.get("/api/project/document/:id", getDocumentById);
-    app.get("/api/project/document/like/user/:userId", getDocumentsLikedByUserId);
     app.delete("/api/project/document/like/user/:userId", removeAllLikeUserIds);
     app.delete("/api/project/document/commentIds", removeAllCommentIds);
     app.get("/api/project/document/:id/comment", getCommentsOnDocument);
 
     function getAllDocuments(req, res) {
-        var documents = documentModel.getAllDocuments();
-        res.json(documents);
+        documentModel.getAllDocuments()
+            .then(
+                function (documents) {
+                    res.json(documents);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function updateDocumentById(req, res) {
         var documentId = req.params.id;
-        var document = req.body;
-        document = documentModel.updateDocumentById(documentId, document);
-        res.json(document);
+        var newDocument = req.body;
+        documentModel.updateDocumentById(documentId, newDocument)
+            .then(
+                function (document) {
+                    res.json(document);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function addNewDocument(req, res) {
-        var document = req.body;
-        document = documentModel.addNewDocument(document);
-        res.json(document);
+        var newDocument = req.body;
+        documentModel.addNewDocument(newDocument)
+            .then(
+                function (document) {
+                    res.json(document);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function getDocumentsModifiedByUserId(req, res) {
         var userId = req.params.userId;
-        var documents = documentModel.getDocumentsModifiedByUserId(userId);
-        res.json(documents);
+        documentModel.getDocumentsModifiedByUserId(userId)
+            .then(
+                function (documents) {
+                    res.json(documents);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function deleteDocumentById(req, res) {
         var documentId = req.params.id;
-        var comments = documentModel.deleteDocumentById(documentId);
-        res.json(comments);
+        documentModel.deleteDocumentById(documentId)
+            .then(
+                function (doc) {
+                    res.send(true);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function likeDocument(req, res) {
         var documentId = req.params.id;
         var userId = req.params.userId;
-        var likes = documentModel.likeDocument(documentId, userId);
-        res.json(likes);
+        documentModel.likeDocument(documentId, userId)
+            .then(
+                function (likes) {
+                    res.send(likes);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function unlikeDocument(req, res) {
         var documentId = req.params.id;
         var userId = req.params.userId;
-        var likes = documentModel.unlikeDocument(documentId, userId);
-        res.json(likes);
+        documentModel.unlikeDocument(documentId, userId)
+            .then(
+                function (likes) {
+                    res.send(likes);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function deleteCommentIdxFromDocumentId(req, res) {
         var documentId = req.params.id;
         var commentIdx = req.params.commentIndex;
-        var comments = documentModel.deleteCommentIdxFromDocumentId(commentIdx, documentId);
-        res.json(comments);
+        documentModel.deleteCommentIdxFromDocumentId(commentIdx, documentId)
+            .then(
+                function (comments) {
+                    res.send(comments);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
-    function addCommentIdToDocummentId(req, res) {
+    function addCommentToDocummentId(req, res) {
         var documentId = req.params.id;
         var commentId = req.params.commentId;
-        var comments = documentModel.addCommentIdToDocummentId(commentId, documentId);
-        res.json(comments);
+        documentModel.addCommentToDocummentId(commentId, documentId).then(
+            function (comments) {
+                res.send(comments);
+            },
+            function (err) {
+                res.status(400).send(err);
+            }
+        );
     }
 
     function getDocumentById(req, res) {
         var documentId = req.params.id;
-        var document = documentModel.getDocumentById(documentId);
-        res.json(document);
-    }
-
-    function getDocumentsLikedByUserId(req, res) {
-        var userId = req.params.userId;
-        var documents = documentModel.getDocumentsLikedByUserId(userId);
-        res.json(documents);
+        documentModel.getDocumentById(documentId)
+            .then(
+                function (document) {
+                    res.send(document);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function removeAllLikeUserIds(req, res) {
@@ -108,7 +170,7 @@ module.exports = function (app, documentModel, commentModel, userModel) {
             var userName = "You";
             if (docComment.userId != req.session.user._id) {
                 var commentUser = userModel.findUserById(docComment.userId);
-                userName =  commentUser.firstName + " " + commentUser.lastName;
+                userName = commentUser.firstName + " " + commentUser.lastName;
             }
             comments.push({
                 "_id": docComment._id,

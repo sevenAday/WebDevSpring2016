@@ -1,0 +1,193 @@
+"use strict";
+var q = require("q");
+
+module.exports = function (db, mongoose) {
+    var UserSchema = require("./user.schema.server.js")(mongoose);
+    var UserModel = mongoose.model("User", UserSchema);
+
+    var api = {
+        findUserByCredentials: findUserByCredentials,
+        findUserByUsername: findUserByUsername,
+        findUserById: findUserById,
+        findAllUsers: findAllUsers,
+        createUser: createUser,
+        updateUserById: updateUserById,
+        deleteUserById: deleteUserById,
+        addCommentedOnByUserId: addCommentedOnByUserId,
+        removeCommentedOnIdByUserId: removeCommentedOnIdByUserId,
+        addLikeByUserId: addLikeByUserId,
+        removeLikeIdByUserId: removeLikeIdByUserId
+    };
+    return api;
+
+    function findUserByUsername(username) {
+        var deferred = q.defer();
+        UserModel
+            .findOne({"username": username},
+                function (err, user) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(user);
+                    }
+                }
+            );
+        return deferred.promise;
+    }
+
+    function findUserById(userId) {
+        var deferred = q.defer();
+        UserModel
+            .findById(userId,
+                function (err, user) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(user);
+                    }
+                }
+            );
+        return deferred.promise;
+    }
+
+    function createUser(user) {
+        var deferred = q.defer();
+        UserModel
+            .create(user,
+                function (err, user) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(user);
+                    }
+                });
+        return deferred.promise;
+    }
+
+    function findUserByCredentials(credentials) {
+        var deferred = q.defer();
+        UserModel
+            .findOne({"username": credentials.username, "password": credentials.password},
+                function (err, user) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(user);
+                    }
+                }
+            );
+        return deferred.promise;
+    }
+
+    function findAllUsers() {
+        var deferred = q.defer();
+        UserModel.find(
+            function (err, users) {
+                if (err) {
+                    deferred.reject(err);
+                } else {
+                    deferred.resolve(users);
+                }
+            }
+        );
+        return deferred.promise;
+    }
+
+    function updateUserById(userId, newUser) {
+        var deferred = q.defer();
+        UserModel
+            .findById(userId,
+                function (err, user) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        if (newUser.firstName) {
+                            user.firstName = newUser.firstName;
+                        }
+                        if (newUser.lastName) {
+                            user.lastName = newUser.lastName;
+                        }
+                        user.username = newUser.username;
+                        user.password = newUser.password;
+                        user.emails = newUser.emails;
+                        if (newUser.phones) {
+                            user.phones = newUser.phones;
+                        }
+                        if (newUser.roles) {
+                            user.roles = newUser.roles;
+                        }
+                        user.save(function (err, doc) {
+                            if (err) {
+                                deferred.reject(err);
+                            } else {
+                                deferred.resolve(doc);
+                            }
+                        });
+                    }
+                }
+            );
+        return deferred.promise;
+    }
+
+    function deleteUserById(userId) {
+        var deferred = q.defer();
+        UserModel
+            .remove(
+                {"_id": userId},
+                function (err, stats) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(stats);
+                    }
+                }
+            );
+        return deferred.promise;
+    }
+
+    function addCommentedOnByUserId(userId, documentId) {
+        return findUserById(userId)
+            .then(function (user) {
+                var documentedOnIdx = user.commentedOn.indexOf(documentId);
+                if (documentedOnIdx >= 0) {
+                    user.commentedOn.splice(documentedOnIdx, 1);
+                }
+                user.commentedOn.push(documentId);
+                return user.save();
+            });
+    }
+
+    function removeCommentedOnIdByUserId(userId, documentId) {
+        return findUserById(userId)
+            .then(function (user) {
+                var documentedOnIdx = user.commentedOn.indexOf(documentId);
+                if (documentedOnIdx >= 0) {
+                    user.commentedOn.splice(documentedOnIdx, 1);
+                }
+                return user.save();
+            });
+    }
+
+    function addLikeByUserId(userId, documentId) {
+        return findUserById(userId)
+            .then(function (user) {
+                var likeIdx = user.likes.indexOf(documentId);
+                if (likeIdx >= 0) {
+                    user.likes.splice(likeIdx, 1);
+                }
+                user.likes.push(documentId);
+                return user.save();
+            });
+    }
+
+    function removeLikeIdByUserId(userId, documentId) {
+        return findUserById(userId)
+            .then(function (user) {
+                var likeIdx = user.likes.indexOf(documentId);
+                if (likeIdx >= 0) {
+                    user.likes.splice(likeIdx, 1);
+                }
+                return user.save();
+            });
+    }
+};

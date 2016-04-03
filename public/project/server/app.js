@@ -1,9 +1,9 @@
 "use strict";
-module.exports = function (app, uuid, db) {
-    var adminModel = require("./models/admin.model.js")();
-    var commentModel = require("./models/comment.model.js")(uuid);
-    var documentModel = require("./models/document.model.js")(uuid);
-    var userModel = require("./models/user.model.js")(uuid);
+module.exports = function (app, db, mongoose) {
+    var adminModel = require("./models/admin.model.js")(db, mongoose);
+    var commentModel = require("./models/comment.model.js")(db, mongoose);
+    var documentModel = require("./models/document.model.server.js")(db, mongoose);
+    var userModel = require("./models/user.model.server.js")(db, mongoose);
 
     var adminService = require("./services/admin.service.server.js")(app, adminModel);
     var commentService = require("./services/comment.service.server.js")(app, commentModel);

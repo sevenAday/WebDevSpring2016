@@ -7,6 +7,7 @@ module.exports = function (mongoose) {
         "password": String,
         "email": String,
         "roles": [String],
+        "likes": [String],
         "commentedOn": [String]
     }, {"collection": "project.user"});
 

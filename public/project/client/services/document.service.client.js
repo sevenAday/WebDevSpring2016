@@ -18,7 +18,6 @@
             deleteCommentIdxFromDocumentId: deleteCommentIdxFromDocumentId,
             addCommentIdToDocummentId: addCommentIdToDocummentId,
             getDocumentById: getDocumentById,
-            getDocumentsLikedByUserId: getDocumentsLikedByUserId,
             removeAllLikeUserIds: removeAllLikeUserIds,
             removeAllCommentIds: removeAllCommentIds,
             getCommentsOnDocument: getCommentsOnDocument
@@ -63,10 +62,6 @@
 
         function getDocumentById(documentId) {
             return $http.get("/api/project/document/" + documentId);
-        }
-
-        function getDocumentsLikedByUserId(userId) {
-            return $http.get("/api/project/document/like/user/" + userId);
         }
 
         function removeAllLikeUserIds(userId) {
