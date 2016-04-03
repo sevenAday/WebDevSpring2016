@@ -8,63 +8,32 @@ module.exports = function (documentModel, mongoose) {
     var CommentModel = mongoose.model("Comment", CommentSchema);
 
     var api = {
-        findCommentById: findCommentById,
-        deleteCommentById: deleteCommentById,
         updateComment: updateComment,
-        addComment: addComment,
-        removeAllUserComments: removeAllUserComments
+        addComment: addComment
     };
     return api;
 
-    function findCommentById(commentId) {
-        for (var c in mock) {
-            if (mock[c]._id == commentId) {
-                return mock[c];
-            }
-        }
-        return null;
+    function updateComment(documentId, commentId, newComment) {
+        return Document.findById(documentId)
+            .then(function (document) {
+                var comment = document.comment.id(commentId);
+                comment.lastModified = newComment.lastModified;
+                comment.content = newComment.content;
+                document.save();
+                return comment;
+            });
     }
 
-    function deleteCommentById(commentId) {
-        for (var c in mock) {
-            if (mock[c]._id == commentId) {
-                mock.splice(c, 1);
-                break;
-            }
-        }
-        return mock;
-    }
-
-    function updateComment(commentId, commentContent) {
-        for (var c in mock) {
-            if (mock[c]._id == commentId) {
-                mock[c].content = commentContent;
-                mock[c].lastModified = (new Date()).toJSON();
-                return mock[c];
-            }
-        }
-        return null;
-    }
-
-    function addComment(comment) {
-        var newComment = {
-            "_id": uuid.v1(),
-            "userId": comment.userId,
-            "lastModified": (new Date()).toJSON(),
-            "content": comment.content
-        };
-        mock.push(newComment);
-        return newComment;
-    }
-
-    function removeAllUserComments(userId) {
-        var removedCommentIds = [];
-        for (var c in mock) {
-            if (mock[c].userId == userId) {
-                removedCommentIds.push(mock[c]._id);
-                mock.splice(c, 1);
-            }
-        }
-        return removedCommentIds;
+    function addComment(documentId, newComment) {
+        return Document.findById(documentId)
+            .then(function (document) {
+                var comment = new CommentModel();
+                comment.userId = newComment.userId;
+                comment.userName = newComment.userName;
+                comment.content = newComment.content;
+                document.comment.push(comment);
+                document.save();
+                return comment;
+            });
     }
 };

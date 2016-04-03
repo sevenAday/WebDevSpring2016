@@ -164,7 +164,8 @@ module.exports = function (db, mongoose) {
                 if (documentedOnIdx >= 0) {
                     user.commentedOn.splice(documentedOnIdx, 1);
                 }
-                return user.save();
+                user.save();
+                return user.commentedOn;
             });
     }
 

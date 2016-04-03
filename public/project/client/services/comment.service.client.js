@@ -8,32 +8,17 @@
     function CommentService($http) {
 
         var service = {
-            findCommentById: findCommentById,
-            deleteCommentById: deleteCommentById,
             updateComment: updateComment,
-            addComment: addComment,
-            removeAllUserComments: removeAllUserComments
+            addComment: addComment
         };
         return service;
 
-        function findCommentById(commentId) {
-            return $http.get("/api/project/comment/" + commentId);
+        function updateComment(documentId, commentId, comment) {
+            return $http.put("/api/project/document/" + documentId + "/comment/" + commentId, comment);
         }
 
-        function updateComment(commentId, commentContent) {
-            return $http.put("/api/project/comment/" + commentId, commentContent);
-        }
-
-        function deleteCommentById(commentId) {
-            return $http.delete("/api/project/comment/" + commentId);
-        }
-
-        function addComment(comment) {
-            return $http.post("/api/project/comment", comment);
-        }
-
-        function removeAllUserComments(userId) {
-            return $http.delete("/api/project/comment/user/" + userId);
+        function addComment(documentId, comment) {
+            return $http.post("/api/project/document/" + documentId + "/comment", comment);
         }
     }
 }());

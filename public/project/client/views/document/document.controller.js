@@ -317,7 +317,7 @@
 
         function saveComment() {
             model.comments[model.editCommentIndex].content = model.commentEditingContent;
-            CommentService.updateComment(model.comments[model.editCommentIndex]._id,
+            CommentService.updateComment($rootScope.document._id, model.comments[model.editCommentIndex]._id,
                 model.comments[model.editCommentIndex])
                 .then(function (response) {
                     var comment = response.data;
@@ -335,17 +335,27 @@
             model.editCommentIndex = -1;
         }
 
+        function stillCommentedOn(comments, userId) {
+            for (var c in comments) {
+                if (comments[c].userId == userId) {
+                    return true;
+                }
+            }
+            return false;
+        }
+
         function deleteComment($index) {
             DocumentService.deleteCommentIdxFromDocumentId($index, $rootScope.document._id)
                 .then(function (response) {
-                    CommentService.deleteCommentById(model.comments[$index]._id)
-                        .then(function (response) {
-                            model.comments.splice($index, 1);
-                            UserService.removeCommentedOnIdByUserId($rootScope.user._id, $rootScope.document._id)
-                                .then(function (response) {
-                                    $rootScope.user.commentedOn = response.data;
-                                });
-                        });
+                    var newComments = response.data;
+                    var userId = model.comments[$index].userId;
+                    model.comments.splice($index, 1);
+                    if (!stillCommentedOn(newComments, userId)) {
+                        UserService.removeCommentedOnIdByUserId($rootScope.user._id, $rootScope.document._id)
+                            .then(function (response) {
+                                $rootScope.user.commentedOn = response.data;
+                            });
+                    }
                 });
         }
 
@@ -357,8 +367,12 @@
             if (!model.newCommentContent) {
                 return;
             }
-            var newComment = {"userId": $rootScope.user._id, "content": model.newCommentContent};
-            CommentService.addComment(newComment)
+            var newComment = {
+                "userId": $rootScope.user._id,
+                "userName": $rootScope.user.firstName + " " + $rootScope.user.lastName,
+                "content": model.newCommentContent
+            };
+            CommentService.addComment($rootScope.document._id, newComment)
                 .then(function (response) {
                     var comment = response.data;
                     DocumentService.addCommentIdToDocummentId(comment._id, $rootScope.document._id)

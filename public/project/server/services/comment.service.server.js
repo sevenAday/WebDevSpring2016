@@ -1,39 +1,34 @@
 "use strict";
 module.exports = function (app, commentModel) {
-    app.get("/api/project/comment/:id", findCommentById);
-    app.delete("/api/project/comment/:id", deleteCommentById);
-    app.put("/api/project/comment/:id", updateComment);
-    app.post("/api/project/comment", addComment);
-    app.delete("/api/project/comment/user/:userId", removeAllUserComments);
-
-    function findCommentById(req, res) {
-        var commentId = req.params.id;
-        var comment = commentModel.findCommentById(commentId);
-        res.json(comment);
-    }
-
-    function deleteCommentById(req, res) {
-        var commentId = req.params.id;
-        var comments = commentModel.deleteCommentById(commentId);
-        res.json(comments);
-    }
+    app.put("/api/project/document/:documentId/comment/:id", updateComment);
+    app.post("/api/project/document/:documentId/comment", addComment);
 
     function updateComment(req, res) {
+        var documentId = req.params.documentId;
         var commentId = req.params.id;
-        var comment = req.body;
-        comment = commentModel.updateComment(commentId, comment.content);
-        res.json(comment);
+        var newComment = req.body;
+        commentModel.updateComment(documentId, commentId, newComment)
+            .then(
+                function (comment) {
+                    res.json(comment);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function addComment(req, res) {
-        var comment = req.body;
-        comment = commentModel.addComment(comment);
-        res.json(comment);
-    }
-
-    function removeAllUserComments(req, res) {
-        var userId = req.params.userId;
-        var comments = commentModel.removeAllUserComments(userId);
-        res.json(comments);
+        var documentId = req.params.documentId;
+        var newComment = req.body;
+        commentModel.addComment(documentId, newComment)
+            .then(
+                function (comment) {
+                    res.json(comment);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 };

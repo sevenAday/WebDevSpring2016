@@ -95,14 +95,10 @@
         function deleteUser($index) {
             DocumentService.removeAllLikeUserIds(model.users[$index]._id)
                 .then(function (response) {
-                    CommentService.removeAllUserComments(model.users[$index]._id)
+                    DocumentService.removeAllCommentsByUserId(model.users[$index]._id);
+                    UserService.deleteUserById(model.users[$index]._id)
                         .then(function (response) {
-                            var commentIds = response.data;
-                            DocumentService.removeAllCommentsByUserId(model.users[$index]._id);
-                            UserService.deleteUserById(model.users[$index]._id)
-                                .then(function (response) {
-                                    model.users.splice($index, 1);
-                                });
+                            model.users.splice($index, 1);
                         });
                 });
         }

@@ -166,19 +166,11 @@ module.exports = function (app, userModel, documentModel) {
         var documentId = req.params.documentId;
         userModel.removeCommentedOnIdByUserId(userId, documentId)
             .then(
-                function (doc) {
-                    return userModel.findUserById(userId);
-                },
-                function (err) {
-                    res.status(400).send(err);
-                }
-            )
-            .then(
-                function (user) {
+                function (commentedOn) {
                     if (req.session.user._id == userId) {
-                        req.session.user.commentedOn = user.commentedOn;
+                        req.session.user.commentedOn = commentedOn;
                     }
-                    res.json(user.commentedOn);
+                    res.json(commentedOn);
                 },
                 function (err) {
                     res.status(400).send(err);
