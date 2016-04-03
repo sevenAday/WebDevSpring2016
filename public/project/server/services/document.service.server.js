@@ -11,7 +11,7 @@ module.exports = function (app, documentModel, commentModel, userModel) {
     app.post("/api/project/document/:id/comment/:commentId", addCommentIdToDocummentId);
     app.get("/api/project/document/:id", getDocumentById);
     app.delete("/api/project/document/like/user/:userId", removeAllLikeUserIds);
-    app.delete("/api/project/document/commentIds", removeAllCommentIds);
+    app.delete("/api/project/document/comment/user/:userId", removeAllCommentsByUserId);
     app.get("/api/project/document/:id/comment", getCommentsOnDocument);
 
     function getAllDocuments(req, res) {
@@ -149,14 +149,52 @@ module.exports = function (app, documentModel, commentModel, userModel) {
 
     function removeAllLikeUserIds(req, res) {
         var userId = req.params.userId;
-        var documents = documentModel.removeAllLikeUserIds(userId);
-        res.json(documents);
+        userModel.findUserById(userId)
+            .then(
+                function (user) {
+                    return documentModel.removeAllLikeUserIds(user.likes, userId);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (stats) {
+                    return documentModel.getAllDocuments();
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (documents) {
+                    res.json(documents);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
-    function removeAllCommentIds(req, res) {
-        var commentIds = req.body;
-        var documents = documentModel.removeAllCommentIds(commentIds);
-        res.send(200);
+    function removeAllCommentsByUserId(req, res) {
+        var userId = req.params.userId;
+        userModel.findUserById(userId)
+            .then(
+                function (user) {
+                    return documentModel.removeAllCommentsByUserId(user.commentedOn, userId);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (stats) {
+                    res.status(200);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function getCommentsOnDocument(req, res) {

@@ -238,9 +238,23 @@ module.exports = function (app, userModel, documentModel) {
 
     function getCommentedOnByUserId(req, res) {
         var userId = req.params.id;
-        var user = userModel.findUserById(userId);
-        var documents = documentModel.getDocumentsByIds(user.commentedOn);
-        res.json(documents);
+        userModel.findUserById(userId)
+            .then(
+                function (user) {
+                    return documentModel.getDocumentsByIds(user.commentedOn);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (documents) {
+                    res.json(documents);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function getLikeByUserId(req, res) {

@@ -18,7 +18,7 @@ module.exports = function (db, mongoose) {
         getDocumentById: getDocumentById,
         getDocumentsByIds: getDocumentsByIds,
         removeAllLikeUserIds: removeAllLikeUserIds,
-        removeAllCommentIds: removeAllCommentIds
+        removeAllCommentsByUserId: removeAllCommentsByUserId
     };
     return api;
 
@@ -178,24 +178,35 @@ module.exports = function (db, mongoose) {
         return deferred.promise;
     }
 
-    function removeAllLikeUserIds(userId) {
-        for (var d in mock) {
-            var likedIdx = mock[d].like.indexOf(userId);
-            if (likedIdx >= 0) {
-                mock[d].like.splice(likedIdx, 1);
-            }
-        }
-        return mock;
+    function removeAllLikeUserIds(documentIds, userId) {
+        var deferred = q.defer();
+        DocumentModel
+            .update({"_id": {"$in": documentIds}},
+                {"$pull": {"project.document.like": userId}},
+                function (err, stats) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(stats);
+                    }
+                }
+            );
+        return deferred.promise;
     }
 
-    function removeAllCommentIds(commentIds) {
-        for (var d in mock) {
-            for (var c in mock[d].comment) {
-                var commentIdx = commentIds.indexOf(mock[d].comment[c]);
-                if (commentIdx >= 0) {
-                    mock[d].comment.splice(c, 1);
+    function removeAllCommentsByUserId(documentIds, userId) {
+        var deferred = q.defer();
+        DocumentModel
+            .update({"_id": {"$in": documentIds}},
+                {"$pull": {"project.document.comment.userId": userId}},
+                function (err, stats) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(stats);
+                    }
                 }
-            }
-        }
+            );
+        return deferred.promise;
     }
 };

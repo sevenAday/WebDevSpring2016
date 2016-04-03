@@ -98,7 +98,7 @@
                     CommentService.removeAllUserComments(model.users[$index]._id)
                         .then(function (response) {
                             var commentIds = response.data;
-                            DocumentService.removeAllCommentIds(commentIds);
+                            DocumentService.removeAllCommentsByUserId(model.users[$index]._id);
                             UserService.deleteUserById(model.users[$index]._id)
                                 .then(function (response) {
                                     model.users.splice($index, 1);

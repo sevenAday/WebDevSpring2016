@@ -19,7 +19,7 @@
             addCommentIdToDocummentId: addCommentIdToDocummentId,
             getDocumentById: getDocumentById,
             removeAllLikeUserIds: removeAllLikeUserIds,
-            removeAllCommentIds: removeAllCommentIds,
+            removeAllCommentsByUserId: removeAllCommentsByUserId,
             getCommentsOnDocument: getCommentsOnDocument
         };
         return service;
@@ -68,8 +68,8 @@
             return $http.delete("/api/project/document/like/user/" + userId);
         }
 
-        function removeAllCommentIds(commentIds) {
-            return $http.delete("/api/project/document/commentIds", commentIds);
+        function removeAllCommentsByUserId(userId) {
+            return $http.delete("/api/project/document/comment/user/" + userId);
         }
 
         function getCommentsOnDocument(documentId) {
