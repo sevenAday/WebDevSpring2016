@@ -17,7 +17,7 @@ module.exports = function (documentModel, mongoose) {
         return Document.findById(documentId)
             .then(function (document) {
                 var comment = document.comment.id(commentId);
-                comment.lastModified = newComment.lastModified;
+                comment.lastModified = new Date();
                 comment.content = newComment.content;
                 document.save();
                 return comment;

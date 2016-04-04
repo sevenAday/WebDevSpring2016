@@ -6,27 +6,65 @@ module.exports = function (app, adminModel) {
     app.post("/api/project/admin/numberofactivities", saveNumberOfActivities);
 
     function getAllAdminSettings(req, res) {
-        res.json({"alertMessage": adminModel.getAdminAlertMessage(),
-            "numberOfPages": adminModel.getNumberOfPages(),
-            "numberOfActivities": adminModel.getNumberOfActivities()
-        });
+        adminModel.getAllAdminSettings()
+            .then(
+                function (adminRecord) {
+                    if (adminRecord) {
+                        res.json(adminRecord);
+                    } else {
+                        return adminModel.createAdminSettings();
+                    }
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (adminSettings) {
+                    res.json(adminSettings);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function saveAdminAlertMessage(req, res) {
         var adminAlertMessage = req.body;
-        adminModel.saveAdminAlertMessage(adminAlertMessage.value);
-        res.send(200);
+        adminModel.saveAdminAlertMessage(adminAlertMessage.value)
+            .then(
+                function (adminSettings) {
+                    res.json(adminSettings);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function saveNumberOfPages(req, res) {
         var numberOfPages = req.body;
-        adminModel.saveNumberOfPages(numberOfPages.value);
-        res.send(200);
+        adminModel.saveNumberOfPages(numberOfPages.value)
+            .then(
+                function (adminSettings) {
+                    res.json(adminSettings);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 
     function saveNumberOfActivities(req, res) {
         var numberOfActivities = req.body;
-        adminModel.saveNumberOfActivities(numberOfActivities.value);
-        res.send(200);
+        adminModel.saveNumberOfActivities(numberOfActivities.value)
+            .then(
+                function (adminSettings) {
+                    res.json(adminSettings);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
     }
 };

@@ -349,7 +349,7 @@
         }
 
         function deleteComment($index) {
-            DocumentService.deleteCommentIdxFromDocumentId($index, $rootScope.document._id)
+            DocumentService.deleteCommentIdFromDocumentId(model.comments[$index]._id, $rootScope.document._id)
                 .then(function (response) {
                     var newComments = response.data;
                     var userId = model.comments[$index].userId;

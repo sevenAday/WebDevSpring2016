@@ -15,7 +15,7 @@
             getDocumentsModifiedByUserId: getDocumentsModifiedByUserId,
             deleteDocumentById: deleteDocumentById,
             rateDocument: rateDocument,
-            deleteCommentIdxFromDocumentId: deleteCommentIdxFromDocumentId,
+            deleteCommentIdFromDocumentId: deleteCommentIdFromDocumentId,
             getDocumentById: getDocumentById,
             removeAllLikeUserIds: removeAllLikeUserIds,
             removeAllCommentsByUserId: removeAllCommentsByUserId,
@@ -51,8 +51,8 @@
             }
         }
 
-        function deleteCommentIdxFromDocumentId(commentIdx, documentId) {
-            return $http.delete("/api/project/document/" + documentId + "/comment/" + commentIdx);
+        function deleteCommentIdFromDocumentId(commentId, documentId) {
+            return $http.delete("/api/project/document/" + documentId + "/comment/" + commentId);
         }
 
         function getDocumentById(documentId) {

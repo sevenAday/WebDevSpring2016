@@ -13,7 +13,7 @@ module.exports = function (db, mongoose) {
         deleteDocumentById: deleteDocumentById,
         likeDocument: likeDocument,
         unlikeDocument: unlikeDocument,
-        deleteCommentIdxFromDocumentId: deleteCommentIdxFromDocumentId,
+        deleteCommentIdFromDocumentId: deleteCommentIdFromDocumentId,
         getDocumentById: getDocumentById,
         getDocumentsByIds: getDocumentsByIds,
         removeAllLikeUserIds: removeAllLikeUserIds,
@@ -134,10 +134,10 @@ module.exports = function (db, mongoose) {
             });
     }
 
-    function deleteCommentIdxFromDocumentId(commentIdx, documentId) {
+    function deleteCommentIdFromDocumentId(commentId, documentId) {
         return getDocumentById(documentId)
             .then(function (document) {
-                document.comment.splice(commentIdx, 1);
+                document.comment.id(commentId).remove();
                 document.save();
                 return document.comment;
             });
