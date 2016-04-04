@@ -33,22 +33,7 @@
             if ($rootScope.user && $rootScope.isAdmin) {
                 UserService.findAllUsers()
                     .then(function (response) {
-                        var users = response.data;
-                        model.users = [];
-                        for (var u in users) {
-                            if (users[u]._id != $rootScope.user._id) {
-                                var roles = "";
-                                if (users[u].roles) {
-                                    roles = users[u].roles.join(" | ");
-                                }
-                                model.users.push({
-                                    "_id": users[u]._id,
-                                    "username": users[u].username,
-                                    "password": users[u].password,
-                                    "roles": roles
-                                });
-                            }
-                        }
+                        populateUsers(response.data);
                     });
             } else {
                 $location.path("/login");
@@ -56,6 +41,24 @@
         }
 
         init();
+
+        function populateUsers(users) {
+            model.users = [];
+            for (var u in users) {
+                if (users[u]._id != $rootScope.user._id) {
+                    var roles = "";
+                    if (users[u].roles) {
+                        roles = users[u].roles.join(" | ");
+                    }
+                    model.users.push({
+                        "_id": users[u]._id,
+                        "username": users[u].username,
+                        "password": users[u].password,
+                        "roles": roles
+                    });
+                }
+            }
+        }
 
         function addUser() {
             if (model.username && model.password && model.role) {
@@ -75,16 +78,7 @@
                             if (model.username && model.password && model.role && $rootScope.user && $rootScope.isAdmin) {
                                 UserService.createUser(newUser)
                                     .then(function (response) {
-                                        var user = response.data;
-                                        model.users.push({
-                                            "_id": user._id,
-                                            "username": user.username,
-                                            "password": user.password,
-                                            "roles": model.role
-                                        });
-                                        model.username = "";
-                                        model.password = "";
-                                        model.role = "";
+                                        populateUsers(response.data);
                                     });
                             }
                         }
