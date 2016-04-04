@@ -262,7 +262,7 @@ module.exports = function (app, userModel, documentModel) {
         var user = req.body;
         req.session.user = user;
         req.session.isAdminUser = false;
-        if (req.session.user.roles.indexOf("admin") >= 0) {
+        if (req.session.user.roles.indexOf("admin") >= 0 || req.session.user.roles.indexOf("administrator") >= 0) {
             req.session.isAdminUser = true;
         }
         res.send(200);
