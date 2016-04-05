@@ -18,13 +18,14 @@ if (process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
 }
 var db = mongoose.connect(connectionString);
 
-app.use(express.static(__dirname + "/public"));
 app.use(bodyParser.json());
-app.use(bodyParser.urlencoded({extended: true}));
-app.use(session({secret: process.env.PASSPORT_SECRET}));
+app.use(bodyParser.urlencoded({"extended": true}));
+multer();
+app.use(session({"secret": process.env.PASSPORT_SECRET, "resave": true, "saveUninitialized": true}));
 app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
+app.use(express.static(__dirname + "/public"));
 
 require('./public/assignment/server/app.js')(app, db, mongoose);
 require('./public/project/server/app.js')(app, uuid, db);

@@ -1,10 +1,20 @@
 "use strict";
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
+var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
+var FacebookStrategy = require('passport-facebook').Strategy;
+
 module.exports = function (app, userModel, documentModel) {
+    var auth = authenticated;
+
+    app.post("/api/project/login", passport.authenticate('local'), login);
+    app.get("/api/project/loggedin", loggedIn);
+    app.post("/api/project/logout", logOut);
+    app.post("/api/project/register", register);
+
     app.post("/api/project/user", createUser);
     app.get("/api/project/user", findUser);
-    app.get("/api/project/loggedin", loggedIn);
     app.post("/api/project/loggedin", setLoggedIn);
-    app.post("/api/project/logout", logOut);
     app.get("/api/project/user/:id", findUserById);
     app.put("/api/project/user/:id", updateUserById);
     app.delete("/api/project/user/:id", deleteUserById);
@@ -14,6 +24,46 @@ module.exports = function (app, userModel, documentModel) {
     app.delete("/api/project/user/:id/like/:documentId", removeLikeIdByUserId);
     app.get("/api/project/user/:id/commentedon", getCommentedOnByUserId);
     app.get("/api/project/user/:id/like", getLikeByUserId);
+
+    passport.use(new LocalStrategy(localStrategy));
+    passport.serializeUser(serializeUser);
+    passport.deserializeUser(deserializeUser);
+
+    function register(req, res) {
+        var newUser = req.body;
+        newUser.roles = ["newcomer"];
+
+        userModel
+            .findUserByUsername(newUser.username)
+            .then(
+                function (user) {
+                    if (user) {
+                        res.json(null);
+                    } else {
+                        return userModel.createUser(newUser);
+                    }
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (user) {
+                    if (user) {
+                        req.login(user, function (err) {
+                            if (err) {
+                                res.status(400).send(err);
+                            } else {
+                                res.json(user);
+                            }
+                        });
+                    }
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            );
+    }
 
     function createUser(req, res) {
         var newUser = req.body;
@@ -269,11 +319,59 @@ module.exports = function (app, userModel, documentModel) {
     }
 
     function loggedIn(req, res) {
-        res.json(req.session.user);
+        res.send(req.isAuthenticated() ? req.user : "0");
     }
 
     function logOut(req, res) {
-        req.session.destroy();
+        req.logOut();
         res.send(200);
     }
+
+    function login(req, res) {
+        var user = req.user;
+        res.json(user);
+    }
+
+    function localStrategy(username, password, done) {
+        userModel
+            .findUserByCredentials({"username": username, "password": password})
+            .then(
+                function (user) {
+                    if (!user) {
+                        return done(null, false);
+                    }
+                    return done(null, user);
+                },
+                function (err) {
+                    if (err) {
+                        return done(err);
+                    }
+                }
+            );
+    }
+
+    function serializeUser(user, done) {
+        done(null, user);
+    }
+
+    function deserializeUser(user, done) {
+        userModel
+            .findUserById(user._id)
+            .then(
+                function (user) {
+                    done(null, user);
+                },
+                function (err) {
+                    done(err, null);
+                }
+            );
+    }
+
+    function authenticated(req, res, next) {
+        if (!req.isAuthenticated()) {
+            res.send(401);
+        } else {
+            next();
+        }
+    };
 };
