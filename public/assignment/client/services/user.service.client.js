@@ -24,7 +24,7 @@
         return service;
 
         function login(username, password) {
-            return $http.post("/api/assignment/login", username, password);
+            return $http.post("/api/assignment/login", {"username": username, "password": password});
         }
 
         function register(user) {

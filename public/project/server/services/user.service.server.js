@@ -319,7 +319,7 @@ module.exports = function (app, userModel, documentModel) {
     }
 
     function loggedIn(req, res) {
-        res.send(req.isAuthenticated() ? req.user : "0");
+        res.json(req.isAuthenticated() ? req.user : null);
     }
 
     function logOut(req, res) {

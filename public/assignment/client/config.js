@@ -10,7 +10,7 @@
             .when("/home", {
                 templateUrl: "views/home/home.view.html",
                 resolve: {
-                    getLoggedIn: getLoggedIn
+                    loggedin: getLoggedIn
                 }
             })
             .when("/register", {
@@ -28,7 +28,7 @@
                 controller: "ProfileController",
                 controllerAs: "model",
                 resolve: {
-                    checkLoggedIn: checkLoggedIn
+                    loggedin: checkLoggedIn
                 }
             })
             .when("/admin", {
@@ -36,7 +36,7 @@
                 controller: "AdminController",
                 controllerAs: "model",
                 resolve: {
-                    checkLoggedIn: checkLoggedIn
+                    loggedin: checkLoggedIn
                 }
             })
             .when("/form", {
@@ -44,7 +44,7 @@
                 controller: "FormController",
                 controllerAs: "model",
                 resolve: {
-                    checkLoggedIn: checkLoggedIn
+                    loggedin: checkLoggedIn
                 }
             })
             .when("/form/:formId", {
@@ -52,7 +52,7 @@
                 controller: "FormController",
                 controllerAs: "model",
                 resolve: {
-                    checkLoggedIn: checkLoggedIn
+                    loggedin: checkLoggedIn
                 }
             })
             .when("/field", {
@@ -60,7 +60,7 @@
                 controller: "FieldController",
                 controllerAs: "model",
                 resolve: {
-                    checkLoggedIn: checkLoggedIn
+                    loggedin: checkLoggedIn
                 }
             })
             .when("/form/:formId/field", {
@@ -68,7 +68,7 @@
                 controller: "FieldController",
                 controllerAs: "model",
                 resolve: {
-                    checkLoggedIn: checkLoggedIn
+                    loggedin: checkLoggedIn
                 }
             })
             .when("/form/:formId/fields", {
@@ -76,7 +76,7 @@
                 controller: "FieldController",
                 controllerAs: "model",
                 resolve: {
-                    checkLoggedIn: checkLoggedIn
+                    loggedin: checkLoggedIn
                 }
             })
             .when("/:userId/form/:formId/field", {
@@ -84,7 +84,7 @@
                 controller: "FieldController",
                 controllerAs: "model",
                 resolve: {
-                    checkLoggedIn: checkLoggedIn
+                    loggedin: checkLoggedIn
                 }
             })
             .otherwise({
@@ -99,7 +99,9 @@
             .getCurrentUser()
             .then(function (response) {
                 var user = response.data;
-                UserService.setCurrentUser(user);
+                if (user) {
+                    UserService.setCurrentUser(user);
+                }
                 deferred.resolve();
             });
 

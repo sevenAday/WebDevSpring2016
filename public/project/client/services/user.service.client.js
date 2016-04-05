@@ -29,86 +29,89 @@
         return service;
 
         function login(username, password) {
-            return $http.post("/api/project/login", username, password);
+            return $http.post("/api/project/login", {"username": username, "password": password});
         }
 
-        function register(user) {
-            return $http.post("/api/assignment/register", user);
-        }
-
-        function findUserByUsername(username) {
-            return $http.get("/api/project/user?username=" + username);
-        }
-
-        function findUserByCredentials(username, password) {
-            return $http.get("/api/project/user?username=" + username + "&password=" + password);
-        }
-
-        function findAllUsers() {
-            return $http.get("/api/project/user");
-        }
-
-        function createUser(user) {
-            return $http.post("/api/project/user", user);
-        }
-
-        function deleteUserById(userId) {
-            return $http.delete("/api/project/user/" + userId);
-        }
-
-        function updateUser(userId, user) {
-            return $http.put("/api/project/user/" + userId, user);
-        }
-
-        function findUserById(userId) {
-            return $http.get("/api/project/user/" + userId);
-        }
-
-        function addCommentedOnByUserId(userId, documentId) {
-            return $http.post("/api/project/user/" + userId + "/commentedon/" + documentId);
-        }
-
-        function removeCommentedOnIdByUserId(userId, documentId, callback) {
-            return $http.delete("/api/project/user/" + userId + "/commentedon/" + documentId);
-        }
-
-        function setCurrentUser(user) {
-            if (user) {
-                if (user.roles) {
-                    var userRoles = user.roles.map(function (role) {
-                        return role.toLowerCase();
-                    });
-                    if (userRoles.indexOf("admin") >= 0 || userRoles.indexOf("administrator") >= 0) {
-                        $rootScope.isAdmin = true;
-                    }
-                }
-                $rootScope.user = user;
-                return $http.post("/api/project/loggedin", user);
+            function register(user) {
+                return $http.post("/api/assignment/register", user);
             }
-        }
 
-        function logout() {
-            return $http.post("/api/project/logout");
-        }
+            function findUserByUsername(username) {
+                return $http.get("/api/project/user?username=" + username);
+            }
 
-        function getCurrentUser() {
-            return $http.get("/api/project/loggedin");
-        }
+            function findUserByCredentials(username, password) {
+                return $http.get("/api/project/user?username=" + username + "&password=" + password);
+            }
 
-        function getCommentedOnByUserId(userId) {
-            return $http.get("/api/project/user/" + userId + "/commentedon");
-        }
+            function findAllUsers() {
+                return $http.get("/api/project/user");
+            }
 
-        function getLikeByUserId(userId) {
-            return $http.get("/api/project/user/" + userId + "/like");
-        }
+            function createUser(user) {
+                return $http.post("/api/project/user", user);
+            }
 
-        function updateLikeByUserId(userId, documentId, liked) {
-            if (liked) {
-                return $http.post("/api/project/user/" + userId + "/like/" + documentId);
-            } else {
-                return $http.delete("/api/project/user/" + userId + "/like/" + documentId);
+            function deleteUserById(userId) {
+                return $http.delete("/api/project/user/" + userId);
+            }
+
+            function updateUser(userId, user) {
+                return $http.put("/api/project/user/" + userId, user);
+            }
+
+            function findUserById(userId) {
+                return $http.get("/api/project/user/" + userId);
+            }
+
+            function addCommentedOnByUserId(userId, documentId) {
+                return $http.post("/api/project/user/" + userId + "/commentedon/" + documentId);
+            }
+
+            function removeCommentedOnIdByUserId(userId, documentId, callback) {
+                return $http.delete("/api/project/user/" + userId + "/commentedon/" + documentId);
+            }
+
+            function setCurrentUser(user) {
+                if (user) {
+                    if (user.roles) {
+                        var userRoles = user.roles.map(function (role) {
+                            return role.toLowerCase();
+                        });
+                        if (userRoles.indexOf("admin") >= 0 || userRoles.indexOf("administrator") >= 0) {
+                            $rootScope.isAdmin = true;
+                        }
+                    }
+                    $rootScope.user = user;
+                    return $http.post("/api/project/loggedin", user);
+                }
+            }
+
+            function logout() {
+                return $http.post("/api/project/logout");
+            }
+
+            function getCurrentUser() {
+                return $http.get("/api/project/loggedin");
+            }
+
+            function getCommentedOnByUserId(userId) {
+                return $http.get("/api/project/user/" + userId + "/commentedon");
+            }
+
+            function getLikeByUserId(userId) {
+                return $http.get("/api/project/user/" + userId + "/like");
+            }
+
+            function updateLikeByUserId(userId, documentId, liked) {
+                if (liked) {
+                    return $http.post("/api/project/user/" + userId + "/like/" + documentId);
+                } else {
+                    return $http.delete("/api/project/user/" + userId + "/like/" + documentId);
+                }
             }
         }
     }
-}());
+
+    ()
+    );
