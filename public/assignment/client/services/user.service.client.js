@@ -16,10 +16,20 @@
             updateUser: updateUser,
             setCurrentUser: setCurrentUser,
             getCurrentUser: getCurrentUser,
+            login: login,
+            register: register,
             logout: logout,
             createAppAdmin: createAppAdmin
         };
         return service;
+
+        function login(username, password) {
+            return $http.post("/api/assignment/login", username, password);
+        }
+
+        function register(user) {
+            return $http.post("/api/assignment/register", user);
+        }
 
         function findUserByUsername(username) {
             return $http.get("/api/assignment/user?username=" + username);

@@ -19,12 +19,22 @@
             removeCommentedOnIdByUserId: removeCommentedOnIdByUserId,
             setCurrentUser: setCurrentUser,
             getCurrentUser: getCurrentUser,
+            login: login,
+            register: register,
             logout: logout,
             getCommentedOnByUserId: getCommentedOnByUserId,
             getLikeByUserId: getLikeByUserId,
             updateLikeByUserId: updateLikeByUserId
         };
         return service;
+
+        function login(username, password) {
+            return $http.post("/api/project/login", username, password);
+        }
+
+        function register(user) {
+            return $http.post("/api/assignment/register", user);
+        }
 
         function findUserByUsername(username) {
             return $http.get("/api/project/user?username=" + username);

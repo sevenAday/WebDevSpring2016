@@ -13,7 +13,7 @@
             model.showError = true;
             delete $scope.signin.password.$error.invalidLogin;
             if (!isNotEmpty($scope.signin.username.$error) && !isNotEmpty($scope.signin.password.$error)) {
-                UserService.findUserByCredentials(model.username, model.password)
+                UserService.login(model.username, model.password)
                     .then(function (response) {
                         UserService.setCurrentUser(response.data);
                         if (!!$rootScope.user) {

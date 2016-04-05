@@ -22,26 +22,22 @@
                 || isNotEmpty($scope.registration.inputEmail.$error)) {
                 return;
             }
-            UserService.findUserByUsername(model.username)
+            var emails = [];
+            if (model.email) {
+                emails.push(model.email);
+            }
+            var newUser = {
+                "username": model.username,
+                "password": model.password,
+                "emails": emails
+            };
+            UserService.register(newUser)
                 .then(function (response) {
                     if (response.data) {
-                        $scope.registration.username.$error = {"duplicateUsername": true};
+                        UserService.setCurrentUser(response.data);
+                        $location.path("/profile");
                     } else {
-                        var emails = [];
-                        if (model.email) {
-                            emails.push(model.email);
-                        }
-                        var newUser = {
-                            "username": model.username,
-                            "password": model.password,
-                            "emails": emails
-                        };
-                        UserService.createUser(newUser)
-                            .then(function (response) {
-                                var users = response.data;
-                                UserService.setCurrentUser(users[users.length - 1]);
-                                $location.path("/profile");
-                            });
+                        $scope.registration.username.$error = {"duplicateUsername": true};
                     }
                 });
         }

@@ -10,7 +10,6 @@
         model.register = register;
 
         function register() {
-            var newUser = null;
             model.showError = true;
             delete $scope.registration.verifyPassword.$error.notMatching;
             delete $scope.registration.username.$error.duplicateUsername;
@@ -23,23 +22,20 @@
                 || isNotEmpty($scope.registration.inputEmail.$error)) {
                 return;
             }
-            UserService.findUserByUsername(model.username)
+            var newUser = {
+                "username": model.username,
+                "password": model.password,
+                "email": model.email,
+                "roles": ["Not specified"],
+                "commentedOn": []
+            };
+            UserService.register(newUser)
                 .then(function (response) {
                     if (response.data) {
-                        $scope.registration.username.$error = {"duplicateUsername": true};
+                        UserService.setCurrentUser(response.data);
+                        $location.path("/profile");
                     } else {
-                        newUser = {
-                            "username": model.username,
-                            "password": model.password,
-                            "email": model.email,
-                            "roles": ["Not specified"],
-                            "commentedOn": []
-                        };
-                        UserService.createUser(newUser)
-                            .then(function (response) {
-                                UserService.setCurrentUser(response.data);
-                                $location.path("/profile");
-                            });
+                        $scope.registration.username.$error = {"duplicateUsername": true};
                     }
                 });
         }
