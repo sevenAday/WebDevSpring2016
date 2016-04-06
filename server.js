@@ -22,7 +22,7 @@ var db = mongoose.connect(connectionString);
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended": true}));
-multer();
+app.use(multer());
 app.use(session({"secret": process.env.PASSPORT_SECRET, "resave": true, "saveUninitialized": true}));
 app.use(cookieParser());
 app.use(assignmentPassport.initialize());
