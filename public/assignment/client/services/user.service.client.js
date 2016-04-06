@@ -66,7 +66,6 @@
                     }
                 }
                 $rootScope.user = user;
-                return $http.post("/api/assignment/loggedin", user);
             }
         }
 

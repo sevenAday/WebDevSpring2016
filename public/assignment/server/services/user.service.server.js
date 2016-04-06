@@ -1,9 +1,8 @@
 "use strict";
-var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 
-module.exports = function (app, userModel) {
-    var auth = authenticated;
+module.exports = function (passport, app, userModel) {
+    var auth = authorized;
 
     app.post("/api/assignment/login", passport.authenticate('local'), login);
     app.get("/api/assignment/loggedin", loggedIn);
@@ -259,11 +258,11 @@ module.exports = function (app, userModel) {
             );
     }
 
-    function authenticated(req, res, next) {
-        if (!req.isAuthenticated()) {
-            res.send(401);
-        } else {
+    function authorized(req, res, next) {
+        if (req.isAuthenticated()) {
             next();
+        } else {
+            res.send(401);
         }
     };
 };
