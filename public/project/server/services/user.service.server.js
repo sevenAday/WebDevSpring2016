@@ -1,10 +1,10 @@
 "use strict";
-var LocalStrategy = require('passport-local').Strategy;
+//var LocalStrategy = require('passport-local').Strategy;
 
-module.exports = function (passport, app, userModel, documentModel) {
+module.exports = function (app, userModel, documentModel) {
     var auth = authenticated;
 
-    app.post("/api/project/login", passport.authenticate('local'), login);
+    //app.post("/api/project/login", passport.authenticate('local'), login);
     app.get("/api/project/loggedin", loggedIn);
     app.post("/api/project/logout", logOut);
     app.post("/api/project/register", register);
@@ -22,9 +22,9 @@ module.exports = function (passport, app, userModel, documentModel) {
     app.get("/api/project/user/:id/commentedon", getCommentedOnByUserId);
     app.get("/api/project/user/:id/like", getLikeByUserId);
 
-    passport.use(new LocalStrategy(localStrategy));
+    /*passport.use(new LocalStrategy(localStrategy));
     passport.serializeUser(serializeUser);
-    passport.deserializeUser(deserializeUser);
+    passport.deserializeUser(deserializeUser);*/
 
     function register(req, res) {
         var newUser = req.body;

@@ -5,7 +5,6 @@ var multer = require("multer");
 var uuid = require("node-uuid");
 var Passport = require("passport").Passport;
 var assignmentPassport = new Passport();
-var projectPassport = new Passport();
 var cookieParser = require("cookie-parser");
 var session = require("express-session");
 var mongoose = require("mongoose");
@@ -27,12 +26,10 @@ app.use(session({"secret": process.env.PASSPORT_SECRET, "resave": true, "saveUni
 app.use(cookieParser());
 app.use(assignmentPassport.initialize());
 app.use(assignmentPassport.session());
-app.use(projectPassport.initialize());
-app.use(projectPassport.session());
 app.use(express.static(__dirname + "/public"));
 
 require('./public/assignment/server/app.js')(assignmentPassport, app, db, mongoose);
-require('./public/project/server/app.js')(projectPassport, app, db, mongoose);
+require('./public/project/server/app.js')(app, db, mongoose);
 
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
 var port = process.env.OPENSHIFT_NODEJS_PORT || 3000;
