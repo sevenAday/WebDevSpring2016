@@ -19,12 +19,12 @@ body {
 
 .image-bg-fluid-height {
     background: url('../images/UPPERHOME.jpg') no-repeat center center scroll;
-    padding: 100px 0;
+    padding: 50px 0;
 }
 
 .image-bg-fixed-height {
     background: url('../images/UPPERHOME.jpg') no-repeat center center scroll;
-    height: 450px;
+    height: 250px;
 }
 
 .img-center {
