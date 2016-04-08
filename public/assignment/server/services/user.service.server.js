@@ -1,5 +1,6 @@
 "use strict";
 var LocalStrategy = require('passport-local').Strategy;
+var bcrypt = require('bcrypt-nodejs');
 
 module.exports = function (passport, app, userModel) {
     var auth = authorized;
