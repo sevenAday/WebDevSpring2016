@@ -7,9 +7,12 @@
 
     function ProfileController($scope, $rootScope, $location, UserService, DocumentService) {
         var model = this;
+        var unchangedPW = null;
 
         model.update = update;
         model.clearMessage = clearMessage;
+        model.clearPassword = clearPassword;
+        model.fillPassword = fillPassword;
         model.openDocument = openDocument;
 
         function init() {
@@ -184,6 +187,18 @@
 
         function clearMessage() {
             model.successful = false;
+        }
+
+        function clearPassword() {
+            unchangedPW = model.password;
+            model.password = "";
+            model.successful = false;
+        }
+
+        function fillPassword() {
+            if (!model.password) {
+                model.password = unchangedPW;
+            }
         }
     }
 }());

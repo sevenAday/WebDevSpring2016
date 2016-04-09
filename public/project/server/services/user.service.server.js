@@ -32,7 +32,7 @@ module.exports = function (app, userModel, documentModel) {
     function register(req, res) {
         var newUser = req.body;
         newUser.roles = ["newcomer"];
-
+        newUser.password = bcrypt.hashSync(newUser.password);
         userModel
             .findUserByUsername(newUser.username)
             .then(
@@ -67,9 +67,10 @@ module.exports = function (app, userModel, documentModel) {
 
     function createUser(req, res) {
         var newUser = req.body;
-        if (!req.session.isAdminUser) {
+        if (!req.session.isAdminUser || !user.roles) {
             newUser.roles = ["newcomer"];
         }
+        newUser.password = bcrypt.hashSync(newUser.password);
         userModel.createUser(newUser)
             .then(
                 function (user) {
@@ -97,12 +98,14 @@ module.exports = function (app, userModel, documentModel) {
         var username = req.query.username;
         var password = req.query.password;
         if (username && password) {
-            var credentials = {"username": username, "password": password};
-            userModel.findUserByCredentials(credentials)
+            userModel.findUserByUsername(username)
                 .then(
                     function (user) {
-                        user.password = DPWD;
-                        res.json(user);
+                        if (user && bcrypt.compareSync(password, user.password)) {
+                            res.json(user);
+                        } else {
+                            res.status(400).send(err);
+                        }
                     },
                     function (err) {
                         res.status(400).send(err);
@@ -148,6 +151,9 @@ module.exports = function (app, userModel, documentModel) {
     function updateUserById(req, res) {
         var userId = req.params.id;
         var newUser = req.body;
+        if (newUser.password == DPWD) {
+            newUser.password = "";
+        }
         userModel.updateUserById(userId, newUser)
             .then(
                 function (user) {
@@ -330,8 +336,25 @@ module.exports = function (app, userModel, documentModel) {
     }
 
     function login(req, res) {
-        var user = req.user;
-        res.json(user);
+        if (req.user.password) {
+            req.user.password = DPWD;
+            var user = req.user;
+            res.json(user);
+        } else {
+            res.json(null);
+        }
+    }
+
+    function isAdmin(user) {
+        if (user.roles) {
+            var userRoles = user.roles.map(function (role) {
+                return role.toLowerCase();
+            });
+            if (userRoles.indexOf("admin") >= 0 || userRoles.indexOf("administrator") >= 0) {
+                return true;
+            }
+            return false;
+        }
     }
 
     /*
@@ -347,20 +370,21 @@ module.exports = function (app, userModel, documentModel) {
         instance.use("local", new LocalStrategy(options,
             function localStrategy(username, password, done) {
                 userModel
-                    .findUserByCredentials({"username": username, "password": password})
-                    .then(
-                        function (user) {
-                            if (!user) {
-                                return done(null, false);
-                            }
+                 .findUserByUsername(username)
+                 .then(
+                     function (user) {
+                            if (user && bcrypt.compareSync(password, user.password)) {
                             return done(null, user);
-                        },
-                        function (err) {
-                            if (err) {
-                                return done(err);
-                            }
+                        } else {
+                            return done(null, {"username": username});
                         }
-                    );
+                     },
+                     function (err) {
+                        if (err) {
+                            return done(err);
+                        }
+                     }
+                 );
             }));
 
         instance.serializeUser(function (user, done) {

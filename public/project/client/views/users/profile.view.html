@@ -23,7 +23,7 @@
                     <div class="col-sm-10">
                         <input name="password" ng-minlength="2" required ng-model="model.password" type="password"
                                class="form-control" id="inputPassword" placeholder="Password"
-                               ng-focus="model.clearMessage()">
+                               ng-focus="model.clearPassword()" ng-blur="model.fillPassword()">
                         <div ng-messages="profile.password.$error" role="alert">
                             <div ng-if="model.showError" class="text-danger">
                                 <div ng-message="required">Please enter a password.</div>
