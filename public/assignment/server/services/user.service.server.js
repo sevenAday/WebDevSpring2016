@@ -3,6 +3,7 @@ var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
 
 module.exports = function (passport, app, userModel) {
+    var DPWD = ".........";
     var auth = authorized;
 
     app.post("/api/assignment/login", passport.authenticate('local'), login);
@@ -186,6 +187,9 @@ module.exports = function (passport, app, userModel) {
     }
 
     function loggedIn(req, res) {
+        if (req.isAuthenticated()) {
+            req.user.password = DPWD;
+        }
         res.json(req.isAuthenticated() ? req.user : null);
     }
 
@@ -238,6 +242,7 @@ module.exports = function (passport, app, userModel) {
     }
 
     function login(req, res) {
+        req.user.password = DPWD;
         var user = req.user;
         res.json(user);
     }

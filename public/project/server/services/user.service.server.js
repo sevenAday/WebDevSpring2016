@@ -5,6 +5,7 @@
 var bcrypt = require('bcrypt-nodejs');
 
 module.exports = function (app, userModel, documentModel) {
+    var DPWD = ".........";
     //var passports = new Passports();
     var auth = authenticated;
 
@@ -100,6 +101,7 @@ module.exports = function (app, userModel, documentModel) {
             userModel.findUserByCredentials(credentials)
                 .then(
                     function (user) {
+                        user.password = DPWD;
                         res.json(user);
                     },
                     function (err) {
@@ -110,6 +112,7 @@ module.exports = function (app, userModel, documentModel) {
             userModel.findUserByUsername(username)
                 .then(
                     function (user) {
+                        user.password = DPWD;
                         res.json(user);
                     },
                     function (err) {
