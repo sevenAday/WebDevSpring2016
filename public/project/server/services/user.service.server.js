@@ -1,11 +1,14 @@
 "use strict";
+//var Passports = require("passports");
+//var Passport = require("passport").Passport;
 //var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
 
 module.exports = function (app, userModel, documentModel) {
+    //var passports = new Passports();
     var auth = authenticated;
 
-    //app.post("/api/project/login", passport.authenticate('local'), login);
+    //app.post("/api/project/login", passports.middleware("authenticate", "local"), login);
     app.get("/api/project/loggedin", loggedIn);
     app.post("/api/project/logout", logOut);
     app.post("/api/project/register", register);
@@ -22,10 +25,6 @@ module.exports = function (app, userModel, documentModel) {
     app.delete("/api/project/user/:id/like/:documentId", removeLikeIdByUserId);
     app.get("/api/project/user/:id/commentedon", getCommentedOnByUserId);
     app.get("/api/project/user/:id/like", getLikeByUserId);
-
-    /*passport.use(new LocalStrategy(localStrategy));
-    passport.serializeUser(serializeUser);
-    passport.deserializeUser(deserializeUser);*/
 
     function register(req, res) {
         var newUser = req.body;
@@ -330,40 +329,54 @@ module.exports = function (app, userModel, documentModel) {
         res.json(user);
     }
 
-    function localStrategy(username, password, done) {
-        userModel
-            .findUserByCredentials({"username": username, "password": password})
-            .then(
-                function (user) {
-                    if (!user) {
-                        return done(null, false);
-                    }
-                    return done(null, user);
-                },
-                function (err) {
-                    if (err) {
-                        return done(err);
-                    }
-                }
-            );
-    }
+    /*
+    passports._getConfig = function _getConfig(req, callback) {
+        return callback(null, req.host, {
+            "realm": req.host
+        });
+    };
 
-    function serializeUser(user, done) {
-        done(null, user);
-    }
+    passports._createInstance = function _createInstance(options, callback) {
+        var instance = new Passport();
 
-    function deserializeUser(user, done) {
-        userModel
-            .findUserById(user._id)
-            .then(
-                function (user) {
-                    done(null, user);
-                },
-                function (err) {
-                    done(err, null);
-                }
-            );
-    }
+        instance.use("local", new LocalStrategy(options,
+            function localStrategy(username, password, done) {
+                userModel
+                    .findUserByCredentials({"username": username, "password": password})
+                    .then(
+                        function (user) {
+                            if (!user) {
+                                return done(null, false);
+                            }
+                            return done(null, user);
+                        },
+                        function (err) {
+                            if (err) {
+                                return done(err);
+                            }
+                        }
+                    );
+            }));
+
+        instance.serializeUser(function (user, done) {
+            done(null, user);
+        });
+
+        instance.deserializeUser(function (user, done) {
+            userModel
+                .findUserById(user._id)
+                .then(
+                    function (user) {
+                        done(null, user);
+                    },
+                    function (err) {
+                        done(err, null);
+                    }
+                );
+        });
+
+        callback(null, instance);
+    };*/
 
     function authenticated(req, res, next) {
         if (!req.isAuthenticated()) {

@@ -1,8 +1,8 @@
 var express = require("express");
-var app = express();
 var bodyParser = require("body-parser");
 var multer = require("multer");
 var uuid = require("node-uuid");
+//var Passports = require("passports");
 var Passport = require("passport").Passport;
 var assignmentPassport = new Passport();
 var cookieParser = require("cookie-parser");
@@ -19,6 +19,9 @@ if (process.env.OPENSHIFT_MONGODB_DB_PASSWORD) {
 }
 var db = mongoose.connect(connectionString);
 
+//var passports = new Passports();
+var app = express();
+
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({"extended": true}));
 app.use(multer());
@@ -26,6 +29,9 @@ app.use(session({"secret": process.env.PASSPORT_SECRET, "resave": true, "saveUni
 app.use(cookieParser());
 app.use(assignmentPassport.initialize());
 app.use(assignmentPassport.session());
+//app.use(passports.attach());
+//app.use(passports.middleware("initialize"));
+//app.use(passports.middleware("session"));
 app.use(express.static(__dirname + "/public"));
 
 require('./public/assignment/server/app.js')(assignmentPassport, app, db, mongoose);
