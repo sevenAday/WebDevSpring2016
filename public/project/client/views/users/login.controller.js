@@ -11,6 +11,7 @@
 
         function login() {
             model.showError = true;
+            model.disableRegisterButton = true;
             delete $scope.signin.password.$error.invalidLogin;
             if (!isNotEmpty($scope.signin.username.$error) && !isNotEmpty($scope.signin.password.$error)) {
                 UserService.login(model.username, model.password)
@@ -26,6 +27,7 @@
                             }
                         } else {
                             $scope.signin.password.$error = {"invalidLogin": true};
+                            model.disableRegisterButton = false;
                         }
                     });
             }

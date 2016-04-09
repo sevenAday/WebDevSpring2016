@@ -26,6 +26,7 @@
                 if ($rootScope.user.phones) {
                     model.phone = $rootScope.user.phones.join(" | ");
                 }
+                model.disableRegisterButton = false;
             } else {
                 $location.path("/login");
             }
@@ -36,17 +37,26 @@
         function update() {
             model.successful = false;
             model.showError = true;
+            model.disableRegisterButton = true;
             if (isNotEmpty($scope.profile.username.$error)
                 || isNotEmpty($scope.profile.password.$error)
                 || isNotEmpty($scope.profile.lastName.$error)
                 || isNotEmpty($scope.profile.firstName.$error)) {
+                model.disableRegisterButton = false;
+                return;
+            }
+            var validRegExp = /^[\w\.]{2,}$/;
+            if (model.password.search(validRegExp) === -1) {
+                $scope.profile.password.$error = {"required": true};
+                model.disableRegisterButton = false;
                 return;
             }
             var emails = model.email.replace(/\s/g, "").split("|");
-            var validRegExp = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
+            validRegExp = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
             for (var e in emails) {
                 if (emails[e].search(validRegExp) === -1) {
                     $scope.profile.inputEmail.$error = {"invalidEmail": true};
+                    model.disableRegisterButton = false;
                     return;
                 }
             }
@@ -56,6 +66,7 @@
             for (var p in phones) {
                 if (phones[p].search(validRegExp) === -1) {
                     $scope.profile.inputPhone.$error = {"invalidPhone": true};
+                    model.disableRegisterButton = false;
                     return;
                 }
             }
@@ -76,6 +87,7 @@
                         }
                     }
                     model.successful = true;
+                    model.disableRegisterButton = false;
                     $location.path("/profile");
                 });
         }
@@ -86,6 +98,7 @@
 
         function clearMessage() {
             model.successful = false;
+            model.disableRegisterButton = false;
         }
 
         function clearPassword() {

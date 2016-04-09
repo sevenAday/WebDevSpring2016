@@ -11,6 +11,7 @@
 
         function register() {
             model.showError = true;
+            model.disableRegisterButton = true;
             delete $scope.registration.verifyPassword.$error.notMatching;
             delete $scope.registration.username.$error.duplicateUsername;
             if (model.password !== model.verifyPassword) {
@@ -20,6 +21,13 @@
                 || isNotEmpty($scope.registration.password.$error)
                 || isNotEmpty($scope.registration.verifyPassword.$error)
                 || isNotEmpty($scope.registration.inputEmail.$error)) {
+                model.disableRegisterButton = false;
+                return;
+            }
+            var validRegExp = /^[\w]{2,}$/;
+            if (model.password.search(validRegExp) === -1) {
+                $scope.registration.password.$error = {"required": true};
+                model.disableRegisterButton = false;
                 return;
             }
             var newUser = {
@@ -36,6 +44,7 @@
                         $location.path("/profile");
                     } else {
                         $scope.registration.username.$error = {"duplicateUsername": true};
+                        model.disableRegisterButton = false;
                     }
                 });
         }

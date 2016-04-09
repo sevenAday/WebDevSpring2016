@@ -17,6 +17,7 @@
 
         function init() {
             if ($rootScope.user) {
+                model.disableRegisterButton = false;
                 model.username = $rootScope.user.username;
                 model.password = $rootScope.user.password;
                 model.firstName = $rootScope.user.firstName;
@@ -155,12 +156,20 @@
             model.successful = false;
             var currentUser;
             model.showError = true;
+            model.disableRegisterButton = true;
             delete $scope.profile.inputEmail.$error.address;
             if (isNotEmpty($scope.profile.username.$error)
                 || isNotEmpty($scope.profile.password.$error)
                 || isNotEmpty($scope.profile.lastName.$error)
                 || isNotEmpty($scope.profile.firstName.$error)
                 || isNotEmpty($scope.profile.inputEmail.$error)) {
+                model.disableRegisterButton = false;
+                return;
+            }
+            var validRegExp = /^[\w\.]{2,}$/;
+            if (model.password.search(validRegExp) === -1) {
+                $scope.profile.password.$error = {"required": true};
+                model.disableRegisterButton = false;
                 return;
             }
             currentUser = {
@@ -174,10 +183,12 @@
                 .then(function (response) {
                         UserService.setCurrentUser(response.data);
                         model.successful = true;
+                        model.disableRegisterButton = false;
                         $location.path("/profile");
                     },
                     function (err) {
                         $scope.profile.inputEmail.$error = {"address": true};
+                        model.disableRegisterButton = false;
                     });
         }
 
@@ -187,6 +198,7 @@
 
         function clearMessage() {
             model.successful = false;
+            model.disableRegisterButton = false;
         }
 
         function clearPassword() {

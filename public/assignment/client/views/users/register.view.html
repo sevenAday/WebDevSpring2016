@@ -25,7 +25,7 @@
                                class="form-control" id="inputPassword" placeholder="Password">
                         <div ng-messages="registration.password.$error" role="alert">
                             <div ng-if="model.showError" class="text-danger">
-                                <div ng-message="required">Please enter a password.</div>
+                                <div ng-message="required">Please enter a valid password.</div>
                                 <div ng-message="minlength">Password is too short.</div>
                             </div>
                         </div>
@@ -63,7 +63,8 @@
             <form class="form-horizontal">
                 <div class="form-group">
                     <div class="col-sm-offset-2 col-sm-10">
-                        <button ng-click="model.register()" type="submit" class="btn btn-block">
+                        <button ng-click="model.register()" type="submit" class="btn btn-block"
+                                ng-disabled="model.disableRegisterButton">
                             <b>Register</b></button>
                     </div>
                 </div>

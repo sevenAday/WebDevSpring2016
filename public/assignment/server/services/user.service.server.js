@@ -25,7 +25,7 @@ module.exports = function (passport, app, userModel) {
     function register(req, res) {
         var newUser = req.body;
         newUser.roles = ["student"];
-        newUser.password = bcrypt.hashSync(newUser.password);
+        newUser.password = bcrypt.hashSync(newUser.password.trim());
         userModel
             .findUserByUsername(newUser.username)
             .then(
@@ -141,6 +141,8 @@ module.exports = function (passport, app, userModel) {
         var user = req.body;
         if (user.password == DPWD) {
             user.password = "";
+        } else {
+            user.password = bcrypt.hashSync(user.password.trim());
         }
         userModel.updateUserById(userId, user)
             .then(

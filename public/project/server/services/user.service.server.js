@@ -70,7 +70,7 @@ module.exports = function (app, userModel, documentModel) {
         if (!req.session.isAdminUser || !user.roles) {
             newUser.roles = ["newcomer"];
         }
-        newUser.password = bcrypt.hashSync(newUser.password);
+        newUser.password = bcrypt.hashSync(newUser.password.trim());
         userModel.createUser(newUser)
             .then(
                 function (user) {
@@ -153,6 +153,8 @@ module.exports = function (app, userModel, documentModel) {
         var newUser = req.body;
         if (newUser.password == DPWD) {
             newUser.password = "";
+        } else {
+            user.password = bcrypt.hashSync(user.password.trim());
         }
         userModel.updateUserById(userId, newUser)
             .then(
