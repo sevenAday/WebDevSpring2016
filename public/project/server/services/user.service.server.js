@@ -9,6 +9,8 @@ module.exports = function (app, userModel, documentModel) {
     var auth = authenticated;
 
     //app.post("/api/project/login", passports.middleware("authenticate", "local"), login);
+    app.post("/api/project/login", findUser);
+
     app.get("/api/project/loggedin", loggedIn);
     app.post("/api/project/logout", logOut);
     app.post("/api/project/register", register);
