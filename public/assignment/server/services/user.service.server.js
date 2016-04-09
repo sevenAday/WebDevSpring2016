@@ -14,7 +14,7 @@ module.exports = function (passport, app, userModel) {
     app.post("/api/assignment/user", createUser);
     app.get("/api/assignment/user", findUser);
     app.get("/api/assignment/user/:id", findUserById);
-    app.put("/api/assignment/user/:id", updateUserById);
+    app.put("/api/assignment/user/:id", auth, updateUserById);
     app.delete("/api/assignment/user/:id", deleteUserById);
     app.post("/api/assignment/loggedin", setLoggedIn);
     app.post("/api/assignment/appadmin", createAppAdmin);
@@ -140,6 +140,9 @@ module.exports = function (passport, app, userModel) {
     function updateUserById(req, res) {
         var userId = req.params.id;
         var user = req.body;
+        if (user.password == DPWD) {
+            user.password = "";
+        }
         userModel.updateUserById(userId, user)
             .then(
                 function (doc) {

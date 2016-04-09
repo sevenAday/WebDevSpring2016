@@ -105,7 +105,9 @@ module.exports = function (db, mongoose) {
                             user.lastName = newUser.lastName;
                         }
                         user.username = newUser.username;
-                        user.password = newUser.password;
+                        if (newUser.password) {
+                            user.password = newUser.password;
+                        }
                         user.emails = newUser.emails;
                         if (newUser.phones) {
                             user.phones = newUser.phones;
