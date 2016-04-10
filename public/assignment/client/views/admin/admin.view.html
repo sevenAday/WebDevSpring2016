@@ -7,10 +7,27 @@
                 <table class="table table-striped">
                     <thead>
                     <tr>
-                        <th><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> Username</th>
+                        <th ng-click="model.sortUsername()">
+                            <span class="glyphicon">
+                                <span ng-if="model.uno === 1"
+                                      class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+                                <span ng-if="model.uno === 2"
+                                      class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+                            </span>
+                            Username</th>
                         <th> Password</th>
-                        <th><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> First Name</th>
-                        <th><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> Last Name</th>
+                        <th ng-click="model.sortFirstName()">
+                            <span ng-if="model.fno == 1"
+                                  class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+                            <span ng-if="model.fno == 2"
+                                  class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+                            First Name</th>
+                        <th ng-click="model.sortLastName()">
+                            <span ng-if="model.lno == 1"
+                                  class="glyphicon glyphicon-triangle-top" aria-hidden="true"></span>
+                            <span ng-if="model.lno == 2"
+                                  class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span>
+                            Last Name</th>
                         <th> Roles</th>
                         <th>Action</th>
                     </tr>

@@ -17,11 +17,15 @@
         model.updateUser = updateUser;
         model.clearPassword = clearPassword;
         model.fillPassword = fillPassword;
+        model.sortUsername = sortUsername;
+        model.sortFirstName = sortFirstName;
+        model.sortLastName = sortLastName;
 
         function init() {
             if ($rootScope.user && $rootScope.isAdmin) {
                 UserService.findAllUsers()
                     .then(function (response) {
+                        clearOrderIndicators();
                         populateUsers(response.data);
                     });
             } else {
@@ -146,6 +150,77 @@
             if (!model.password) {
                 model.password = unchangedPW;
             }
+        }
+
+        function clearOrderIndicators() {
+            model.uno = 0;
+            model.lno = 0;
+            model.fno = 0;
+        }
+
+        function getSortOrder(x, y, o) {
+            if (o == 1) {
+                if (x < y) {
+                    return 1;
+                } else if (x > y) {
+                    return -1;
+                }
+            } else {
+                if (x < y) {
+                    return -1;
+                } else if (x > y) {
+                    return 1;
+                }
+            }
+            return 0;
+        }
+
+        function sortUsername() {
+            if (model.uno < 2) {
+                model.uno += 1;
+            } else {
+                model.uno = 1;
+            }
+            model.lno = 0;
+            model.fno = 0;
+
+            model.users.sort(function (x, y) {
+                var x = x.username;
+                var y = y.username;
+                return getSortOrder(x, y, model.uno);
+            });
+        }
+
+        function sortFirstName() {
+            if (model.fno < 2) {
+                model.fno += 1;
+            } else {
+                model.fno = 1;
+            }
+            model.lno = 0;
+            model.uno = 0;
+
+            model.users.sort(function (x, y) {
+                var x = x.firstName;
+                var y = y.firstName;
+                return getSortOrder(x, y, model.fno);
+            });
+        }
+
+        function sortLastName() {
+            if (model.lno < 2) {
+                model.lno += 1;
+            } else {
+                model.lno = 1;
+            }
+            model.fno = 0;
+            model.uno = 0;
+
+            model.users.sort(function (x, y) {
+                var x = x.lastName;
+                var y = y.lastName;
+                return getSortOrder(x, y, model.lno);
+            });
         }
     }
 }());
