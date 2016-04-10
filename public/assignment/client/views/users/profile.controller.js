@@ -21,10 +21,10 @@
                 model.firstName = $rootScope.user.firstName;
                 model.lastName = $rootScope.user.lastName;
                 if ($rootScope.user.emails) {
-                    model.email = $rootScope.user.emails.join(" | ");
+                    model.email = $rootScope.user.emails.join(" , ");
                 }
                 if ($rootScope.user.phones) {
-                    model.phone = $rootScope.user.phones.join(" | ");
+                    model.phone = $rootScope.user.phones.join(" , ");
                 }
                 model.disableRegisterButton = false;
             } else {
@@ -51,7 +51,7 @@
                 model.disableRegisterButton = false;
                 return;
             }
-            var emails = model.email.replace(/\s/g, "").split("|");
+            var emails = model.email.replace(/\s/g, "").split(",");
             validRegExp = /^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
             for (var e in emails) {
                 if (emails[e].search(validRegExp) === -1) {
@@ -61,7 +61,7 @@
                 }
             }
             delete $scope.profile.inputEmail.$error.invalidEmail;
-            var phones = model.phone.replace(/\s/g, "").split("|");
+            var phones = model.phone.replace(/\s/g, "").split(",");
             validRegExp = /^\(?([0-9]{3})\)?[-. ]?([0-9]{3})[-. ]?([0-9]{4})$/;
             for (var p in phones) {
                 if (phones[p].search(validRegExp) === -1) {

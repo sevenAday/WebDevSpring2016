@@ -8,6 +8,7 @@
     function AdminController($rootScope, $location, UserService, DocumentService, CommentService, AdminService) {
         var model = this;
         var selectedUserIndex = -1;
+        var unchangedPW = null;
 
         model.addUser = addUser;
         model.deleteUser = deleteUser;
@@ -17,6 +18,8 @@
         model.removeAlertMessage = removeAlertMessage;
         model.updateNumberOfPages = updateNumberOfPages;
         model.updateNumberOfActivities = updateNumberOfActivities;
+        model.clearPassword = clearPassword;
+        model.fillPassword = fillPassword;
 
         function init() {
             model.alertMessage = $rootScope.alertMessageToAll;
@@ -53,7 +56,7 @@
                     model.users.push({
                         "_id": users[u]._id,
                         "username": users[u].username,
-                        "password": users[u].password,
+                        "password": users[idx].password,
                         "roles": roles
                     });
                 }
@@ -62,6 +65,13 @@
 
         function addUser() {
             if (model.username && model.password && model.role) {
+                var validRegExp = /^[\w\.]{2,}$/;
+                if (model.password.search(validRegExp) === -1) {
+                    model.username = "Invalid password!!!";
+                    model.password = "";
+                    model.role = "";
+                    return;
+                }
                 UserService.findUserByUsername(model.username)
                     .then(function (response) {
                         if (response.data) {
@@ -106,6 +116,13 @@
 
         function updateUser() {
             if (selectedUserIndex >= 0 && model.username && model.password && model.role) {
+                var validRegExp = /^[\w\.]{2,}$/;
+                if (model.password.search(validRegExp) === -1) {
+                    model.username = "Invalid password!!!";
+                    model.password = "";
+                    model.role = "";
+                    return;
+                }
                 var newUser = {
                     "username": model.users[selectedUserIndex].username,
                     "password": model.password,
@@ -146,6 +163,18 @@
         function updateNumberOfActivities() {
             AdminService.saveNumberOfActivities({"value": model.numberOfRecentActivities});
             $rootScope.numberOfActivities = model.numberOfRecentActivities;
+        }
+
+        function clearPassword() {
+            unchangedPW = model.password;
+            model.password = "";
+            model.successful = false;
+        }
+
+        function fillPassword() {
+            if (!model.password) {
+                model.password = unchangedPW;
+            }
         }
     }
 }());

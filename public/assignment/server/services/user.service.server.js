@@ -75,6 +75,9 @@ module.exports = function (passport, app, userModel) {
             )
             .then(
                 function (users) {
+                    for (var u in users) {
+                        users[u].password = DPWD;
+                    }
                     res.json(users);
                 },
                 function (err) {
@@ -114,6 +117,9 @@ module.exports = function (passport, app, userModel) {
             userModel.findAllUsers()
                 .then(
                     function (users) {
+                        for (var u in users) {
+                            users[u].password = DPWD;
+                        }
                         res.json(users);
                     },
                     function (err) {
@@ -155,6 +161,9 @@ module.exports = function (passport, app, userModel) {
             )
             .then(
                 function (users) {
+                    for (var u in users) {
+                        users[u].password = DPWD;
+                    }
                     res.json(users);
                 },
                 function (err) {
@@ -176,6 +185,9 @@ module.exports = function (passport, app, userModel) {
             )
             .then(
                 function (users) {
+                    for (var u in users) {
+                        users[u].password = DPWD;
+                    }
                     res.json(users);
                 },
                 function (err) {

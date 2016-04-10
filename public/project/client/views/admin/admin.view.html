@@ -17,8 +17,9 @@
                             <input ng-model="model.username" type="text" class="form-control" id="inputUsername"
                                    placeholder="username">
                         </th>
-                        <th><input ng-model="model.password" type="text" class="form-control" id="inputPassword"
-                                   placeholder="password">
+                        <th><input ng-model="model.password" type="password" class="form-control" id="inputPassword"
+                                   placeholder="password"
+                                   ng-focus="model.clearPassword()" ng-blur="model.fillPassword()">
                         </th>
                         <th>
                             <input ng-model="model.role" type="text" class="form-control" id="inputRole"
@@ -37,7 +38,7 @@
                     <tbody>
                     <tr ng-repeat="user in model.users">
                         <td>{{user.username}}</td>
-                        <td>{{user.password}}</td>
+                        <td></td>
                         <td>{{user.roles}}</td>
                         <td>
                             <a ng-click="model.deleteUser($index)">
