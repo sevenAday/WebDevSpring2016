@@ -4,18 +4,19 @@ var bcrypt = require('bcrypt-nodejs');
 
 module.exports = function (passport, app, userModel) {
     var DPWD = ".........";
-    var auth = authorized;
+    var auth = authenticated;
+    var admn = isAdmin;
 
     app.post("/api/assignment/login", passport.authenticate('local'), login);
     app.get("/api/assignment/loggedin", loggedIn);
     app.post("/api/assignment/logout", logOut);
     app.post("/api/assignment/register", register);
 
-    app.post("/api/assignment/user", createUser);
-    app.get("/api/assignment/user", findUser);
-    app.get("/api/assignment/user/:id", findUserById);
+    app.post("/api/assignment/user", admn, createUser);
+    app.get("/api/assignment/user", admn, findUser);
+    app.get("/api/assignment/user/:id", admn, findUserById);
     app.put("/api/assignment/user/:id", auth, updateUserById);
-    app.delete("/api/assignment/user/:id", deleteUserById);
+    app.delete("/api/assignment/user/:id", admn, deleteUserById);
     app.post("/api/assignment/appadmin", createAppAdmin);
 
     passport.use(new LocalStrategy(localStrategy));
@@ -60,7 +61,7 @@ module.exports = function (passport, app, userModel) {
 
     function createUser(req, res) {
         var user = req.body;
-        if (!isAdmin(req.user) || !user.roles) {
+        if (!isAdminUser(req.user) || !user.roles) {
             user.roles = ["student"];
         }
         user.password = bcrypt.hashSync(user.password);
@@ -149,6 +150,9 @@ module.exports = function (passport, app, userModel) {
             user.password = "";
         } else {
             user.password = bcrypt.hashSync(user.password.trim());
+        }
+        if (!isAdminUser(req.user)) {
+            user.roles = "";
         }
         userModel.updateUserById(userId, user)
             .then(
@@ -279,7 +283,15 @@ module.exports = function (passport, app, userModel) {
             );
     }
 
-    function isAdmin(user) {
+    function authenticated(req, res, next) {
+        if (req.isAuthenticated()) {
+            next();
+        } else {
+            res.send(401);
+        }
+    }
+
+    function isAdminUser(user) {
         if (user.roles) {
             var userRoles = user.roles.map(function (role) {
                 return role.toLowerCase();
@@ -291,11 +303,15 @@ module.exports = function (passport, app, userModel) {
         }
     }
 
-    function authorized(req, res, next) {
+    function isAdmin(req, res, next) {
         if (req.isAuthenticated()) {
-            next();
+            if (isAdminUser(req.user)) {
+                next();
+            } else {
+                res.send(403);
+            }
         } else {
-            res.send(401);
+            res.send(403);
         }
-    };
+    }
 };

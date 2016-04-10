@@ -371,6 +371,18 @@ module.exports = function (app, userModel, documentModel) {
         }
     }
 
+    function isAdmin(req, res, next) {
+        if (req.isAuthenticated()) {
+            if (isAdmin(req.user)) {
+                next();
+            } else {
+                res.send(403);
+            }
+        } else {
+            res.send(403);
+        }
+    }
+
     /*
     passports._getConfig = function _getConfig(req, callback) {
         return callback(null, req.host, {
