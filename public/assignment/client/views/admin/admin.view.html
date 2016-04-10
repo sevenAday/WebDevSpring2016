@@ -8,8 +8,10 @@
                     <thead>
                     <tr>
                         <th><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> Username</th>
-                        <th><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> Password</th>
-                        <th><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> Role</th>
+                        <th> Password</th>
+                        <th><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> First Name</th>
+                        <th><span class="glyphicon glyphicon-triangle-bottom" aria-hidden="true"></span> Last Name</th>
+                        <th> Roles</th>
                         <th>Action</th>
                     </tr>
                     <tr>
@@ -20,6 +22,14 @@
                         <th><input ng-model="model.password" type="password" class="form-control" id="inputPassword"
                                    placeholder="password"
                                    ng-focus="model.clearPassword()" ng-blur="model.fillPassword()">
+                        </th>
+                        <th>
+                            <input ng-model="model.firstName" type="text" class="form-control" id="inputFirstName"
+                                   placeholder="firstName">
+                        </th>
+                        <th>
+                            <input ng-model="model.lastName" type="text" class="form-control" id="inputLastName"
+                                   placeholder="lastName">
                         </th>
                         <th>
                             <input ng-model="model.role" type="text" class="form-control"
@@ -39,6 +49,8 @@
                     <tr ng-repeat="user in model.users">
                         <td>{{user.username}}</td>
                         <td></td>
+                        <td>{{user.firstName}}</td>
+                        <td>{{user.lastName}}</td>
                         <td>{{user.roles}}</td>
                         <td>
                             <a ng-click="model.deleteUser($index)">

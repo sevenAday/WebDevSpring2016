@@ -42,39 +42,39 @@
                     "_id": users[idx]._id,
                     "username": users[idx].username,
                     "password": users[idx].password,
+                    "firstName": users[idx].firstName,
+                    "lastName": users[idx].lastName,
                     "roles": roles
                 };
             }
         }
 
         function addUser() {
-            if (model.username && model.password && model.role) {
+            if (model.username && model.password && model.firstName && model.lastName && model.role) {
                 var validRegExp = /^[\w\.]{2,}$/;
                 if (model.password.search(validRegExp) === -1) {
+                    clearModel();
                     model.username = "Invalid password!!!";
-                    model.password = "";
-                    model.role = "";
                     return;
                 }
                 UserService.findUserByUsername(model.username)
                     .then(function (response) {
                         if (response.data) {
+                            clearModel();
                             model.username = "Invalid username!!!";
-                            model.password = "";
-                            model.role = "";
                         } else {
                             var newUser = {
                                 "username": model.username,
                                 "password": model.password,
+                                "firstName": model.firstName,
+                                "lastName": model.lastName,
                                 "roles": model.role.replace(/\s/g, "").split(DELIMITER)
                             };
-                            if (model.username && model.password && model.role && $rootScope.user && $rootScope.isAdmin) {
+                            if ($rootScope.user && $rootScope.isAdmin) {
                                 UserService.createUser(newUser)
                                     .then(function (response) {
                                         populateUsers(response.data);
-                                        model.username = "";
-                                        model.password = "";
-                                        model.role = "";
+                                        clearModel();
                                     });
                             }
                         }
@@ -99,32 +99,41 @@
             selectedUserIndex = $index;
             model.username = model.users[selectedUserIndex].username;
             model.password = model.users[selectedUserIndex].password;
+            model.firstName = model.users[selectedUserIndex].firstName;
+            model.lastName = model.users[selectedUserIndex].lastName;
             model.role = model.users[selectedUserIndex].roles;
         }
 
         function updateUser() {
-            if (selectedUserIndex >= 0 && model.username && model.password && model.role) {
+            if (selectedUserIndex >= 0 && model.username && model.password && model.firstName && model.lastName && model.role) {
                 var validRegExp = /^[\w\.]{2,}$/;
                 if (model.password.search(validRegExp) === -1) {
+                    clearModel();
                     model.username = "Invalid password!!!";
-                    model.password = "";
-                    model.role = "";
                     return;
                 }
                 var newUser = {
                     "username": model.users[selectedUserIndex].username,
                     "password": model.password,
+                    "firstName": model.firstName,
+                    "lastName": model.lastName,
                     "roles": model.role.replace(/\s/g, "").split(DELIMITER)
                 };
                 UserService.updateUser(model.users[selectedUserIndex]._id, newUser)
                     .then(function (response) {
                         populateUsers(response.data);
-                        model.username = "";
-                        model.password = "";
-                        model.role = "";
+                        clearModel();
                         selectedUserIndex = -1;
                     });
             }
+        }
+
+        function clearModel() {
+            model.username = "";
+            model.password = "";
+            model.firstName = "";
+            model.lastName = "";
+            model.role = "";
         }
 
         function clearPassword() {
