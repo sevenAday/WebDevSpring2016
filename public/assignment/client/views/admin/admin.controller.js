@@ -51,6 +51,7 @@
                     "roles": roles
                 };
             }
+            doSort();
         }
 
         function addUser() {
@@ -176,10 +177,16 @@
         }
 
         function sortUsername() {
-            if (model.uno < 2) {
-                model.uno += 1;
-            } else {
-                model.uno = 1;
+            doSortUsername(true);
+        }
+
+        function doSortUsername(changeOrder) {
+            if (changeOrder) {
+                if (model.uno < 2) {
+                    model.uno += 1;
+                } else {
+                    model.uno = 1;
+                }
             }
             model.lno = 0;
             model.fno = 0;
@@ -192,10 +199,16 @@
         }
 
         function sortFirstName() {
-            if (model.fno < 2) {
-                model.fno += 1;
-            } else {
-                model.fno = 1;
+            doSortFirstName(true);
+        }
+
+        function doSortFirstName(changeOrder) {
+            if (changeOrder) {
+                if (model.fno < 2) {
+                    model.fno += 1;
+                } else {
+                    model.fno = 1;
+                }
             }
             model.lno = 0;
             model.uno = 0;
@@ -208,10 +221,16 @@
         }
 
         function sortLastName() {
-            if (model.lno < 2) {
-                model.lno += 1;
-            } else {
-                model.lno = 1;
+            doSortLastName(true);
+        }
+
+        function doSortLastName(changeOrder) {
+            if (changeOrder) {
+                if (model.lno < 2) {
+                    model.lno += 1;
+                } else {
+                    model.lno = 1;
+                }
             }
             model.fno = 0;
             model.uno = 0;
@@ -221,6 +240,16 @@
                 var y = y.lastName;
                 return getSortOrder(x, y, model.lno);
             });
+        }
+
+        function doSort() {
+            if (model.uno > 0) {
+                doSortUsername(false);
+            } else if (model.fno > 0) {
+                doSortFirstName(false);
+            } else if (model.lno > 0) {
+                doSortLastName(false);
+            }
         }
     }
 }());
