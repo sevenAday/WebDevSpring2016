@@ -7,14 +7,14 @@ var bcrypt = require('bcrypt-nodejs');
 module.exports = function (app, userModel, documentModel) {
     var DPWD = ".........";
     //var passports = new Passports();
-    var auth = authenticated;
+    ///var auth = authenticated;
 
     //app.post("/api/project/login", passports.middleware("authenticate", "local"), login);
     app.post("/api/project/login", findUser);
 
     app.get("/api/project/loggedin", loggedIn);
     app.post("/api/project/logout", logOut);
-    app.post("/api/project/register", register);
+    app.post("/api/project/register", createUser);
 
     app.post("/api/project/user", createUser);
     app.get("/api/project/user", findUser);
@@ -77,7 +77,8 @@ module.exports = function (app, userModel, documentModel) {
                     if (req.session.isAdminUser) {
                         return userModel.findAllUsers();
                     } else {
-                        return user;
+                        user.password = DPWD;
+                        res.json(user);
                     }
                 },
                 function (err) {
@@ -107,7 +108,7 @@ module.exports = function (app, userModel, documentModel) {
                         if (user && bcrypt.compareSync(password, user.password)) {
                             res.json(user);
                         } else {
-                            res.status(400).send(err);
+                            res.json(null);
                         }
                     },
                     function (err) {
@@ -168,7 +169,8 @@ module.exports = function (app, userModel, documentModel) {
                     if (req.session.isAdminUser) {
                         return userModel.findAllUsers();
                     } else {
-                        return user;
+                        user.password = DPWD;
+                        res.json(user);
                     }
                 },
                 function (err) {
@@ -341,7 +343,11 @@ module.exports = function (app, userModel, documentModel) {
     }
 
     function loggedIn(req, res) {
-        res.json(req.isAuthenticated() ? req.user : null);
+        if (true) {
+            res.json(req.session.user);
+        } else {
+            res.json(req.isAuthenticated() ? req.user : null);
+        }
     }
 
     function logOut(req, res) {
@@ -359,7 +365,7 @@ module.exports = function (app, userModel, documentModel) {
         }
     }
 
-    function isAdmin(user) {
+    function isAdminUser(user) {
         if (user.roles) {
             var userRoles = user.roles.map(function (role) {
                 return role.toLowerCase();
@@ -373,7 +379,7 @@ module.exports = function (app, userModel, documentModel) {
 
     function isAdmin(req, res, next) {
         if (req.isAuthenticated()) {
-            if (isAdmin(req.user)) {
+            if (isAdminUser(req.user)) {
                 next();
             } else {
                 res.send(403);
@@ -382,6 +388,14 @@ module.exports = function (app, userModel, documentModel) {
             res.send(403);
         }
     }
+
+    function authenticated(req, res, next) {
+        if (!req.isAuthenticated()) {
+            res.send(401);
+        } else {
+            next();
+        }
+    };
 
     /*
     passports._getConfig = function _getConfig(req, callback) {
@@ -432,12 +446,4 @@ module.exports = function (app, userModel, documentModel) {
 
         callback(null, instance);
     };*/
-
-    function authenticated(req, res, next) {
-        if (!req.isAuthenticated()) {
-            res.send(401);
-        } else {
-            next();
-        }
-    };
 };

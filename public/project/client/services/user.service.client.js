@@ -69,7 +69,7 @@
             return $http.post("/api/project/user/" + userId + "/commentedon/" + documentId);
         }
 
-        function removeCommentedOnIdByUserId(userId, documentId, callback) {
+        function removeCommentedOnIdByUserId(userId, documentId) {
             return $http.delete("/api/project/user/" + userId + "/commentedon/" + documentId);
         }
 
