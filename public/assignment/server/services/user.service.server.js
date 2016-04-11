@@ -1,8 +1,9 @@
 "use strict";
+var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
 
-module.exports = function (passport, app, userModel) {
+module.exports = function (app, userModel) {
     var DPWD = ".........";
     var auth = authenticated;
     var admn = isAdmin;

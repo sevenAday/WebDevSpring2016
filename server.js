@@ -3,8 +3,7 @@ var bodyParser = require("body-parser");
 var multer = require("multer");
 var uuid = require("node-uuid");
 //var Passports = require("passports");
-var Passport = require("passport").Passport;
-var assignmentPassport = new Passport();
+var passport = require("passport");
 var cookieParser = require("cookie-parser");
 var session = require("express-session");
 var mongoose = require("mongoose");
@@ -27,14 +26,14 @@ app.use(bodyParser.urlencoded({"extended": true}));
 app.use(multer());
 app.use(session({"secret": process.env.SESSION_SECRET, "resave": true, "saveUninitialized": true}));
 app.use(cookieParser());
-app.use(assignmentPassport.initialize());
-app.use(assignmentPassport.session());
+app.use(passport.initialize());
+app.use(passport.session());
 //app.use(passports.attach());
 //app.use(passports.middleware("initialize"));
 //app.use(passports.middleware("session"));
 app.use(express.static(__dirname + "/public"));
 
-require('./public/assignment/server/app.js')(assignmentPassport, app, db, mongoose);
+require('./public/assignment/server/app.js')(app, db, mongoose);
 require('./public/project/server/app.js')(app, db, mongoose);
 
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';
