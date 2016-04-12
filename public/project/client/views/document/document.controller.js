@@ -224,8 +224,10 @@
                     UserService.findUserById(like[0])
                         .then(function (response) {
                             var user = response.data;
-                            model.likeMessage = model.likeMessage + user.firstName + " " + user.lastName + " ";
-                            addMoreThan2(like, -1);
+                            if (user) {
+                                model.likeMessage = model.likeMessage + user.firstName + " " + user.lastName + " ";
+                                addMoreThan2(like, -1);
+                            }
                         });
                 }
             }

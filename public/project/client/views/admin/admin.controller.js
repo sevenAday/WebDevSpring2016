@@ -58,7 +58,7 @@
                     model.users.push({
                         "_id": users[u]._id,
                         "username": users[u].username,
-                        "password": users[idx].password,
+                        "password": users[u].password,
                         "roles": roles
                     });
                 }
@@ -102,10 +102,12 @@
         function deleteUser($index) {
             DocumentService.removeAllLikeUserIds(model.users[$index]._id)
                 .then(function (response) {
-                    DocumentService.removeAllCommentsByUserId(model.users[$index]._id);
-                    UserService.deleteUserById(model.users[$index]._id)
+                    DocumentService.removeAllCommentsByUserId(model.users[$index]._id)
                         .then(function (response) {
-                            model.users.splice($index, 1);
+                            UserService.deleteUserById(model.users[$index]._id)
+                                .then(function (response) {
+                                    model.users.splice($index, 1);
+                                });
                         });
                 });
         }
@@ -133,11 +135,7 @@
                 };
                 UserService.updateUser(model.users[selectedUserIndex]._id, newUser)
                     .then(function (response) {
-                        var user = response.data;
-                        model.users[selectedUserIndex]._id = user._id;
-                        model.users[selectedUserIndex].username = user.username;
-                        model.users[selectedUserIndex].password = user.password;
-                        model.users[selectedUserIndex].roles = model.role;
+                        populateUsers(response.data);
                         model.username = "";
                         model.password = "";
                         model.role = "";

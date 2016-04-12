@@ -106,6 +106,7 @@ module.exports = function (app, userModel, documentModel) {
                 .then(
                     function (user) {
                         if (user && bcrypt.compareSync(password, user.password)) {
+                            user.password = DPWD;
                             res.json(user);
                         } else {
                             res.json(null);
@@ -161,7 +162,7 @@ module.exports = function (app, userModel, documentModel) {
         if (newUser.password == DPWD) {
             newUser.password = "";
         } else {
-            user.password = bcrypt.hashSync(user.password.trim());
+            newUser.password = bcrypt.hashSync(newUser.password.trim());
         }
         userModel.updateUserById(userId, newUser)
             .then(
@@ -344,6 +345,9 @@ module.exports = function (app, userModel, documentModel) {
 
     function loggedIn(req, res) {
         if (true) {
+            if (req.session.user) {
+                req.session.user.password = DPWD;
+            }
             res.json(req.session.user);
         } else {
             res.json(req.isAuthenticated() ? req.user : null);
@@ -351,7 +355,8 @@ module.exports = function (app, userModel, documentModel) {
     }
 
     function logOut(req, res) {
-        req.logOut();
+        //req.logOut();
+        req.session.destroy();
         res.send(200);
     }
 
