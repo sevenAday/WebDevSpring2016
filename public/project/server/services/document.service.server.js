@@ -175,7 +175,7 @@ module.exports = function (app, documentModel, commentModel, userModel) {
             )
             .then(
                 function (stats) {
-                    res.status(200);
+                    res.send(stats);
                 },
                 function (err) {
                     res.status(400).send(err);

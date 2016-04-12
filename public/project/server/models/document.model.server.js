@@ -177,7 +177,7 @@ module.exports = function (db, mongoose) {
         var deferred = q.defer();
         DocumentModel
             .update({"_id": {"$in": documentIds}},
-                {"$pull": {"project.document.like": userId}},
+                {"$pull": {"like": userId}},
                 function (err, stats) {
                     if (err) {
                         deferred.reject(err);
@@ -193,7 +193,7 @@ module.exports = function (db, mongoose) {
         var deferred = q.defer();
         DocumentModel
             .update({"_id": {"$in": documentIds}},
-                {"$pull": {"project.document.comment.userId": userId}},
+                {"$pull": {"comment": {"userId": userId}}},
                 function (err, stats) {
                     if (err) {
                         deferred.reject(err);
