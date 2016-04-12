@@ -65,6 +65,8 @@
                                 } else {
                                     $rootScope.document.user = user.firstName + " " + user.lastName;
                                 }
+                            } else {
+                                $rootScope.document.user = "unknown collaborator"
                             }
                             $rootScope.document.lastModifiedDate = dispDate;
                             model.title = $rootScope.document.title;
