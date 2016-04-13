@@ -8,7 +8,7 @@ module.exports = function (app, userModel) {
     var auth = authenticated;
     var admn = isAdmin;
 
-    app.post("/api/assignment/login", passport.authenticate('local'), login);
+    app.post("/api/assignment/login", passport.authenticate("assignment", "local"), login);
     app.get("/api/assignment/loggedin", loggedIn);
     app.post("/api/assignment/logout", logOut);
     app.post("/api/assignment/register", register);
@@ -20,7 +20,7 @@ module.exports = function (app, userModel) {
     app.delete("/api/assignment/user/:id", admn, deleteUserById);
     app.post("/api/assignment/appadmin", createAppAdmin);
 
-    passport.use(new LocalStrategy(localStrategy));
+    passport.use("assignment", new LocalStrategy(localStrategy));
     passport.serializeUser(serializeUser);
     passport.deserializeUser(deserializeUser);
 
