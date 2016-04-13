@@ -67,7 +67,7 @@ module.exports = function (app, userModel, documentModel) {
 
     function createUser(req, res) {
         var newUser = req.body;
-        if (!req.session.isAdminUser || !user.roles) {
+        if (!req.session.isAdminUser || !newUser.roles) {
             newUser.roles = ["newcomer"];
         }
         newUser.password = bcrypt.hashSync(newUser.password.trim());
@@ -77,7 +77,9 @@ module.exports = function (app, userModel, documentModel) {
                     if (req.session.isAdminUser) {
                         return userModel.findAllUsers();
                     } else {
-                        user.password = DPWD;
+                        if (user) {
+                            user.password = DPWD;
+                        }
                         res.json(user);
                     }
                 },
@@ -120,7 +122,9 @@ module.exports = function (app, userModel, documentModel) {
             userModel.findUserByUsername(username)
                 .then(
                     function (user) {
-                        user.password = DPWD;
+                        if (user) {
+                            user.password = DPWD;
+                        }
                         res.json(user);
                     },
                     function (err) {
