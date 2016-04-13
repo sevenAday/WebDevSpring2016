@@ -85,13 +85,16 @@
                             var newUser = {
                                 "username": model.username,
                                 "password": model.password,
-                                "roles": model.role.replace(/\s/g, "").split(","),
+                                "roles": model.role.replace(/^[,\s]+|[,\s]+$/g, "").replace(/\s*,\s*/g, ",").split(","),
                                 "commentedOn": []
                             };
                             if (model.username && model.password && model.role && $rootScope.user && $rootScope.isAdmin) {
                                 UserService.createUser(newUser)
                                     .then(function (response) {
                                         populateUsers(response.data);
+                                        model.username = "";
+                                        model.password = "";
+                                        model.role = "";
                                     });
                             }
                         }
@@ -131,7 +134,7 @@
                 var newUser = {
                     "username": model.users[selectedUserIndex].username,
                     "password": model.password,
-                    "roles": model.role.replace(/\s/g, "").split(",")
+                    "roles": model.role.replace(/^[,\s]+|[,\s]+$/g, "").replace(/\s*,\s*/g, ",").split(",")
                 };
                 UserService.updateUser(model.users[selectedUserIndex]._id, newUser)
                     .then(function (response) {

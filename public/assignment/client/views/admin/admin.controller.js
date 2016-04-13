@@ -73,7 +73,7 @@
                                 "password": model.password,
                                 "firstName": model.firstName,
                                 "lastName": model.lastName,
-                                "roles": model.role.replace(/\s/g, "").split(DELIMITER)
+                                "roles": model.role.replace(/^[,\s]+|[,\s]+$/g, "").replace(/\s*,\s*/g, ",").split(DELIMITER)
                             };
                             if ($rootScope.user && $rootScope.isAdmin) {
                                 UserService.createUser(newUser)
@@ -122,7 +122,7 @@
                     "password": model.password,
                     "firstName": model.firstName,
                     "lastName": model.lastName,
-                    "roles": model.role.replace(/\s/g, "").split(DELIMITER)
+                    "roles": model.role.replace(/^[,\s]+|[,\s]+$/g, "").replace(/\s*,\s*/g, ",").split(DELIMITER)
                 };
                 UserService.updateUser(model.users[selectedUserIndex]._id, newUser)
                     .then(function (response) {
