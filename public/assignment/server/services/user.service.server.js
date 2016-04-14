@@ -3,8 +3,9 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
 
-module.exports = function (app, userModel) {
+module.exports = function (app, userModel, otherUserModel) {
     var DPWD = ".........";
+    var validRegExp = /^[\w\.]{2,}$/;
     var auth = authenticated;
     var admn = isAdmin;
 
@@ -95,7 +96,8 @@ module.exports = function (app, userModel) {
             userModel.findUserByUsername(username)
                 .then(
                     function (user) {
-                        if (user && bcrypt.compareSync(password, user.password)) {
+                        if (user && user.password.search(validRegExp) === -1 && bcrypt.compareSync(password, user.password)) {
+                            user.password = DPWD;
                             res.json(user);
                         } else {
                             res.status(400).send(err);
@@ -109,6 +111,9 @@ module.exports = function (app, userModel) {
             userModel.findUserByUsername(username)
                 .then(
                     function (user) {
+                        if (user) {
+                            user.password = DPWD;
+                        }
                         res.json(user);
                     },
                     function (err) {
@@ -243,7 +248,7 @@ module.exports = function (app, userModel) {
             .findUserByUsername(username)
             .then(
                 function (user) {
-                    if (user && bcrypt.compareSync(password, user.password)) {
+                    if (user && user.password.search(validRegExp) === -1 && bcrypt.compareSync(password, user.password)) {
                         return done(null, user);
                     } else {
                         return done(null, {"username": username});
@@ -272,16 +277,29 @@ module.exports = function (app, userModel) {
     }
 
     function deserializeUser(user, done) {
-        userModel
-            .findUserById(user._id)
-            .then(
-                function (user) {
-                    done(null, user);
-                },
-                function (err) {
-                    done(err, null);
-                }
-            );
+        if (user.hasOwnProperty("likes")) {
+            otherUserModel
+                .findUserById(user._id)
+                .then(
+                    function (user) {
+                        done(null, user);
+                    },
+                    function (err) {
+                        done(err, null);
+                    }
+                );
+        } else {
+            userModel
+                .findUserById(user._id)
+                .then(
+                    function (user) {
+                        done(null, user);
+                    },
+                    function (err) {
+                        done(err, null);
+                    }
+                );
+        }
     }
 
     function authenticated(req, res, next) {

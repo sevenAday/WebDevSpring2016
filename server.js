@@ -29,7 +29,7 @@ app.use(passport.session());
 app.use(express.static(__dirname + "/public"));
 
 var userModel = require("./public/project/server/models/user.model.server.js")(db, mongoose);
-require('./public/assignment/server/app.js')(app, db, mongoose);
+require('./public/assignment/server/app.js')(app, db, mongoose, userModel);
 require('./public/project/server/app.js')(app, db, mongoose, userModel);
 
 var ipaddress = process.env.OPENSHIFT_NODEJS_IP || '127.0.0.1';

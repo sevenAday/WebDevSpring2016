@@ -1,33 +1,33 @@
 "use strict";
-//var Passports = require("passports");
-//var Passport = require("passport").Passport;
-//var LocalStrategy = require('passport-local').Strategy;
+var passport = require('passport');
+var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
 
 module.exports = function (app, userModel, documentModel) {
     var DPWD = ".........";
-    //var passports = new Passports();
-    ///var auth = authenticated;
+    var validRegExp = /^[\w\.]{2,}$/;
+    var auth = authenticated;
+    var admn = isAdmin;
 
-    //app.post("/api/project/login", passports.middleware("authenticate", "local"), login);
-    app.post("/api/project/login", findUser);
+    app.post("/api/project/login", passport.authenticate("project", "local"), login);
 
     app.get("/api/project/loggedin", loggedIn);
     app.post("/api/project/logout", logOut);
     app.post("/api/project/register", createUser);
 
-    app.post("/api/project/user", createUser);
-    app.get("/api/project/user", findUser);
-    app.post("/api/project/loggedin", setLoggedIn);
-    app.get("/api/project/user/:id", findUserById);
-    app.put("/api/project/user/:id", updateUserById);
-    app.delete("/api/project/user/:id", deleteUserById);
-    app.post("/api/project/user/:id/commentedon/:documentId", addCommentedOnByUserId);
-    app.delete("/api/project/user/:id/commentedon/:documentId", removeCommentedOnIdByUserId);
-    app.post("/api/project/user/:id/like/:documentId", addLikeByUserId);
-    app.delete("/api/project/user/:id/like/:documentId", removeLikeIdByUserId);
-    app.get("/api/project/user/:id/commentedon", getCommentedOnByUserId);
-    app.get("/api/project/user/:id/like", getLikeByUserId);
+    app.post("/api/project/user", admn, createUser);
+    app.get("/api/project/user", auth, findUser);
+    app.get("/api/project/user/:id", auth, findUserById);
+    app.put("/api/project/user/:id", auth, updateUserById);
+    app.delete("/api/project/user/:id", admn, deleteUserById);
+    app.post("/api/project/user/:id/commentedon/:documentId", auth, addCommentedOnByUserId);
+    app.delete("/api/project/user/:id/commentedon/:documentId", auth, removeCommentedOnIdByUserId);
+    app.post("/api/project/user/:id/like/:documentId", auth, addLikeByUserId);
+    app.delete("/api/project/user/:id/like/:documentId", auth, removeLikeIdByUserId);
+    app.get("/api/project/user/:id/commentedon", auth, getCommentedOnByUserId);
+    app.get("/api/project/user/:id/like", auth, getLikeByUserId);
+
+    passport.use("project", new LocalStrategy(localStrategy));
 
     function register(req, res) {
         var newUser = req.body;
@@ -67,14 +67,14 @@ module.exports = function (app, userModel, documentModel) {
 
     function createUser(req, res) {
         var newUser = req.body;
-        if (!req.session.isAdminUser || !newUser.roles) {
+        if (!isAdminUser(req.user) || !newUser.roles) {
             newUser.roles = ["newcomer"];
         }
         newUser.password = bcrypt.hashSync(newUser.password.trim());
         userModel.createUser(newUser)
             .then(
                 function (user) {
-                    if (req.session.isAdminUser) {
+                    if (isAdminUser(req.user)) {
                         return userModel.findAllUsers();
                     } else {
                         if (user) {
@@ -107,7 +107,7 @@ module.exports = function (app, userModel, documentModel) {
             userModel.findUserByUsername(username)
                 .then(
                     function (user) {
-                        if (user && bcrypt.compareSync(password, user.password)) {
+                        if (user && user.password.search(validRegExp) === -1 && bcrypt.compareSync(password, user.password)) {
                             user.password = DPWD;
                             res.json(user);
                         } else {
@@ -168,10 +168,13 @@ module.exports = function (app, userModel, documentModel) {
         } else {
             newUser.password = bcrypt.hashSync(newUser.password.trim());
         }
+        if (!isAdminUser(req.user)) {
+            newUser.roles = "";
+        }
         userModel.updateUserById(userId, newUser)
             .then(
                 function (user) {
-                    if (req.session.isAdminUser) {
+                    if (isAdminUser(req.user)) {
                         return userModel.findAllUsers();
                     } else {
                         user.password = DPWD;
@@ -233,8 +236,8 @@ module.exports = function (app, userModel, documentModel) {
             )
             .then(
                 function (user) {
-                    if (req.session.user._id == userId) {
-                        req.session.user.commentedOn = user.commentedOn;
+                    if (req.user._id == userId) {
+                        req.user.commentedOn = user.commentedOn;
                     }
                     res.json(user.commentedOn);
                 },
@@ -250,8 +253,8 @@ module.exports = function (app, userModel, documentModel) {
         userModel.removeCommentedOnIdByUserId(userId, documentId)
             .then(
                 function (commentedOn) {
-                    if (req.session.user._id == userId) {
-                        req.session.user.commentedOn = commentedOn;
+                    if (req.user._id == userId) {
+                        req.user.commentedOn = commentedOn;
                     }
                     res.json(commentedOn);
                 },
@@ -267,8 +270,8 @@ module.exports = function (app, userModel, documentModel) {
         userModel.addLikeByUserId(userId, documentId)
             .then(
                 function (likes) {
-                    if (req.session.user._id == userId) {
-                        req.session.user.likes = likes;
+                    if (req.user._id == userId) {
+                        req.user.likes = likes;
                     }
                     res.json(likes);
                 },
@@ -284,8 +287,8 @@ module.exports = function (app, userModel, documentModel) {
         userModel.removeLikeIdByUserId(userId, documentId)
             .then(
                 function (likes) {
-                    if (req.session.user._id == userId) {
-                        req.session.user.likes = likes;
+                    if (req.user._id == userId) {
+                        req.user.likes = likes;
                     }
                     res.json(likes);
                 },
@@ -337,31 +340,35 @@ module.exports = function (app, userModel, documentModel) {
             );
     }
 
-    function setLoggedIn(req, res) {
-        var user = req.body;
-        req.session.user = user;
-        req.session.isAdminUser = false;
-        if (req.session.user.roles.indexOf("admin") >= 0 || req.session.user.roles.indexOf("administrator") >= 0) {
-            req.session.isAdminUser = true;
-        }
-        res.send(200);
-    }
-
     function loggedIn(req, res) {
-        if (true) {
-            if (req.session.user) {
-                req.session.user.password = DPWD;
-            }
-            res.json(req.session.user);
-        } else {
-            res.json(req.isAuthenticated() ? req.user : null);
+        if (req.isAuthenticated()) {
+            req.user.password = DPWD;
         }
+        res.json(req.isAuthenticated() ? req.user : null);
     }
 
     function logOut(req, res) {
-        //req.logOut();
-        req.session.destroy();
+        req.logOut();
         res.send(200);
+    }
+
+    function localStrategy(username, password, done) {
+        userModel
+            .findUserByUsername(username)
+            .then(
+                function (user) {
+                    if (user && user.password.search(validRegExp) === -1 && bcrypt.compareSync(password, user.password)) {
+                        return done(null, user);
+                    } else {
+                        return done(null, {"username": username});
+                    }
+                },
+                function (err) {
+                    if (err) {
+                        return done(err);
+                    }
+                }
+            );
     }
 
     function login(req, res) {
@@ -371,6 +378,14 @@ module.exports = function (app, userModel, documentModel) {
             res.json(user);
         } else {
             res.json(null);
+        }
+    }
+
+    function authenticated(req, res, next) {
+        if (req.isAuthenticated()) {
+            next();
+        } else {
+            res.send(401);
         }
     }
 
@@ -397,62 +412,4 @@ module.exports = function (app, userModel, documentModel) {
             res.send(403);
         }
     }
-
-    function authenticated(req, res, next) {
-        if (!req.isAuthenticated()) {
-            res.send(401);
-        } else {
-            next();
-        }
-    };
-
-    /*
-    passports._getConfig = function _getConfig(req, callback) {
-        return callback(null, req.host, {
-            "realm": req.host
-        });
-    };
-
-    passports._createInstance = function _createInstance(options, callback) {
-        var instance = new Passport();
-
-        instance.use("local", new LocalStrategy(options,
-            function localStrategy(username, password, done) {
-                userModel
-                 .findUserByUsername(username)
-                 .then(
-                     function (user) {
-                            if (user && bcrypt.compareSync(password, user.password)) {
-                            return done(null, user);
-                        } else {
-                            return done(null, {"username": username});
-                        }
-                     },
-                     function (err) {
-                        if (err) {
-                            return done(err);
-                        }
-                     }
-                 );
-            }));
-
-        instance.serializeUser(function (user, done) {
-            done(null, user);
-        });
-
-        instance.deserializeUser(function (user, done) {
-            userModel
-                .findUserById(user._id)
-                .then(
-                    function (user) {
-                        done(null, user);
-                    },
-                    function (err) {
-                        done(err, null);
-                    }
-                );
-        });
-
-        callback(null, instance);
-    };*/
 };
