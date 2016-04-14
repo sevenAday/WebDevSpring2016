@@ -209,8 +209,14 @@ module.exports = function (app, userModel, otherUserModel) {
     function loggedIn(req, res) {
         if (req.isAuthenticated()) {
             req.user.password = DPWD;
+            if (req.user._doc.hasOwnProperty("likes")) {
+                res.json(null);
+            } else {
+                res.json(req.user);
+            }
+        } else {
+            res.json(null);
         }
-        res.json(req.isAuthenticated() ? req.user : null);
     }
 
     function logOut(req, res) {
