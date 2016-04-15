@@ -8,6 +8,7 @@
     function LoginController($scope, $rootScope, $location, UserService) {
         var model = this;
         model.login = login;
+        model.register = register;
 
         function login() {
             model.showError = true;
@@ -31,6 +32,10 @@
                         }
                     });
             }
+        }
+
+        function register() {
+            $location.url("/register");
         }
 
         function isNotEmpty(obj) {

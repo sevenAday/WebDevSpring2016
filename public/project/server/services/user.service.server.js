@@ -13,7 +13,7 @@ module.exports = function (app, userModel, documentModel) {
 
     app.get("/api/project/loggedin", loggedIn);
     app.post("/api/project/logout", logOut);
-    app.post("/api/project/register", createUser);
+    app.post("/api/project/register", register);
 
     app.post("/api/project/user", admn, createUser);
     app.get("/api/project/user", auth, findUser);

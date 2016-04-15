@@ -89,6 +89,8 @@
 
         function deleteUser($index) {
             if (model.users[$index]._id == $rootScope.user._id) {
+                clearModel();
+                model.username = "Cannot delete yourself!!";
                 return;
             }
             UserService.deleteUserById(model.users[$index]._id)
@@ -99,6 +101,8 @@
 
         function selectUser($index) {
             if (model.users[$index]._id == $rootScope.user._id) {
+                clearModel();
+                model.username = "Cannot select yourself!!";
                 return;
             }
             selectedUserIndex = $index;
