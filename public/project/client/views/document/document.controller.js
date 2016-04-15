@@ -245,9 +245,14 @@
                 }
                 UserService.findUserById(like[Udx])
                     .then(function (response) {
+                        var tempLength = like.length;
                         var user = response.data;
-                        model.likeMessage = model.likeMessage + "and " + user.firstName + " " + user.lastName + " ";
-                        addToLike(like.length, youIdx);
+                        if (user) {
+                            model.likeMessage = model.likeMessage + "and " + user.firstName + " " + user.lastName + " ";
+                        } else {
+                            tempLength = tempLength - 1;
+                        }
+                        addToLike(tempLength, youIdx);
                     });
             } else if (like.length > 2) {
                 model.likeMessage = model.likeMessage + "and " + (like.length - 1) + " others ";
