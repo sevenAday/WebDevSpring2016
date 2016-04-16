@@ -194,7 +194,7 @@ module.exports = function (app, documentModel, commentModel, userModel) {
                         var docComment = docComments[c];
                         var dd = new Date(docComment.lastModified);
                         var userName = "You";
-                        if (docComment.userId != req.session.user._id) {
+                        if (!req.session.user._id.equals(docComment.userId)) {
                             userName = docComment.userName;
                         }
                         comments.push({
