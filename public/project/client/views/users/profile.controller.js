@@ -24,6 +24,7 @@
                 model.lastName = $rootScope.user.lastName;
                 model.email = $rootScope.user.email;
                 model.profileImage = $sce.trustAsResourceUrl($rootScope.user.profileImage);
+                $rootScope.user.profileImageUrl = model.profileImage;
                 model.documents = [];
                 model.likedDocuments = [];
                 model.documentsCommentedOn = [];

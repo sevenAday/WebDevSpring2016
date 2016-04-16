@@ -5,7 +5,7 @@
         .module("DocumentCallaborationApp")
         .controller("HeaderController", HeaderController);
 
-    function HeaderController($rootScope, $location, UserService) {
+    function HeaderController($rootScope, $location, $sce, UserService) {
         var model = this;
 
         model.createDocument = createDocument;
