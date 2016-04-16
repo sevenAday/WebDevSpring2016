@@ -174,7 +174,7 @@ module.exports = function (app, userModel, documentModel) {
         userModel.updateUserById(userId, newUser)
             .then(
                 function (user) {
-                    if (isAdminUser(req.user)) {
+                    if (isAdminUser(req.user) && !user._id.equals(req.user._id)) {
                         return userModel.findAllUsers();
                     } else {
                         user.password = DPWD;

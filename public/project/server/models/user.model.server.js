@@ -117,6 +117,9 @@ module.exports = function (db, mongoose) {
                         if (newUser.roles) {
                             user.roles = newUser.roles;
                         }
+                        if (newUser.profileImage) {
+                            user.profileImage = newUser.profileImage;
+                        }
                         user.save(function (err, doc) {
                             if (err) {
                                 deferred.reject(err);

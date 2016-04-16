@@ -8,7 +8,8 @@ module.exports = function (mongoose) {
         "email": {"type": String, "unique": true, "sparse": true},
         "roles": [String],
         "likes": [String],
-        "commentedOn": [String]
+        "commentedOn": [String],
+        "profileImage": String
     }, {"collection": "project.user"});
 
     return UserSchema;
