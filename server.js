@@ -27,6 +27,8 @@ app.use(cookieParser());
 app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.static(__dirname + "/public"));
+app.use(express.methodOverride());
+app.use(express.multipart());
 
 var userModel = require("./public/project/server/models/user.model.server.js")(db, mongoose);
 require('./public/assignment/server/app.js')(app, db, mongoose, userModel);

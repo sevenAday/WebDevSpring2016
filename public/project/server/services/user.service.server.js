@@ -2,12 +2,30 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
+var fs = require('fs');
 
 module.exports = function (app, userModel, documentModel) {
     var DPWD = ".........";
     var validRegExp = /^[\w\.]{2,}$/;
     var auth = authenticated;
     var admn = isAdmin;
+
+    var multer = require('multer');
+    /*
+    var storage = multer.diskStorage({
+        destination: function (req, file, cb) {
+            var dest = './uploads/';
+            fs.ensureDirSync(dest);
+            cb(null, dest);
+        },
+        filename: function (req, file, cb) {
+            var datetimestamp = Date.now();
+            cb(null, file.fieldname + '-' + datetimestamp);
+        }
+    });
+    var upload = multer({storage: storage});
+    */
+    var upload = multer({ dest: __dirname + 'public/uploads' });
 
     app.post("/api/project/login", passport.authenticate("project", "local"), login);
 
@@ -26,6 +44,8 @@ module.exports = function (app, userModel, documentModel) {
     app.delete("/api/project/user/:id/like/:documentId", auth, removeLikeIdByUserId);
     app.get("/api/project/user/:id/commentedon", auth, getCommentedOnByUserId);
     app.get("/api/project/user/:id/like", auth, getLikeByUserId);
+
+    app.post("/api/project/upload", auth, upload.single("profilePicture"), uploadProfileImage);
 
     passport.use("project", new LocalStrategy(localStrategy));
 
@@ -373,6 +393,41 @@ module.exports = function (app, userModel, documentModel) {
                     if (err) {
                         return done(err);
                     }
+                }
+            );
+    }
+
+    function uploadProfileImage(req, res) {
+        console.log(req.files);
+        var profilePicture = req.files['profilePicture'];
+        var fileName = profilePicture.name;
+        var tempPath = profilePicture.path;
+        var trgtPath = "public/uploads/" + req.user.username;
+        var newUser = {
+            "username": req.user.username,
+            "profileImage": "/uploads/" + req.user.username
+        };
+        fs.rename(tempPath, trgtPath, function (err) {
+            if (err) {
+                console.log("rename:" + err);
+            }
+            fs.unlink(tempPath, function (err) {
+                if (err) {
+                    console.log("remove:" + err);
+                }
+            });
+        });
+        userModel.updateUserById(req.user._id, newUser)
+            .then(
+                function (user) {
+                    if (user) {
+                        req.user.profileImage = user.profileImage;
+                        user.password = DPWD;
+                    }
+                    res.redirect("/project/client/#/profile");
+                },
+                function (err) {
+                    res.status(400).send(err);
                 }
             );
     }

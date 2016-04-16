@@ -5,7 +5,7 @@
         .module("DocumentCallaborationApp")
         .factory("UserService", UserService);
 
-    function UserService($http, $rootScope) {
+    function UserService($http, $rootScope, $sce) {
 
         var service = {
             findUserByUsername: findUserByUsername,
@@ -84,6 +84,7 @@
                     }
                 }
                 $rootScope.user = user;
+                $rootScope.user.profileImageUrl = $sce.trustAsResourceUrl(user.profileImage);
             }
         }
 

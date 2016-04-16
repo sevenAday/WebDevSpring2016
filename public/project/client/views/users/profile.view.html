@@ -1,7 +1,22 @@
-<div class="container-fluid">
+<div class="container-fluid" xmlns="http://www.w3.org/1999/html">
     <div class="row">
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1><img ng-src="{{model.profileImage}}" width="63" height="63"/> Profile</h1>
+            <form name="profileImage"
+                  action="/api/project/upload" method="post" enctype="multipart/form-data"
+                  class="form-horizontal">
+                <div class="form-group">
+                    <div class="col-sm-2">
+                        <button type="submit" class="btn btn-block">
+                            <span class="glyphicon glyphicon-picture" aria-hidden="true"></span>
+                            <span class="glyphicon glyphicon-upload" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                    <div class="col-sm-10">
+                        <input type="file" name="profilePicture" class="form-control"/>
+                    </div>
+                </div>
+            </form>
             <div ng-if="model.successful" class="text-success">Successfully updated!</div>
             <br ng-hide="model.successful"/>
             <form name="profile" class="form-horizontal">
