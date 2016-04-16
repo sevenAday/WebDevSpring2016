@@ -2,7 +2,6 @@
 var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
-var fs = require('fs');
 var mv = require('mv');
 
 module.exports = function (app, userModel, documentModel) {
@@ -12,20 +11,6 @@ module.exports = function (app, userModel, documentModel) {
     var admn = isAdmin;
 
     var multer = require('multer');
-    /*
-    var storage = multer.diskStorage({
-        destination: function (req, file, cb) {
-            var dest = './uploads/';
-            fs.ensureDirSync(dest);
-            cb(null, dest);
-        },
-        filename: function (req, file, cb) {
-            var datetimestamp = Date.now();
-            cb(null, file.fieldname + '-' + datetimestamp);
-        }
-    });
-    var upload = multer({storage: storage});
-    */
     var upload = multer({ dest: __dirname + '/../../../uploads' });
 
     app.post("/api/project/login", passport.authenticate("project", "local"), login);
