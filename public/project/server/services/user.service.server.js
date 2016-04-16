@@ -3,6 +3,7 @@ var passport = require('passport');
 var LocalStrategy = require('passport-local').Strategy;
 var bcrypt = require('bcrypt-nodejs');
 var fs = require('fs');
+var mv = require('mv');
 
 module.exports = function (app, userModel, documentModel) {
     var DPWD = ".........";
@@ -400,23 +401,17 @@ module.exports = function (app, userModel, documentModel) {
     function uploadProfileImage(req, res) {
         console.log(req.files);
         var profilePicture = req.files['profilePicture'];
-        var fileName = profilePicture.name;
         var tempPath = profilePicture.path;
         var trgtPath = "public/uploads/ppic_" + req.user.username;
         var newUser = {
             "username": req.user.username,
             "profileImage": "/uploads/ppic_" + req.user.username
         };
-        fs.rename(tempPath, trgtPath, function (err) {
+        mv(tempPath, trgtPath, function (err) {
             if (err) {
                 console.log("rename:" + err);
                 newUser.profileImage = "/images/ErrorDuckling.jpg";
             }
-            fs.unlink(tempPath, function (err) {
-                if (err) {
-                    console.log("remove:" + err);
-                }
-            });
         });
         userModel.updateUserById(req.user._id, newUser)
             .then(

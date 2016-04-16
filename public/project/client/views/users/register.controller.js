@@ -5,9 +5,22 @@
         .module("DocumentCallaborationApp")
         .controller("RegisterController", RegisterController);
 
-    function RegisterController($scope, $location, UserService) {
+    function RegisterController($scope, $rootScope, $location, UserService) {
         var model = this;
         model.register = register;
+
+        function init() {
+            if ($rootScope.usernameToRegister) {
+                model.username = $rootScope.usernameToRegister;
+                $rootScope.usernameToRegister = null;
+            }
+            if ($rootScope.passwordToRegister) {
+                model.password = $rootScope.passwordToRegister;
+                $rootScope.passwordToRegister = null;
+            }
+        }
+
+        init();
 
         function register() {
             model.showError = true;

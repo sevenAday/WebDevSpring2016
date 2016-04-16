@@ -27,6 +27,8 @@
                                 $location.path("/profile");
                             }
                         } else {
+                            $rootScope.usernameToRegister = model.username;
+                            $rootScope.passwordToRegister = model.password;
                             $scope.signin.password.$error = {"invalidLogin": true};
                             model.disableRegisterButton = false;
                         }
