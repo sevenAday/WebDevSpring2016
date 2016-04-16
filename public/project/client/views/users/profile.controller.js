@@ -5,7 +5,7 @@
         .module("DocumentCallaborationApp")
         .controller("ProfileController", ProfileController);
 
-    function ProfileController($scope, $rootScope, $location, UserService, DocumentService) {
+    function ProfileController($scope, $rootScope, $location, $sce, UserService, DocumentService) {
         var model = this;
         var unchangedPW = null;
 
@@ -23,6 +23,7 @@
                 model.firstName = $rootScope.user.firstName;
                 model.lastName = $rootScope.user.lastName;
                 model.email = $rootScope.user.email;
+                model.profileImage = $sce.trustAsResourceUrl($rootScope.user.profileImage);
                 model.documents = [];
                 model.likedDocuments = [];
                 model.documentsCommentedOn = [];

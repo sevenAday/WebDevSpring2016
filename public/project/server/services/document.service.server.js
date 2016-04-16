@@ -76,7 +76,7 @@ module.exports = function (app, documentModel, commentModel, userModel) {
                         userIds.push(document.comment[c].userId);
                     }
                     likes = document.like;
-                    return userModel.removeCommentedOnIdByUserIds(userIds, documentId, document.like);
+                    return userModel.removeCommentedOnIdByUserIds(userIds, documentId);
                 },
                 function (err) {
                     res.status(400).send(err);

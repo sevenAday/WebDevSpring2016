@@ -53,6 +53,7 @@ module.exports = function (db, mongoose) {
     }
 
     function createUser(newUser) {
+        newUser.profileImage = "/images/DefaultUserProfile.png";
         var deferred = q.defer();
         UserModel
             .create(newUser,
@@ -200,7 +201,7 @@ module.exports = function (db, mongoose) {
             });
     }
 
-    function removeCommentedOnIdByUserIds(userIds, documentId, likes) {
+    function removeCommentedOnIdByUserIds(userIds, documentId) {
         var deferred = q.defer();
         UserModel
             .update({"_id": {"$in": userIds}},
