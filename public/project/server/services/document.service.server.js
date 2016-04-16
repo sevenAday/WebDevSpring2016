@@ -67,7 +67,37 @@ module.exports = function (app, documentModel, commentModel, userModel) {
 
     function deleteDocumentById(req, res) {
         var documentId = req.params.id;
-        documentModel.deleteDocumentById(documentId)
+        var likes = [];
+        documentModel.getDocumentById(documentId)
+            .then(
+                function (document) {
+                    var userIds = [];
+                    for (var c in document.comment) {
+                        userIds.push(document.comment[c].userId);
+                    }
+                    likes = document.like;
+                    return userModel.removeCommentedOnIdByUserIds(userIds, documentId, document.like);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (stats) {
+                    return userModel.removeLikeIdByUserIds(likes, documentId);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
+            .then(
+                function (stats) {
+                    return documentModel.deleteDocumentById(documentId);
+                },
+                function (err) {
+                    res.status(400).send(err);
+                }
+            )
             .then(
                 function (doc) {
                     res.send(true);
@@ -194,7 +224,7 @@ module.exports = function (app, documentModel, commentModel, userModel) {
                         var docComment = docComments[c];
                         var dd = new Date(docComment.lastModified);
                         var userName = "You";
-                        if (!req.session.user._id.equals(docComment.userId)) {
+                        if (!req.user._id.equals(docComment.userId)) {
                             userName = docComment.userName;
                         }
                         comments.push({

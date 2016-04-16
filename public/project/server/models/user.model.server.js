@@ -16,7 +16,9 @@ module.exports = function (db, mongoose) {
         addCommentedOnByUserId: addCommentedOnByUserId,
         removeCommentedOnIdByUserId: removeCommentedOnIdByUserId,
         addLikeByUserId: addLikeByUserId,
-        removeLikeIdByUserId: removeLikeIdByUserId
+        removeLikeIdByUserId: removeLikeIdByUserId,
+        removeCommentedOnIdByUserIds: removeCommentedOnIdByUserIds,
+        removeLikeIdByUserIds: removeLikeIdByUserIds
     };
     return api;
 
@@ -196,5 +198,37 @@ module.exports = function (db, mongoose) {
                 user.save();
                 return user.likes;
             });
+    }
+
+    function removeCommentedOnIdByUserIds(userIds, documentId, likes) {
+        var deferred = q.defer();
+        UserModel
+            .update({"_id": {"$in": userIds}},
+                {"$pull": {"commentedOn": documentId}}, {"multi": true},
+                function (err, stats) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(stats);
+                    }
+                }
+            );
+        return deferred.promise;
+    }
+
+    function removeLikeIdByUserIds(userIds, documentId) {
+        var deferred = q.defer();
+        UserModel
+            .update({"_id": {"$in": userIds}},
+                {"$pull": {"likes": documentId}}, {"multi": true},
+                function (err, stats) {
+                    if (err) {
+                        deferred.reject(err);
+                    } else {
+                        deferred.resolve(stats);
+                    }
+                }
+            );
+        return deferred.promise;
     }
 };
