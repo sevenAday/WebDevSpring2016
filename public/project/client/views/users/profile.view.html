@@ -1,7 +1,7 @@
 <div class="container-fluid" xmlns="http://www.w3.org/1999/html">
     <div class="row">
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
-            <h1><img ng-src="{{model.profileImage}}" width="63" height="63"/> Profile</h1>
+            <h1><img ng-src="{{model.profileImage || model.defaultImage}}" width="63" height="63"/> Profile</h1>
             <form name="profileImage"
                   action="/api/project/upload" method="post" enctype="multipart/form-data"
                   class="form-horizontal">

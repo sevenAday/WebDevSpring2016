@@ -5,9 +5,10 @@
         .module("DocumentCallaborationApp")
         .controller("ProfileController", ProfileController);
 
-    function ProfileController($scope, $rootScope, $location, UserService, DocumentService) {
+    function ProfileController($scope, $rootScope, $location, $sce, UserService, DocumentService) {
         var model = this;
         var unchangedPW = null;
+        model.defaultImage = $sce.trustAsResourceUrl("/images/ErrorDuckling.jpg");
 
         model.update = update;
         model.clearMessage = clearMessage;

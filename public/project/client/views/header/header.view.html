@@ -46,7 +46,7 @@
                 </li>
                 <li ng-show="user" ng-class="{'active': $location.url().indexOf('profile') != -1}">
                     <a href="#/profile">
-                        <img ng-src="{{user.profileImageUrl}}" width="18" height="18"/>
+                        <img ng-src="{{user.profileImageUrl || model.defaultImage}}" width="18" height="18"/>
                         {{user.username}}</a>
                 </li>
                 <li ng-show="user"><a ng-click="model.logout()">Logout</a></li>

@@ -7,6 +7,7 @@
 
     function HeaderController($rootScope, $location, $sce, UserService) {
         var model = this;
+        model.defaultImage = $sce.trustAsResourceUrl("/images/ErrorDuckling.jpg");
 
         model.createDocument = createDocument;
         model.logout = logout;
