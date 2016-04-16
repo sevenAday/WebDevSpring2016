@@ -71,7 +71,6 @@
                             $rootScope.document.lastModifiedDate = dispDate;
                             model.title = $rootScope.document.title;
                             model.content = $rootScope.document.content;
-                            getLikeInformation();
                             getComments();
                         });
                 }
@@ -143,7 +142,6 @@
                     $rootScope.document.lastModifiedDate = (dd.getMonth() + 1) + "/" + dd.getDate() + "/" + dd.getFullYear();
                     model.title = $rootScope.document.title;
                     model.content = $rootScope.document.content;
-                    getLikeInformation();
                     getComments();
                     $location.path("/document/" + $rootScope.document._id);
                 });
@@ -320,6 +318,7 @@
             DocumentService.getCommentsOnDocument($rootScope.document._id)
                 .then(function (response) {
                     model.comments = response.data;
+                    getLikeInformation();
                 });
         }
 
