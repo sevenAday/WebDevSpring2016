@@ -68,6 +68,15 @@
                     getAdminSettings: getAdminSettings
                 }
             })
+            .when("/collaborator/:userId", {
+                templateUrl: "views/users/collaborator.view.html",
+                controller: "CollaboratorController",
+                controllerAs: "model",
+                resolve: {
+                    checkLoggedIn: checkLoggedIn,
+                    getAdminSettings: getAdminSettings
+                }
+            })
             .when("/results", {
                 templateUrl: "views/search/results.view.html",
                 controller: "ResultsController",

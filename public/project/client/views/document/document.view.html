@@ -3,7 +3,9 @@
         <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
             <h1 ng-hide="editable || newDocument" ng-mouseup="model.getSelectedText()" ng-cloak>{{document.title}}</h1>
             <h6 ng-hide="editable || newDocument" ng-cloak>
-                Last modified by {{document.user}} on {{document.lastModifiedDate}}
+                Last modified by <a ng-click="model.openCollaboratorPage(document.modifierId,document.user)">
+                {{document.user}}</a>
+                on {{document.lastModifiedDate}}
             </h6>
             <p ng-hide="editable || newDocument" ng-mouseup="model.getSelectedText()" ng-cloak>{{document.content}}</p>
             <div ng-if="model.errorred" class="text-danger" ng-cloak>{{model.errorMessage}}</div>
@@ -33,7 +35,8 @@
             </a>
             <div ng-hide="editable || newDocument" ng-repeat="comment in model.comments">
                 <hr/>
-                <h6>{{comment.userName}} wrote on {{comment.commentDate}}:</h6>
+                <h6><a ng-click="model.openCollaboratorPage(comment.userId,comment.userName)">
+                    {{comment.userName}}</a> wrote on {{comment.commentDate}}:</h6>
                 <p ng-hide="$index === model.editCommentIndex">{{comment.content}}</p>
                 <textarea ng-show="$index === model.editCommentIndex" ng-model="model.commentEditingContent"
                           class="form-control"></textarea>

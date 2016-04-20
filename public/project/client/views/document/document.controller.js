@@ -24,6 +24,7 @@
         model.addNewComment = addNewComment;
         model.getSelectedText = getSelectedText;
         model.discardComment = discardComment;
+        model.openCollaboratorPage = openCollaboratorPage;
 
         $scope.showDefinition = false;
         $scope.createComment = createComment;
@@ -65,8 +66,10 @@
                                 } else {
                                     $rootScope.document.user = user.firstName + " " + user.lastName;
                                 }
+                                $rootScope.document.modifierId = user._id;
                             } else {
-                                $rootScope.document.user = "unknown collaborator"
+                                $rootScope.document.user = "unknown collaborator";
+                                $rootScope.document.modifierId = -1;
                             }
                             $rootScope.document.lastModifiedDate = dispDate;
                             model.title = $rootScope.document.title;
@@ -403,6 +406,16 @@
                             model.newCommentContent = "";
                         });
                 });
+        }
+
+        function openCollaboratorPage(tUserId, tUserName) {
+            if (tUserName == "unknown collaborator") {
+                //do nothing here
+            } else if (tUserName == "you" || tUserName == "You") {
+                $location.path("/profile");
+            } else {
+                $location.path("/collaborator/" + tUserId);
+            }
         }
     }
 }());

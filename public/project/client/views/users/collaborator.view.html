@@ -1,0 +1,90 @@
+<div class="container-fluid" xmlns="http://www.w3.org/1999/html">
+    <div class="row">
+        <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+            <h1><img ng-src="{{model.profileImage}}" width="63" height="63"/> {{model.username}}'s Profile</h1>
+            <form name="secondUser" class="form-horizontal">
+                <div class="form-group">
+                    <label for="inputFirstName" class="col-sm-2">First Name:</label>
+                    <div class="col-sm-10">
+                        <input name="firstName" required ng-model="model.firstName" type="text" class="form-control"
+                               id="inputFirstName" placeholder="First Name" ng-readonly="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputLastName" class="col-sm-2">Last Name:</label>
+                    <div class="col-sm-10">
+                        <input name="lastName" required ng-model="model.lastName" type="text" class="form-control"
+                               id="inputLastName" placeholder="Last Name" ng-readonly="true">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="inputEmail" class="col-sm-2">Email:</label>
+                    <div class="col-sm-10">
+                        <input name="inputEmail" ng-model="model.email" type="email" class="col-sm-10 form-control"
+                               id="inputEmail" placeholder="Email" ng-readonly="true">
+                    </div>
+                </div>
+            </form>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>Documents last modified by {{model.firstName}}:</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="document in model.documents">
+                        <td>
+                            <a ng-click="model.openDocument(0, $index)">
+                                <span class="text-nowrap">{{document.title}}</span>
+                            </a>
+                            <br/>
+                            <span>{{document.abstract}} ...</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>{{model.firstName}} likes:</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="document in model.likedDocuments">
+                        <td>
+                            <a ng-click="model.openDocument(1, $index)">
+                                <span class="text-nowrap">{{document.title}}</span>
+                            </a>
+                            <br/>
+                            <span>{{document.abstract}} ...</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="table-responsive">
+                <table class="table table-striped">
+                    <thead>
+                    <tr>
+                        <th>{{model.firstName}} commented on:</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <tr ng-repeat="document in model.documentsCommentedOn">
+                        <td>
+                            <a ng-click="model.openDocument(2, $index)">
+                                <span class="text-nowrap">{{document.title}}</span>
+                            </a>
+                            <br/>
+                            <span>{{document.abstract}} ...</span>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
