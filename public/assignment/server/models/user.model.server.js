@@ -13,7 +13,8 @@ module.exports = function (db, mongoose) {
         createUser: createUser,
         updateUserById: updateUserById,
         deleteUserById: deleteUserById,
-        createAppAdmin: createAppAdmin
+        createAppAdmin: createAppAdmin,
+        getNumberOfUsers: getNumberOfUsers
     };
     return api;
 
@@ -167,5 +168,19 @@ module.exports = function (db, mongoose) {
                 });
         return deferred.promise;
         */
+    }
+
+    function getNumberOfUsers() {
+        var deferred = q.defer();
+        UserModel.count(
+            function (err, numberOfUsers) {
+                if (err) {
+                    deferred.reject(err);
+                } else {
+                    deferred.resolve(numberOfUsers);
+                }
+            }
+        );
+        return deferred.promise;
     }
 };

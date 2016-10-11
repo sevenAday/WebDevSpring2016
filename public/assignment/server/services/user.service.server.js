@@ -21,6 +21,8 @@ module.exports = function (app, userModel, otherUserModel) {
     app.delete("/api/assignment/user/:id", admn, deleteUserById);
     app.post("/api/assignment/appadmin", createAppAdmin);
 
+    app.get("/api/assignment/numberofusers", getNumberOfUsers);
+
     passport.use("assignment", new LocalStrategy(localStrategy));
     passport.serializeUser(serializeUser);
     passport.deserializeUser(deserializeUser);
@@ -338,5 +340,18 @@ module.exports = function (app, userModel, otherUserModel) {
         } else {
             res.send(403);
         }
+    }
+
+    function getNumberOfUsers(req, res, next) {
+        userModel
+            .getNumberOfUsers()
+            .then(
+                function (numberOfUsers) {
+                    done(null, numberOfUsers);
+                },
+                function (err) {
+                    done(err, null);
+                }
+            );
     }
 };

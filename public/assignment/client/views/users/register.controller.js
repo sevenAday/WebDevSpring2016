@@ -39,14 +39,25 @@
                 "password": model.password,
                 "emails": emails
             };
-            UserService.register(newUser)
+
+            UserService.getNumberOfUsers()
                 .then(function (response) {
                     if (response.data) {
-                        UserService.setCurrentUser(response.data);
-                        $location.path("/profile");
-                    } else {
-                        $scope.registration.username.$error = {"duplicateUsername": true};
-                        model.disableRegisterButton = false;
+                        if (response.data > 5) {
+                            $scope.registration.username.$error = {"duplicateUsername": true};
+                            model.disableRegisterButton = false;
+                            return;
+                        }
+                        UserService.register(newUser)
+                            .then(function (response) {
+                                if (response.data) {
+                                    UserService.setCurrentUser(response.data);
+                                    $location.path("/profile");
+                                } else {
+                                    $scope.registration.username.$error = {"duplicateUsername": true};
+                                    model.disableRegisterButton = false;
+                                }
+                            });
                     }
                 });
         }
